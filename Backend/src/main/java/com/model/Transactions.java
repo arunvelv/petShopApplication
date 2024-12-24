@@ -41,6 +41,21 @@ public class Transactions {
     }
     
     public Transactions() {}
+    
+    
+
+	public Transactions(int transactionId, Date transactionDate, double amount, TransactionStatus transactionStatus,
+			Customer customers, Pets pets) {
+		super();
+		this.transactionId = transactionId;
+		this.transactionDate = transactionDate;
+		this.amount = amount;
+		this.transactionStatus = transactionStatus;
+		this.customers = customers;
+		this.pets = pets;
+	}
+
+
 
 	public int getTransactionId() {
 		return transactionId;

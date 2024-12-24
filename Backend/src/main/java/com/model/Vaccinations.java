@@ -28,12 +28,25 @@ public class Vaccinations {
 	@OneToMany(mappedBy="vaccinations")
     private List<Pets> pets;	
 
-	public Vaccinations() {
-		super();
-		
-	}
+	public Vaccinations() {}
+	
+	
 
 	
+	public Vaccinations(int vaccinationId, String name, String description, float price, boolean available,
+			List<Pets> pets) {
+		super();
+		this.vaccinationId = vaccinationId;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.available = available;
+		this.pets = pets;
+	}
+
+
+
+
 	public int getVaccinationId() {
 		return vaccinationId;
 	}

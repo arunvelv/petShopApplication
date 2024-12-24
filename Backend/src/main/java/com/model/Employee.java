@@ -45,6 +45,24 @@ public class Employee {
 
     public Employee() {}
     
+    
+    
+
+		public Employee(int employeeId, String name, String position, Date hireDate, String phoneNumber, String email,
+			Address address, List<Pets> pets) {
+		super();
+		this.employeeId = employeeId;
+		this.name = name;
+		this.position = position;
+		this.hireDate = hireDate;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.address = address;
+		this.pets = pets;
+	}
+
+
+
 
 		public int getEmployeeId() {
 			return employeeId;

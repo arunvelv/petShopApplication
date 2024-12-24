@@ -36,6 +36,24 @@ public class Customer {
 			@OneToMany(mappedBy = "customers", cascade=CascadeType.ALL)
 			@JsonIgnore
 			private List<Transactions> transactions;
+			
+			public Customer() {}
+			
+			
+
+			public Customer(int customerId, String firstName, String lastName, String email, String phoneNumber,
+					Address address, List<Transactions> transactions) {
+				super();
+				this.customerId = customerId;
+				this.firstName = firstName;
+				this.lastName = lastName;
+				this.email = email;
+				this.phoneNumber = phoneNumber;
+				this.address = address;
+				this.transactions = transactions;
+			}
+
+
 
 			public int getCustomerId() {
 				return customerId;

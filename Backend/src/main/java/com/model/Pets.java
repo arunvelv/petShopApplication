@@ -80,6 +80,31 @@ public class Pets {
     private Vaccinations vaccinations;
     
     public Pets() {}
+    
+    
+
+	public Pets(int petId, @NotNull @Size(max = 255) String name, @Size(max = 50) String breed, @Positive int age,
+			@Positive float price, String description, @Size(max = 255) String imageUrl, PetCategories category,
+			List<Transactions> transactions, GroomingService grooming_services, Suppliers suppliers, Employee employees,
+			PetFood pet_food, Vaccinations vaccinations) {
+		super();
+		this.petId = petId;
+		this.name = name;
+		this.breed = breed;
+		this.age = age;
+		this.price = price;
+		this.description = description;
+		this.imageUrl = imageUrl;
+		this.category = category;
+		this.transactions = transactions;
+		this.grooming_services = grooming_services;
+		this.suppliers = suppliers;
+		this.employees = employees;
+		this.pet_food = pet_food;
+		this.vaccinations = vaccinations;
+	}
+
+
 
 	public int getPetId() {
 		return petId;

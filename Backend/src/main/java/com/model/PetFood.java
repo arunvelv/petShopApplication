@@ -48,11 +48,24 @@ public class PetFood
     @JsonIgnore
     private List<Pets> pets;
 	
-	public PetFood()
-	{
-		
-	}
+	public PetFood() {}
+	
+	
  
+	public PetFood(int foodId, @NotNull @Size(max = 255) String name, @Size(max = 255) String brand,
+			@Size(max = 255) String type, @NotNull int quantity, @NotNull float price, List<Pets> pets) {
+		super();
+		this.foodId = foodId;
+		this.name = name;
+		this.brand = brand;
+		this.type = type;
+		this.quantity = quantity;
+		this.price = price;
+		this.pets = pets;
+	}
+
+
+
 	public int getFoodId() {
 		return foodId;
 	}

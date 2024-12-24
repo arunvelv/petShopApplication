@@ -30,8 +30,25 @@ public class GroomingService {
     @OneToMany(mappedBy = "grooming_services", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<Pets> pets;
+    
+    public GroomingService() {}
+    
+    
 
-    public int getServiceId() {
+    public GroomingService(int serviceId, String name, String description, float price, boolean available,
+			List<Pets> pets) {
+		super();
+		this.serviceId = serviceId;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.available = available;
+		this.pets = pets;
+	}
+
+
+
+	public int getServiceId() {
         return serviceId;
     }
 

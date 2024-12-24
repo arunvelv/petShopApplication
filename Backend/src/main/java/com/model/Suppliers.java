@@ -36,6 +36,22 @@ public class Suppliers {
     private List<Pets> pets;
 
 	public Suppliers() {}
+	
+	
+
+	public Suppliers(int suppliersId, String name, String contactPerson, String phoneNumber, String email,
+			Address address) {
+		super();
+		this.suppliersId = suppliersId;
+		this.name = name;
+		this.contactPerson = contactPerson;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.address = address;
+		this.pets = pets;
+	}
+
+
 
 	public int getSuppliersId() {
 		return suppliersId;

@@ -32,6 +32,17 @@ public class PetCategories
     private List<Pets> petsList;
     
     public PetCategories() {}
+    
+    
+
+	public PetCategories(int categoryId, @NotNull @Size(max = 255) String name, List<Pets> petsList) {
+		super();
+		this.categoryId = categoryId;
+		this.name = name;
+		this.petsList = petsList;
+	}
+
+
 
 	public int getCategoryId() {
 		return categoryId;

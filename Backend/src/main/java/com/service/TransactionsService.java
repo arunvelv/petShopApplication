@@ -20,8 +20,6 @@ public class TransactionsService {
 
     public void saveTransaction(Transactions transaction) {
         int customerId = transaction.getCustomer().getCustomerId();
-
-        // Validate that the customer exists
         if (!customerDAO.existsById(customerId)) {
             throw new IllegalArgumentException("Customer not found with ID: " + customerId);
         }
@@ -48,5 +46,6 @@ public class TransactionsService {
 
     public List<Transactions> getAllTransactions() {
         return transactionsDAO.findAll();
-    }
+    
+	}
 }
