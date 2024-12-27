@@ -1,0 +1,63 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <div class="card-body">
+      <h3 class="card-title text-center text-primary mb-4">Sign Up</h3>
+      <form (ngSubmit)="UserRegister()">
+        <div class="form-group mb-3">
+          <label for="username" class="form-label">User Name</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            [(ngModel)]="user.username" 
+            name="username" 
+            placeholder="Enter User Name" 
+            required 
+          />
+        </div>
+        <div class="form-group mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            [(ngModel)]="user.password" 
+            name="password" 
+            placeholder="Password" 
+            required 
+          />
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary w-100 mb-3"
+        >
+          Sign Up
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Success/Failure Message -->
+<div 
+  class="modal fade show d-block" 
+  *ngIf="showModal" 
+  style="background-color: rgba(0, 0, 0, 0.5);"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ message }}</h5>
+      </div>
+      <div class="modal-footer">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="showModal = false"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

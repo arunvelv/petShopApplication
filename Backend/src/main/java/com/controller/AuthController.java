@@ -37,15 +37,15 @@ public class AuthController {
 		System.out.println("controller invoked");
 	}
  
-	@PostMapping("/api/auth")
+	@PostMapping("/api/login")
 	public ResponseEntity<?> authenticate(@RequestBody AuthenticateUser user)
 	{
 		JwtToken jwtToken=new JwtToken();
 		AuthenticationManager manager=new ProviderManager(provider);
-		Authentication authentication=manager.authenticate(new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword()));
+		Authentication authentication=manager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword()));
 		 if(authentication.isAuthenticated())
 		{
-			 String username=user.getUserName();
+			 String username=user.getUsername();
 			 String password=user.getPassword();
 			 List<Role> roleList=userRepository.findByUsername(username).get().getRoles();
     		 System.out.println(user.getRole());

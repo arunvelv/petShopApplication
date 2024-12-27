@@ -2,6 +2,9 @@ package com.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,7 +12,7 @@ import jakarta.persistence.*;
 public class Vaccinations {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="vaccination_id",  nullable=false)
 	private int vaccinationId;
 	
@@ -26,12 +29,11 @@ public class Vaccinations {
 	private boolean available;
 	
 	@OneToMany(mappedBy="vaccinations")
+	@JsonIgnore
     private List<Pets> pets;	
 
 	public Vaccinations() {}
 	
-	
-
 	
 	public Vaccinations(int vaccinationId, String name, String description, float price, boolean available,
 			List<Pets> pets) {
@@ -96,11 +98,6 @@ public class Vaccinations {
 	public void setPets(List<Pets> pets) {
 		this.pets = pets;
 	}
-
-
-	
-	
-	
 	
 	
 }

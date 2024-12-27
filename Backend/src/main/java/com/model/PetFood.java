@@ -3,11 +3,13 @@ package com.model;
 import java.util.List;
  
 import com.fasterxml.jackson.annotation.JsonIgnore;
- 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -19,7 +21,7 @@ import jakarta.validation.constraints.Size;
 public class PetFood
 {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="food_id", nullable=false)
 	private int foodId;
 	
@@ -45,7 +47,7 @@ public class PetFood
 	private float price;
 		
 	@OneToMany(mappedBy = "pet_food", cascade = CascadeType.ALL)
-    @JsonIgnore
+	@JsonIgnore
     private List<Pets> pets;
 	
 	public PetFood() {}

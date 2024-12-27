@@ -2,17 +2,16 @@ package com.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 
 
 @Entity
 @Table(name="address")
 public class Address {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="address_id")
 	private int addressId;
 	
@@ -30,12 +29,12 @@ public class Address {
 	
 	
 	@OneToMany(mappedBy = "address", cascade=CascadeType.ALL)
-	@JsonIgnore
+    @JsonIgnore
 	private List<Customer> Customers;
 	
 
 	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
-    @JsonIgnore
+	@JsonIgnore
     private List<Suppliers> suppliers;
 	
 	public Address() {}

@@ -2,7 +2,7 @@ package com.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 
@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Table(name="suppliers")
 public class Suppliers {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="supplier_id",  nullable=false)
     private int suppliersId;
 	
@@ -28,11 +28,10 @@ public class Suppliers {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="address_id")
-	@JsonIgnore
 	private Address address;
 	
 	@OneToMany(mappedBy = "suppliers", cascade = CascadeType.ALL)
-    @JsonIgnore
+	@JsonIgnore
     private List<Pets> pets;
 
 	public Suppliers() {}

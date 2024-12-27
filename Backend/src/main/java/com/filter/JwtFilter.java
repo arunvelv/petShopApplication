@@ -32,8 +32,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	        return;
 	    }
  
-	    if ((request.getRequestURI().startsWith("/api/auth") && request.getMethod().equals("POST")) ||
-	        (request.getRequestURI().equals("/api/user/register") && request.getMethod().equals("POST"))) {
+	    if ((request.getRequestURI().startsWith("/api/login") && request.getMethod().equals("POST")) ||
+	        (request.getRequestURI().equals("/api/user/register") && request.getMethod().equals("POST")) ||
+	        (request.getRequestURI().equals("/api/admin/register") && request.getMethod().equals("POST"))) {
 	        filterChain.doFilter(request, response);
 	        return;
 	    }

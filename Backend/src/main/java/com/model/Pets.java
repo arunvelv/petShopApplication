@@ -2,7 +2,7 @@ package com.model;
 
 import java.util.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Pets {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pet_id", nullable=false)
     private int petId;
 
@@ -45,7 +45,6 @@ public class Pets {
     private String imageUrl;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private PetCategories category;
 
@@ -55,28 +54,23 @@ public class Pets {
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
-    @JsonIgnore
     private GroomingService grooming_services;
 
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
     private Suppliers suppliers;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "employee_id",referencedColumnName = "employee_id")
     private Employee employees;
     
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "food_id")
     private PetFood pet_food;
 
     @ManyToOne
     @JoinColumn(name="vaccination_id")
-    @JsonIgnore
     private Vaccinations vaccinations;
     
     public Pets() {}

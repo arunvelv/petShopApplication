@@ -2,7 +2,7 @@ package com.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 
@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 public class GroomingService {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "service_id",  nullable=false)
 	private int serviceId;
 

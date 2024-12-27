@@ -2,6 +2,7 @@ package com.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class Transactions {
     private TransactionStatus transactionStatus;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JsonIgnore
+    @JsonBackReference
     @JoinColumn(name = "customer_id")
     private Customer customers;
 

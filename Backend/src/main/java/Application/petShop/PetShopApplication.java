@@ -61,23 +61,25 @@ public class PetShopApplication {
 	        .csrf().disable() // Disable CSRF protection
 	        
 	        .authorizeRequests()
-	            .requestMatchers(HttpMethod.POST,"/api/auth").permitAll()
+	            .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
 	            
-	                .requestMatchers(HttpMethod.PUT,"/api/manager/register/*").hasRole("ADMIN")
+//	                .requestMatchers(HttpMethod.PUT,"/api/manager/register/*").hasRole("ADMIN")
 	                .requestMatchers("/api/user/register").permitAll()
-	                .requestMatchers("/api/admin").hasAnyRole("ADMIN")
+	                .requestMatchers("/api/admin/register").permitAll()
+
+	                .requestMatchers("/api/admin/login").hasAnyRole("ADMIN")
 	                
-	                .requestMatchers(HttpMethod.POST, "/api/v1/customers/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET, "/api/v1/customers").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"api/v1/customers/{id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/name/{firstname}/{lastname} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/apiv1/customers/city/{city}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/state/{state}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/transactions/{id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/transactions-status/{status}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/no-transactions").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/pets/{id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/customers/update/{id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST, "/api/v1/customers/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET, "/api/v1/customers").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"api/v1/customers/{id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/name/{firstname}/{lastname} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/apiv1/customers/city/{city}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/state/{state}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/transactions/{id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/transactions-status/{status}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/no-transactions").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/pets/{id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/customers/update/{id}").hasAnyRole("ADMIN")
 	                
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/employees/add ").hasAnyRole("ADMIN")
@@ -88,79 +90,79 @@ public class PetShopApplication {
 	                .requestMatchers(HttpMethod.PUT,"/api/v1/employees/update/{employeeId}").hasAnyRole("ADMIN")
 	                
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/address/add ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/address").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/address/{addressId} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")  
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/employees/update/{address_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/address/add ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/address").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/address/{addressId} ").hasAnyRole("ADMIN")  
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/employees/update/{address_id}").hasAnyRole("ADMIN")
 	                
 	                
 	              
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/suppliers/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/{id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/name/{name}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/suppliers/city/{city}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/state/{state}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/suppliers/update/{id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/suppliers/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/{id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/name/{name}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/suppliers/city/{city}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/suppliers/state/{state}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.PUT,"/api/suppliers/update/{id}").hasAnyRole("ADMIN")
 	            
 	                
-	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history ").hasAnyRole("USER","ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.POST,"/api/v1/transaction_history/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/{transaction_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/successful").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/failed").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/by_customer/{customer_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/transaction_history/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/{transaction_id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/successful").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/failed").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/transaction_history/by_customer/{customer_id}").hasAnyRole("ADMIN")
 	           
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/serices/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/services/{id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/services").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/services/available").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/services/unavailable").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/services/update/{serviceId}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/serices/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/services/{id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/services").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/services/available").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/services/unavailable").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/services/update/{serviceId}").hasAnyRole("ADMIN")
 	                
 	      
 	                	
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/vaccinations/add ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations ").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/{vaccination_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/available ").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/unavailable").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/vaccinations/update/{vaccination_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/vaccinations/add ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations ").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/{vaccination_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/available ").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/unavailable").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/vaccinations/update/{vaccination_id}").hasAnyRole("ADMIN")
 	                
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/pets/add ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets").hasAnyRole("USER","ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/{pet_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/category/{category} ").hasAnyRole("USER","ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/grooming_services/{pet_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/vaccinations/{pet_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/food_info/{pet_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/suppliers/{pet_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/transaction_history/{pet_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/pets/update/{pet_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/pets/add ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets").hasAnyRole("USER","ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/{pet_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/category/{category} ").hasAnyRole("USER","ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/grooming_services/{pet_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/vaccinations/{pet_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/food_info/{pet_id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/suppliers/{pet_id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/transaction_history/{pet_id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/pets/update/{pet_id} ").hasAnyRole("ADMIN")
 	        
 	                
 	            
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/categories/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/categories").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/{category_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/name/{category_name}").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/categories/update/{category_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/categories/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/categories").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/{category_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/name/{category_name}").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/categories/update/{category_id}").hasAnyRole("ADMIN")
 	                
 	                
 	                
-	                .requestMatchers(HttpMethod.POST,"/api/v1/pet_foods/add").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/{food_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/search").hasAnyRole("ADMIN","ROLE_EMPLOYEE","USER")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/food_type/{type}").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/brand/{brand_name}").hasAnyRole("ADMIN","USER","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/pet_foods/update/{food_id} ").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
-	                .requestMatchers(HttpMethod.PUT,"/api/v1/pet_foods/quantity/{food_id}").hasAnyRole("ADMIN","ROLE_EMPLOYEE")
+	                .requestMatchers(HttpMethod.POST,"/api/v1/pet_foods/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/{food_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/search").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/food_type/{type}").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/brand/{brand_name}").hasAnyRole("ADMIN","USER")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/pet_foods/update/{food_id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.PUT,"/api/v1/pet_foods/quantity/{food_id}").hasAnyRole("ADMIN")
 	               
 	              
 	            .anyRequest().authenticated()
