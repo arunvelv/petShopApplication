@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from '../User';
+import { User } from '../../models/User';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '../services/auth-services.service';
@@ -34,7 +34,7 @@ export class UserRegisterComponent {
       return;
     }
 
-    this.authenticationService.UserRegisterComponent(this.user).subscribe(
+    this.authenticationService.UserRegister(this.user).subscribe(
       (response) => {
         console.log('User registered successfully:', response);
         this.message = 'User account created successfully!';

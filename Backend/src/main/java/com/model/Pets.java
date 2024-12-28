@@ -45,7 +45,9 @@ public class Pets {
     private String imageUrl;
 
     @ManyToOne
+    
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
+    
     private PetCategories category;
 
     @OneToMany(mappedBy = "pets", cascade = CascadeType.ALL)
@@ -54,23 +56,28 @@ public class Pets {
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
+    @JsonIgnore
     private GroomingService grooming_services;
 
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
+    @JsonIgnore
     private Suppliers suppliers;
 
     @ManyToOne
     @JoinColumn(name = "employee_id",referencedColumnName = "employee_id")
+    @JsonIgnore
     private Employee employees;
     
     @ManyToOne
     @JoinColumn(name = "food_id")
+    @JsonIgnore
     private PetFood pet_food;
 
     @ManyToOne
     @JoinColumn(name="vaccination_id")
+    @JsonIgnore
     private Vaccinations vaccinations;
     
     public Pets() {}

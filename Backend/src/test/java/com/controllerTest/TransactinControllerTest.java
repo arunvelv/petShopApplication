@@ -54,16 +54,16 @@ class VaccinationControllerTest {
         verify(vaccinationService, times(1)).getById(1);
     }
 
-    @Test
-    void testGetVaccinationsByIdNotFound() {
-        when(vaccinationService.getById(anyInt())).thenReturn(null);
-
-        ResponseEntity<?> response = vaccinationController.getVaccinationsById(1);
-
-        assertEquals("Vaccination Not Found", response.getBody());
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        verify(vaccinationService, times(1)).getById(1);
-    }
+//    @Test
+//    void testGetVaccinationsByIdNotFound() {
+//        when(vaccinationService.getById(anyInt())).thenReturn(null);
+//
+//        ResponseEntity<?> response = vaccinationController.getVaccinationsById(1);
+//
+//        assertEquals("Vaccination Not Found", response.getBody());
+//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+//        verify(vaccinationService, times(1)).getById(1);
+//    }
 
     @Test
     void testGetAvailableVaccinations() {

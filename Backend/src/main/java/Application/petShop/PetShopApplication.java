@@ -116,7 +116,7 @@ public class PetShopApplication {
 	           
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/serices/add").hasAnyRole("ADMIN")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/services/{id} ").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/services/{id} ").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/services").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/services/available").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/services/unavailable").hasAnyRole("ADMIN","USER")
@@ -127,7 +127,7 @@ public class PetShopApplication {
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/vaccinations/add ").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations ").hasAnyRole("ADMIN","USER")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/{vaccination_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/{vaccination_id}").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/available ").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/vaccinations/unavailable").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.PUT,"/api/v1/vaccinations/update/{vaccination_id}").hasAnyRole("ADMIN")
@@ -135,7 +135,7 @@ public class PetShopApplication {
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/pets/add ").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pets").hasAnyRole("USER","ADMIN")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/{pet_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/{pet_id}").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/category/{category} ").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/grooming_services/{pet_id}").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pets/vaccinations/{pet_id}").hasAnyRole("ADMIN")
@@ -149,7 +149,7 @@ public class PetShopApplication {
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/categories/add").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/categories").hasAnyRole("ADMIN","USER")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/{category_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/{category_id}").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/categories/name/{category_name}").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.PUT,"/api/v1/categories/update/{category_id}").hasAnyRole("ADMIN")
 	                
@@ -157,7 +157,7 @@ public class PetShopApplication {
 	                
 	                .requestMatchers(HttpMethod.POST,"/api/v1/pet_foods/add").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods").hasAnyRole("ADMIN","USER")
-	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/{food_id}").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/{food_id}").hasAnyRole("USER","ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/search").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/food_type/{type}").hasAnyRole("ADMIN","USER")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/pet_foods/brand/{brand_name}").hasAnyRole("ADMIN","USER")

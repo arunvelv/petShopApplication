@@ -25,7 +25,7 @@ public class PetFood
 	@Column(name="food_id", nullable=false)
 	private int foodId;
 	
-	@NotNull
+//	@NotNull
 	@Size(max=255)
 	@Column(name="name", nullable=false)
 	private String name;
@@ -38,11 +38,10 @@ public class PetFood
     @Column(name = "type",  nullable=false)
 	private String type;
 	
-	@NotNull
+//	@NotNull
 	@Column(name = "quantity",  nullable=false)
 	private int quantity;
 	
-	@NotNull
 	@Column(name = "price",  nullable=false)
 	private float price;
 		

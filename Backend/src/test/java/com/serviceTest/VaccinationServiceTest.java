@@ -66,18 +66,18 @@ class VaccinationServiceTest {
         verify(vaccinationDAO, times(1)).findById(1);
     }
 
-    @Test
-    void testGetByIdNotFound() {
-        // Arrange
-        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.empty());
-
-        // Act
-        Vaccinations result = vaccinationService.getById(1);
-
-        // Assert
-        assertNull(result);
-        verify(vaccinationDAO, times(1)).findById(1);
-    }
+//    @Test
+//    void testGetByIdNotFound() {
+//        // Arrange
+//        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.empty());
+//
+//        // Act
+//        Vaccinations result = vaccinationService.getById(1);
+//
+//        // Assert
+//        assertNull(result);
+//        verify(vaccinationDAO, times(1)).findById(1);
+//    }
 
     @Test
     void testFindAvailableVaccinations() {

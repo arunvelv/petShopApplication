@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {CommonModule} from "@angular/common";
 import { AuthenticationService } from '../services/auth-services.service';
-import { User } from '../User';
+import { User } from '../../models/User';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class AdminLoginComponent {
   token: any;
   AdminLogin(){
     this.user.role = "ROLE_ADMIN";
-    this.authenticationService.UserLoginComponent(this.user).subscribe((e)=>{
+    this.authenticationService.UserLogin(this.user).subscribe((e)=>{
       this.token = e.token;
       // alert(JSON.stringify(e));
       localStorage.setItem('token', this.token);

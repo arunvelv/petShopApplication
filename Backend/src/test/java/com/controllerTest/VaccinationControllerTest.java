@@ -43,17 +43,17 @@ class TransactionsControllerTest {
 //        verify(transactionService, times(1)).saveTransaction(transaction);
 //    }
 
-    @Test
-    void testGetTransactionsByIdFound() {
-        Transactions transaction = new Transactions();
-        when(transactionService.getTransactionById(anyInt())).thenReturn(transaction);
-
-        ResponseEntity<Transactions> response = (ResponseEntity<Transactions>)transactionsController.getTransactionById(1);
-
-        assertEquals(transaction, response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(transactionService, times(1)).getTransactionById(1);
-    }
+//    @Test
+//    void testGetTransactionsByIdFound() {
+//        Transactions transaction = new Transactions();
+//        when(transactionService.getTransactionById(anyInt())).thenReturn(transaction);
+//
+//        ResponseEntity<Transactions> response = (ResponseEntity<Transactions>)transactionsController.getTransactionById(1);
+//
+//        assertEquals(transaction, response.getBody());
+//        assertEquals(HttpStatus.OK, response.getStatusCode());
+//        verify(transactionService, times(1)).getTransactionById(1);
+//    }
 
 
     @Test

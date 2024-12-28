@@ -30,7 +30,6 @@ public class Customer {
 				
 		@ManyToOne(cascade=CascadeType.ALL)
 		@JoinColumn(name="address_id")
-		@JsonIgnore
 		private Address address;
 				
 		@OneToMany(mappedBy = "customers", cascade=CascadeType.ALL)
