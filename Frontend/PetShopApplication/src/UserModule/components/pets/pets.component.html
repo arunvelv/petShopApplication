@@ -1,10 +1,23 @@
 <div class="container">
   <h2>Pets</h2>
-  <div *ngFor="let pet of pets" class="card">
-    <div class="card-body">
-      <h5 class="card-title">{{ pet.name }}</h5>
-      <!-- <p class="card-text">Category: {{ pet.category }}</p> -->
-      <p class="card-text">Age: {{ pet.age }}</p>
+  <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let pet of pets">
+    <div class="col">
+      <div class="card h-100">
+        <img src="{{ pet.imageUrl }}" class="card-img-top" alt="{{ pet.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ pet.name }}</h5>
+          <p class="card-text">{{pet.breed}}</p>
+          <p class="card-text">{{pet.description}}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="card-text">Category: {{ pet.category.name}}</p>
+            <p class="card-text">Age: {{ pet.age }}</p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="card-text">Price: {{ pet.price }}</p>
+            <button type="button" class="btn btn-primary">Buy Now</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

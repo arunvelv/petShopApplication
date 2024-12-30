@@ -1,5 +1,7 @@
 package com.service;
  
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
@@ -14,10 +16,11 @@ public class UserService {
 	{
 		userDAO.save(user);
 	}
-//	public UserEntity findById(long id)
-//	{
-//		return userDAO.findById(id).get();
-//	}
+	
+	 public List<User> getAllUsers() {
+	        return userDAO.findAll();
+	    }
+	 
 	public boolean findById(long id)
 	{
 		return userDAO.findById(id).isPresent();

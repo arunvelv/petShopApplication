@@ -7,17 +7,19 @@ import { Pets } from '../../../models/Pets';
   providedIn: 'root',
 })
 export class PetService {
-  private baseUrl = 'http://localhost:9999/api/v1/pets';
+  constructor(private httpClient: HttpClient) {}
+   baseUrl:string = 'http://localhost:9999/api/v1/pets';
 
-  constructor(private http: HttpClient) {}
 
   getAllPets(): Observable<Pets[]> {
-    return this.http.get<Pets[]>(this.baseUrl);
+    return this.httpClient.get<Pets[]>(this.baseUrl+"",{
+      responseType: 'json'
+    });
   }
 
-  getPetById(petId: number): Observable<Pets> {
-    return this.http.get<Pets>(`${this.baseUrl}/${petId}`);
-  }
+  // getPetById(petId: number): Observable<Pets> {
+  //   return this.httpClient.get<Pets>(`${this.baseUrl}/${petId}`);
+  // }
 
   // addPet(pet: Pets): Observable<Pets> {
   //   return this.http.post<Pets>(`${this.baseUrl}/add`, pet);

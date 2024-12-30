@@ -32,6 +32,10 @@ public class Address {
     @JsonIgnore
 	private List<Customer> Customers;
 	
+	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Employee> employees;
+	
 
 	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
 	@JsonIgnore

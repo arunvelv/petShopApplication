@@ -1,0 +1,22 @@
+<div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Address ID</th>
+      <th>Street</th>
+      <th>City</th>
+      <th>State</th>
+      <th>Zip Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let address of addresses">
+      <td>{{ address.addressId }}</td>
+      <td>{{ address.street }}</td>
+      <td>{{ address.city }}</td>
+      <td>{{ address.state }}</td>
+      <td>{{ address.zipCode }}</td>
+    </tr>
+  </tbody>
+</table>
+</div>

@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Customer Id</th>
+        <th>Pet Id</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.transactionId }}</td>
+        <td>{{ transaction.transactionDate | date:'shortDate' }}</td> 
+        <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.transactionStatus }}</td>
+        <td>{{ transaction.customer.customerId }} </td> 
+        <td>{{ transaction.pet.petId }}</td> 
+      </tr>
+    </tbody>
+  </table>

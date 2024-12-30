@@ -13,11 +13,11 @@ export interface Pets {
     price: number;
     description: string;
     imageUrl: string;
-    // category: string;
-    // groomingServices: GroomingService[];
-    // suppliers: Supplier[];
-    // employees: Employee[];
-    // petFood: PetFood[];
-    // vaccinations: Vaccination[];
+    category: PetCategory;
+    groomingServices: GroomingService[];
+    suppliers: Supplier[];
+    employees: Employee[];
+    petFood: PetFood[];
+    vaccinations: Vaccination[];
   }
   

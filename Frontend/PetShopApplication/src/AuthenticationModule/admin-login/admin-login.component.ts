@@ -27,7 +27,7 @@ export class AdminLoginComponent {
       // alert(JSON.stringify(e));
       localStorage.setItem('token', this.token);
       localStorage.setItem('role', this.user.role);
-      this.router.navigate(["/"])
+      this.router.navigate(["/admin-dashboard"])
     },(error) => {
       console.error('Error saving user:', error);
       alert(JSON.stringify(error));

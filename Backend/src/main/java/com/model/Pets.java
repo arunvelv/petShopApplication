@@ -56,28 +56,28 @@ public class Pets {
 
     @ManyToOne
     @JoinColumn(name = "service_id", referencedColumnName = "service_id")
-    @JsonIgnore
+//    @JsonIgnore
     private GroomingService grooming_services;
 
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", referencedColumnName = "supplier_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Suppliers suppliers;
 
     @ManyToOne
     @JoinColumn(name = "employee_id",referencedColumnName = "employee_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Employee employees;
     
     @ManyToOne
     @JoinColumn(name = "food_id")
-    @JsonIgnore
+//    @JsonIgnore
     private PetFood pet_food;
 
     @ManyToOne
     @JoinColumn(name="vaccination_id")
-    @JsonIgnore
+//    @JsonIgnore
     private Vaccinations vaccinations;
     
     public Pets() {}

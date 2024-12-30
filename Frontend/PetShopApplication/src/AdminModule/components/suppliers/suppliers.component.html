@@ -1,0 +1,22 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Supplier ID</th>
+      <th>Name</th>
+      <th>Contact Person</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Address Id</th> 
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let supplier of suppliers">
+      <td>{{ supplier.suppliersId }}</td>
+      <td>{{ supplier.name }}</td>
+      <td>{{ supplier.contactPerson }}</td>
+      <td>{{ supplier.phoneNumber }}</td>
+      <td>{{ supplier.email }}</td>
+      <td>{{ supplier.address.addressId }}</td> 
+    </tr>
+  </tbody>
+</table>

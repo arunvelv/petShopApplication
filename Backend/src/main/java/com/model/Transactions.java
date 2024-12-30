@@ -32,7 +32,7 @@ public class Transactions {
     private Customer customers;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "pet_id")
     private Pets pets;
 

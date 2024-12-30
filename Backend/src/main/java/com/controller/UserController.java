@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
  
 import com.model.User;
 import com.exception.Response;
+import com.model.Customer;
 import com.model.Role;
 import com.service.UserService;
 import com.service.RoleService;
@@ -28,6 +29,12 @@ public class UserController {
  
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
  
     @PostMapping("/user/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {

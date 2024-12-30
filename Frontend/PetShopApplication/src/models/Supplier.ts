@@ -8,6 +8,5 @@ export interface Supplier {
     phoneNumber: string;
     email: string;
     address: Address;
-    pets: Pets[];
   }
   
