@@ -15,9 +15,9 @@ public class AddressService {
     @Autowired
     private AddressDAO addressDAO;
  
-    public ResponseEntity<String> addAddress(Address address) {
+    public ResponseEntity<Address> addAddress(Address address) {
         addressDAO.save(address);
-        return new ResponseEntity<>("Address added successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
  
     public ResponseEntity<List<Address>> getAllAddresses() {
@@ -25,13 +25,13 @@ public class AddressService {
         return new ResponseEntity<>(addressList, HttpStatus.OK);
     }
  
-    public ResponseEntity<String> updateAddress(Address address) {
+    public ResponseEntity<Address> updateAddress(Address address) {
         Optional<Address> existingAddress = addressDAO.findById(address.getAddressId());
         if (existingAddress.isPresent()) {
             addressDAO.save(address);
-            return new ResponseEntity<>("Address updated successfully", HttpStatus.OK);
+            return new ResponseEntity<>(address, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Address not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(address, HttpStatus.NOT_FOUND);
         }
     }
  

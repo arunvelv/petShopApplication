@@ -16,4 +16,10 @@ export class TransactionsService {
     return this.http.get<Transaction[]>(this.baseUrl,{
       responseType:'json'});
   }
+
+  addTransactions(transaction: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(this.baseUrl + "/add", transaction, {
+      responseType: 'json'
+    });
+  }
 }

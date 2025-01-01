@@ -1,77 +1,209 @@
 <div class="container">
-    <h2>Customer List</h2>
-    <button class="btn btn-primary" (click)="showAddCustomerForm = !showAddCustomerForm">
-      {{ showAddCustomerForm ? 'Hide Add Customer' : 'Add Customer' }}
-    </button>
+  <h2>Customer Management</h2>
 
-    <div *ngIf="showAddCustomerForm">
-      <form (ngSubmit)="addCustomer(newCustomerForm.value)" #newCustomerForm="ngForm">
-        <div class="form-group">
-          <label for="firstName">First Name:</label>
-          <input type="text" id="firstName" class="form-control" name="firstName" [(ngModel)]="newCustomer.firstName" required />
-        </div>
-        <div class="form-group">
-          <label for="lastName">Last Name:</label>
-          <input type="text" id="lastName" class="form-control" name="lastName" [(ngModel)]="newCustomer.lastName" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" class="form-control" name="email" [(ngModel)]="newCustomer.email" required />
-        </div>
-        <div class="form-group">
-          <label for="phoneNumber">Phone Number:</label>
-          <input type="text" id="phoneNumber" class="form-control" name="phoneNumber" [(ngModel)]="newCustomer.phoneNumber" required />
-        </div>
-        <button type="submit" class="btn btn-primary">Add Customer</button>
-      </form>
-    </div>
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
 
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let customer of customers">
-          <td>{{ customer.customerId }}</td>
-          <td>{{ customer.firstName }}</td>
-          <td>{{ customer.lastName }}</td>
-          <td>{{ customer.email }}</td>
-          <td>{{ customer.phoneNumber }}</td>
-          <td>
-            <button class="btn btn-success" (click)="editCustomer = customer; showEditCustomerForm = true">Edit</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Search Bar -->
+  <div class="search-container mb-4">
+    <div class="form-inline">
+      <select class="form-control mr-2" [(ngModel)]="searchType">
+        <option value="name">Search by Name</option>
+        <option value="city">Search by City</option>
+        <option value="state">Search by State</option>
+        <option value="transactionStatus">Search by Transaction Status</option>
+        <option value="noTransactions">Customers Without Transactions</option>
+      </select>
 
-    <div *ngIf="showEditCustomerForm">
-      <h2>Update Customer</h2>
-      <form (ngSubmit)="updateCustomer(editCustomer.customerId, editCustomer)" #updateCustomerForm="ngForm">
-        <div class="form-group">
-          <label for="firstName">First Name:</label>
-          <input type="text" id="firstName" class="form-control" name="firstName" [(ngModel)]="editCustomer.firstName" required />
-        </div>
-        <div class="form-group">
-          <label for="lastName">Last Name:</label>
-          <input type="text" id="lastName" class="form-control" name="lastName" [(ngModel)]="editCustomer.lastName" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" class="form-control" name="email" [(ngModel)]="editCustomer.email" required />
-        </div>
-        <div class="form-group">
-          <label for="phoneNumber">Phone Number:</label>
-          <input type="text" id="phoneNumber" class="form-control" name="phoneNumber" [(ngModel)]="editCustomer.phoneNumber" required />
-        </div>
-        <button type="submit" class="btn btn-success">Update Customer</button>
-        <button type="button" class="btn btn-secondary" (click)="showEditCustomerForm = false">Cancel</button>
-      </form>
+      <div *ngIf="searchType === 'name'" class="d-inline-flex">
+        <input
+          type="text"
+          class="form-control mr-2"
+          placeholder="First Name"
+          [(ngModel)]="searchParams.firstName"
+        />
+        <input
+          type="text"
+          class="form-control mr-2"
+          placeholder="Last Name"
+          [(ngModel)]="searchParams.lastName"
+        />
+        <button class="btn btn-primary" (click)="searchByName()">Search</button>
+      </div>
+
+      <div *ngIf="searchType === 'city'" class="d-inline-flex">
+        <input
+          type="text"
+          class="form-control mr-2"
+          placeholder="City"
+          [(ngModel)]="searchParams.city"
+        />
+        <button class="btn btn-primary" (click)="searchByCity()">Search</button>
+      </div>
+
+      <div *ngIf="searchType === 'state'" class="d-inline-flex">
+        <input
+          type="text"
+          class="form-control mr-2"
+          placeholder="State"
+          [(ngModel)]="searchParams.state"
+        />
+        <button class="btn btn-primary" (click)="searchByState()">Search</button>
+      </div>
+
+      <div *ngIf="searchType === 'transactionStatus'" class="d-inline-flex">
+        <input
+          type="text"
+          class="form-control mr-2"
+          placeholder="Transaction Status"
+          [(ngModel)]="searchParams.status"
+        />
+        <button class="btn btn-primary" (click)="searchByTransactionStatus()">Search</button>
+      </div>
+
+      <div *ngIf="searchType === 'noTransactions'" class="d-inline-flex">
+        <button class="btn btn-primary" (click)="searchCustomersWithoutTransactions()">
+          Search Customers Without Transactions
+        </button>
+      </div>
     </div>
   </div>
+
+  <!-- Add Customer Form -->
+  <div class="mb-4">
+    <h3>Add New Customer</h3>
+    <form (ngSubmit)="addCustomer()" #addCustomerForm="ngForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="firstName" class="form-label">First Name</label>
+          <input
+            type="text"
+            id="firstName"
+            class="form-control"
+            [(ngModel)]="newCustomer.firstName"
+            name="firstName"
+            required
+          />
+        </div>
+        <div class="col">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input
+            type="text"
+            id="lastName"
+            class="form-control"
+            [(ngModel)]="newCustomer.lastName"
+            name="lastName"
+            required
+          />
+        </div>
+        <div class="col">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            [(ngModel)]="newCustomer.email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="col">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input
+            type="text"
+            id="phoneNumber"
+            class="form-control"
+            [(ngModel)]="newCustomer.phoneNumber"
+            name="phoneNumber"
+            required
+          />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Customer</button>
+    </form>
+  </div>
+
+  <!-- Customer Table -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers">
+        <td>{{ customer.customerId }}</td>
+        <td>
+          <input
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            [(ngModel)]="editingCustomer.firstName"
+            class="form-control"
+          />
+          <span *ngIf="!editingCustomer || editingCustomer.customerId !== customer.customerId">
+            {{ customer.firstName }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            [(ngModel)]="editingCustomer.lastName"
+            class="form-control"
+          />
+          <span *ngIf="!editingCustomer || editingCustomer.customerId !== customer.customerId">
+            {{ customer.lastName }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            [(ngModel)]="editingCustomer.email"
+            class="form-control"
+          />
+          <span *ngIf="!editingCustomer || editingCustomer.customerId !== customer.customerId">
+            {{ customer.email }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            [(ngModel)]="editingCustomer.phoneNumber"
+            class="form-control"
+          />
+          <span *ngIf="!editingCustomer || editingCustomer.customerId !== customer.customerId">
+            {{ customer.phoneNumber }}
+          </span>
+        </td>
+        <td>
+          <button
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            class="btn btn-primary btn-sm"
+            (click)="updateCustomer()"
+          >
+            Save
+          </button>
+          <button
+            *ngIf="editingCustomer && editingCustomer.customerId === customer.customerId"
+            class="btn btn-secondary btn-sm"
+            (click)="cancelEdit()"
+          >
+            Cancel
+          </button>
+          <button
+            *ngIf="!editingCustomer || editingCustomer.customerId !== customer.customerId"
+            class="btn btn-success btn-sm"
+            (click)="editCustomer(customer)"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

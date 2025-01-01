@@ -16,7 +16,7 @@ public class AddressController {
     private AddressService addressService;
  
     @PostMapping("/add")
-    public ResponseEntity<String> addAddress(@RequestBody Address address) {
+    public ResponseEntity<Address> addAddress(@RequestBody Address address) {
         return addressService.addAddress(address);
     }
  
@@ -26,7 +26,7 @@ public class AddressController {
     }
  
     @PutMapping("/update/{addressId:[0-9]+}")
-    public ResponseEntity<String> updateAddress(@PathVariable int addressId, @RequestBody Address address) {
+    public ResponseEntity<Address> updateAddress(@PathVariable int addressId, @RequestBody Address address) {
         address.setAddressId(addressId);
         return addressService.updateAddress(address);
     }

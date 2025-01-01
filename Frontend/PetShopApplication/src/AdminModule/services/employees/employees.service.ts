@@ -16,4 +16,16 @@ export class EmployeesService {
       responseType: 'json'
     });
   }
+
+  addEmployee(employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(this.baseUrl + "/add", employee, {
+      responseType: 'json'
+    });
+  }
+
+  updateEmployee(employeeId: number, employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(this.baseUrl + `/update/${employeeId}`, employee, {
+      responseType: 'json'
+    });
+  }
 }
