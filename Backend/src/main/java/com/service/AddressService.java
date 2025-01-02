@@ -14,6 +14,13 @@ import com.model.Address;
 public class AddressService {
     @Autowired
     private AddressDAO addressDAO;
+    
+    @Autowired
+    private AddressDAO addressdao;
+
+    public Address save(Address address) {
+        return addressdao.save(address);
+    }
  
     public ResponseEntity<Address> addAddress(Address address) {
         addressDAO.save(address);

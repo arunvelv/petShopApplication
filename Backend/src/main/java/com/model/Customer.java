@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 		
 @Entity
 @Table(name="customers")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Customer {
 	
 		@Id
@@ -29,11 +30,11 @@ public class Customer {
 		private String phoneNumber;
 				
 		@ManyToOne(cascade=CascadeType.ALL)
-		@JoinColumn(name="address_id")
+		@JoinColumn(name="address_id", referencedColumnName = "address_id")
 		@JsonIgnore
 		private Address address;
 				
-		@OneToMany(mappedBy = "customers", cascade=CascadeType.ALL)
+		@OneToMany(mappedBy = "customers", cascade=CascadeType.MERGE)
 		@JsonIgnore
 		private List<Transactions> transactions;
 				
@@ -108,5 +109,9 @@ public class Customer {
 		public void setTransactions(List<Transactions> transactions) {
 			this.transactions = transactions;
 		}
+		
+		 public Integer getAddressId() {
+		        return this.address != null ? this.address.getAddressId() : null;
+		    }
 							
 	}

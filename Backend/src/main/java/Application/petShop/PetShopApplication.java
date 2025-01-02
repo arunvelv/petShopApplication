@@ -70,6 +70,7 @@ public class PetShopApplication {
 	                .requestMatchers("/api/admin/login").hasAnyRole("ADMIN")
 	                
 	                .requestMatchers(HttpMethod.POST, "/api/v1/customers/add").hasAnyRole("ADMIN")
+	                .requestMatchers(HttpMethod.POST, "/api/v1/customers/add-with-address").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET, "/api/v1/customers").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"api/v1/customers/{id}").hasAnyRole("ADMIN")
 	                .requestMatchers(HttpMethod.GET,"/api/v1/customers/name/{firstname}/{lastname} ").hasAnyRole("ADMIN")

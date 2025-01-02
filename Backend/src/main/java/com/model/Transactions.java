@@ -26,12 +26,12 @@ public class Transactions {
     @Column(name="transaction_status")
     private TransactionStatus transactionStatus;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JsonBackReference
     @JoinColumn(name = "customer_id")
     private Customer customers;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
 //    @JsonIgnore
     @JoinColumn(name = "pet_id")
     private Pets pets;

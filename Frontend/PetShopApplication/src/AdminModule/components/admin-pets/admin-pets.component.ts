@@ -99,7 +99,7 @@ export class AdminPetsComponent implements OnInit  {
         console.error('Error adding pet:', err);
         if (err.status === 403) {
           alert('You do not have permission to add a pet. Please check your authorization.');
-        } else {
+        } else {      
           alert('Failed to add pet. Please check your input.');
         }
       },

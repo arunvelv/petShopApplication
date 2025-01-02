@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Transaction } from '../../../models/Transaction';
 import { Observable } from 'rxjs';
+import { Transaction } from '../../../models/Transaction';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +13,31 @@ export class TransactionsService {
   constructor(private http: HttpClient) { }
 
   getAllTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(this.baseUrl,{
-      responseType:'json'});
+    return this.http.get<Transaction[]>(this.baseUrl, {
+      responseType: 'json'
+    });
   }
 
-  addTransactions(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(this.baseUrl + "/add", transaction, {
+  addTransaction(transaction: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(`${this.baseUrl}/add`, transaction, {
+      responseType: 'json'
+    });
+  }
+
+  getSuccessfulTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.baseUrl}/successful`, {
+      responseType: 'json'
+    });
+  }
+
+  getFailedTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.baseUrl}/failed`, {
+      responseType: 'json'
+    });
+  }
+
+  getTransactionsByCustomerId(customerId: number): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.baseUrl}/by_customer/${customerId}`, {
       responseType: 'json'
     });
   }

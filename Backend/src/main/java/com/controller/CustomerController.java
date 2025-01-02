@@ -2,7 +2,7 @@ package com.controller;
 
 import com.model.*;
 import com.model.Transactions.TransactionStatus;
-import com.service.CustomerService;
+import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,8 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private AddressService addressService;
 
     @GetMapping
     public ResponseEntity<List<Customer>> getAllCustomers() {
@@ -95,4 +97,18 @@ public class CustomerController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    
+    @PostMapping("/add-with-address")
+    public ResponseEntity<Customer> addCustomerWithAddress(@RequestBody Customer customer) {
+        // Save address
+        Address savedAddress = addressService.save(customer.getAddress());
+        customer.setAddress(savedAddress); // Link saved address to customer
+        
+        // Save customer
+        Customer savedCustomer = customerService.addCustomer(customer);
+        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+    }
+
+
+
 }
