@@ -1,121 +1,88 @@
-import { Component, OnInit } from '@angular/core';
-import { Customer } from '../../../models/Customer';
-import { CustomerService } from '../../services/customers/customers.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+  import { Component, OnInit } from '@angular/core';
+  import { Customer } from '../../../models/Customer';
+  import { CustomerService } from '../../services/customers/customers.service';
+  import { FormsModule } from '@angular/forms';
+  import { CommonModule } from '@angular/common';
+  import { Address } from '../../../models/Address';
 
-@Component({
-  selector: 'app-customers',
-  imports: [CommonModule, FormsModule],
-  templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.css']
-})
-export class CustomersComponent implements OnInit {
-  customers: Customer[] = [];
-  newCustomer: Customer = {} as Customer;
-  editCustomer: Customer = {} as Customer;
-  showAddCustomerForm: boolean = false;
-  showEditCustomerForm: boolean = false;
-  
-    constructor(private customersService: CustomerService) { }
-  
+  @Component({
+    selector: 'app-customers',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './customers.component.html',
+    styleUrls: ['./customers.component.css']
+  })
+  export class CustomersComponent implements OnInit {
+    customers: Customer[] = [];
+    newCustomer: Customer = {} as Customer;
+    newAddress: Address = {} as Address;
+    editCustomer: Customer | null = null;
+    errorMessage: string | null = null;
+
+    constructor(private customerService: CustomerService) {}
+
     ngOnInit(): void {
-      this.getCustomerList();
+      this.getCustomers();
     }
 
-  searchType: string = 'name'; // Default search type
-searchParams: any = {
-  firstName: '',
-  lastName: '',
-  city: '',
-  state: '',
-  status: ''
-};
-
-searchByName(): void {
-  const { firstName, lastName } = this.searchParams;
-  this.customersService.getCustomerByName(firstName, lastName).subscribe(
-    (data: Customer[]) => {
-      this.customers = data;
-    },
-    (error) => console.error('Error searching by name:', error)
-  );
-}
-
-searchByCity(): void {
-  this.customersService.getCustomersByCity(this.searchParams.city).subscribe(
-    (data: Customer[]) => {
-      this.customers = data;
-    },
-    (error) => console.error('Error searching by city:', error)
-  );
-}
-
-searchByState(): void {
-  this.customersService.getCustomersByState(this.searchParams.state).subscribe(
-    (data: Customer[]) => {
-      this.customers = data;
-    },
-    (error) => console.error('Error searching by state:', error)
-  );
-}
-
-searchByTransactionStatus(): void {
-  this.customersService.getCustomersByTransactionStatus(this.searchParams.status).subscribe(
-    (data: Customer[]) => {
-      this.customers = data;
-    },
-    (error) => console.error('Error searching by transaction status:', error)
-  );
-}
-
-searchCustomersWithoutTransactions(): void {
-  this.customersService.getCustomersWithoutTransactions().subscribe(
-    (data: Customer[]) => {
-      this.customers = data;
-    },
-    (error) => console.error('Error searching customers without transactions:', error)
-  );
-}
-
-
-  getCustomerList(): void {
-    this.customersService.getAllCustomers().subscribe(
-      (data: Customer[]) => {
-        this.customers = data;
-      },
-      (error) => {
-        console.error('Error fetching customers:', error);
-      }
-    );
-  }
-
-  addCustomer(customer: Customer): void {
-    this.customersService.addCustomer(customer).subscribe(
-      (addedCustomer: Customer) => {
-        this.customers.push(addedCustomer);
-        console.log('Customer added successfully!');
-        this.newCustomer = {} as Customer; // Reset form
-      },
-      (error) => {
-        console.error('Error adding customer:', error);
-      }
-    );
-  }
-
-  updateCustomer(customerId: number, customerDetails: Customer): void {
-    this.customersService.updateCustomer(customerId, customerDetails).subscribe(
-      (updatedCustomer: Customer) => {
-        const index = this.customers.findIndex(c => c.customerId === customerId);
-        if (index !== -1) {
-          this.customers[index] = updatedCustomer;
+    getCustomers(): void {
+      this.customerService.getAllCustomers().subscribe(
+        (data) => {
+          this.customers = data;
+        },
+        (error) => {
+          console.error('Error fetching customers:', error);
+          this.errorMessage = 'Failed to load customers. Please try again later.';
         }
-        console.log('Customer updated successfully!');
-        this.editCustomer = {} as Customer;
-      },
-      (error) => {
-        console.error('Error updating customer:', error);
-      }
-    );
+      );
+    }
+
+    // addCustomer(): void {
+    //   if (!this.newCustomer.name || !this.newCustomer.email || !this.newAddress.street || !this.newAddress.city || !this.newAddress.state || !this.newAddress.zipCode) {
+    //     this.errorMessage = 'All fields are required.';
+    //     return;
+    //   }
+    
+    //   const payload = { customer: this.newCustomer, address: this.newAddress };
+    //   this.customerService.addCustomer(payload).subscribe(
+    //     (addedCustomer: Customer) => {
+    //       this.customers.push(addedCustomer);
+    //       console.log('Customer with address added successfully!');
+    //       this.newCustomer = {} as Customer;
+    //       this.newAddress = {} as Address;
+    //       this.errorMessage = null;
+    //     },
+    //     (error) => {
+    //       console.error('Error adding customer with address:', error);
+    //       this.errorMessage = 'Failed to add customer with address. Please try again.';
+    //     }
+    //   );
+    // }
+    
+    
+
+    // editCustomer(customer: Customer): void {
+    //   this.editCustomer = { ...customer };
+    // }
+
+    // updateCustomer(): void {
+    //   if (this.editCustomer) {
+    //     const payload = { customer: this.editCustomer, address: this.newAddress };
+    //     this.customerService.updateCustomer(this.editCustomer.customerId, payload).subscribe(
+    //       (updatedCustomer: Customer) => {
+    //         const index = this.customers.findIndex(c => c.customerId === updatedCustomer.customerId);
+    //         if (index !== -1) {
+    //           this.customers[index] = updatedCustomer;
+    //         }
+    //         console.log('Customer updated successfully!');
+    //         this.editCustomer = null;
+    //       },
+    //       (error) => {
+    //         console.error('Error updating customer:', error);
+    //         this.errorMessage = 'Failed to update customer. Please try again later.';
+    //       }
+    //     );
+    //   }
+    // }
+    // cancelEdit(): void {
+    //   this.editCustomer = null;
   }
-}

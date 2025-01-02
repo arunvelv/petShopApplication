@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 		
 @Entity
 @Table(name="customers")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Customer {
 	
 		@Id
@@ -29,8 +28,8 @@ public class Customer {
 		@Column(name="phone_number", nullable=false, length=20)
 		private String phoneNumber;
 				
-		@ManyToOne(cascade=CascadeType.ALL)
-		@JoinColumn(name="address_id", referencedColumnName = "address_id")
+		@OneToOne(fetch = FetchType.EAGER)
+		@JoinColumn(name="address_id")
 		@JsonIgnore
 		private Address address;
 				

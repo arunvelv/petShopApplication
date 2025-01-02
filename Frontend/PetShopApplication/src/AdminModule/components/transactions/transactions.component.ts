@@ -54,11 +54,11 @@ export class TransactionsComponent implements OnInit {
         this.transactions.push(addedTransaction); // Add the new transaction to the list
         this.newTransaction = {
           transactionId: 0,
-          transactionDate: new Date(),
+          transactionDate: '',
           amount: 0,
           transactionStatus: TransactionStatus.SUCCESS,
-          customer: { customerId: 0 } as any,
-          pet: { petId: 0 } as any
+          customer: { customerId: 1} as any,
+          pet: { petId: 1} as any
         };
         this.isAddTransactionFormVisible = false;
       },

@@ -26,7 +26,7 @@ public class Suppliers {
 	@Column(name="email",  nullable=false, length=100)
     private String email;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="address_id")
 	private Address address;
 	

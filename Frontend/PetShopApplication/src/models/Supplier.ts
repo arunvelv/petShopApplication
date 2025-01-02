@@ -1,12 +1,11 @@
 import { Address } from "./Address";
-import { Pets } from "./Pets";
+import { Customer } from "./Customer";
 
 export interface Supplier {
-    suppliersId: number;
-    name: string;
-    contactPerson: string;
-    phoneNumber: string;
-    email: string;
-    address: Address;
-  }
-  
+  supplierId: number;
+  name: string;
+  contactPerson: string;
+  phoneNumber: string;
+  email: string;
+  address: Address;
+}

@@ -1,5 +1,7 @@
 package com.controller;
 
+import com.exception.InvalidInputException;
+import com.exception.Response;
 import com.model.*;
 import com.model.Transactions.TransactionStatus;
 import com.service.*;
@@ -83,11 +85,11 @@ public class CustomerController {
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
-        Customer createdCustomer = customerService.addCustomer(customer);
-        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<Customer> addCustomer(@RequestBody Customer customer) {
+//        Customer createdCustomer = customerService.addCustomer(customer);
+//        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
+//    }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Customer> updateCustomer(@PathVariable("id") int customerId, @RequestBody Customer customerDetails) {
@@ -98,17 +100,18 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
-    @PostMapping("/add-with-address")
-    public ResponseEntity<Customer> addCustomerWithAddress(@RequestBody Customer customer) {
-        // Save address
-        Address savedAddress = addressService.save(customer.getAddress());
-        customer.setAddress(savedAddress); // Link saved address to customer
-        
-        // Save customer
-        Customer savedCustomer = customerService.addCustomer(customer);
-        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+    @PostMapping("/add")
+    public ResponseEntity<Object> addCustomerWithAddress(@RequestBody CustomerPayload payload) {
+        Address address = payload.getAddress();
+        Customer customer = payload.getCustomer();
+        if (address == null || customer == null) {
+            throw new InvalidInputException("VALIDATION_ERROR");
+        }
+        List<Customer> existingCustomers = customerService.findByAddress(address.getAddressId());
+        if (!existingCustomers.isEmpty()) {
+            throw new InvalidInputException("ADD_FAILS");
+        }
+        customerService.saveCustomerAndAddress(customer, address);
+        return ResponseEntity.status(201).body(new Response("POST_SUCCESS", "Customer with address added successfully"));
     }
-
-
-
 }

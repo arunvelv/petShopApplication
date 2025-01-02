@@ -28,18 +28,18 @@ public class Address {
 	private String zipCode;
 	
 	
-	@OneToMany(mappedBy = "address", cascade=CascadeType.ALL)
-    @JsonIgnore
-	private List<Customer> Customers;
+//	@OneToMany(mappedBy = "address", cascade=CascadeType.MERGE)
+//    @JsonIgnore
+//	private List<Customer> Customers;
 	
-	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Employee> employees;
+//	@OneToMany(mappedBy = "address", cascade = CascadeType.MERGE)
+//    @JsonIgnore
+//    private List<Employee> employees;
 	
 
-	@OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
-	@JsonIgnore
-    private List<Suppliers> suppliers;
+//	@OneToMany(mappedBy = "address", cascade = CascadeType.MERGE)
+//	@JsonIgnore
+//    private List<Suppliers> suppliers;
 	
 	public Address() {}
 	
@@ -109,22 +109,22 @@ public class Address {
 	}
 
 
-	public List<Customer> getCustomers() {
-		return Customers;
-	}
-
-
-	public void setCustomers(List<Customer> customers) {
-		Customers = customers;
-	}
-	
-	public List<Suppliers> getSuppliers() {
-		return suppliers;
-	}
-	
-	
-	public void setSuppliers(List<Suppliers> suppliers) {
-		this.suppliers = suppliers;
-	}
+//	public List<Customer> getCustomers() {
+//		return Customers;
+//	}
+//
+//
+//	public void setCustomers(List<Customer> customers) {
+//		Customers = customers;
+//	}
+//	
+//	public List<Suppliers> getSuppliers() {
+//		return suppliers;
+//	}
+//	
+//	
+//	public void setSuppliers(List<Suppliers> suppliers) {
+//		this.suppliers = suppliers;
+//	}
 
 }

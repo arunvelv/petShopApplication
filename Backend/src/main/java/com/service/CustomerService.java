@@ -1,6 +1,6 @@
 package com.service;
 
-import com.dao.CustomerDAO;
+import com.dao.*;
 import com.model.*;
 import com.model.Transactions.TransactionStatus;
 
@@ -14,6 +14,10 @@ public class CustomerService {
 
     @Autowired
     private CustomerDAO customerDAO;
+    
+    @Autowired
+    private AddressDAO addressDAO;
+    
 
     public List<Customer> getAllCustomers() {
         return customerDAO.findAll();
@@ -50,6 +54,11 @@ public class CustomerService {
     public List<Pets> getPetsByCustomerId(int customerId) {
         return customerDAO.findPetsByCustomerId(customerId);
     }
+    
+    public List<Customer> findByAddress(int addressId) {
+		return customerDAO.findByAddress_AddressId(addressId);
+    	
+    }
 
     public Customer addCustomer(Customer customer) {
         return customerDAO.save(customer);
@@ -67,5 +76,17 @@ public class CustomerService {
         }
         return null;
     }
+
+    public void saveCustomerAndAddress(Customer customer, Address address) {
+        // Save the address first (if needed)
+        if (address.getAddressId() == 0) {
+            addressDAO.save(address);
+        }
+
+        // Associate the saved address with the customer
+        customer.setAddress(address);
+        customerDAO.save(customer);
+    }
+
 
 }
