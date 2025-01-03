@@ -36,38 +36,41 @@
       );
     }
 
-    // addCustomer(): void {
-    //   if (!this.newCustomer.name || !this.newCustomer.email || !this.newAddress.street || !this.newAddress.city || !this.newAddress.state || !this.newAddress.zipCode) {
-    //     this.errorMessage = 'All fields are required.';
-    //     return;
-    //   }
+    addCustomer(): void {
+      // if (!this.newCustomer.name || !this.newCustomer.email || !this.newAddress.street || !this.newAddress.city || !this.newAddress.state || !this.newAddress.zipCode) {
+      //   this.errorMessage = 'All fields are required.';
+      //   return;
+      // }
     
-    //   const payload = { customer: this.newCustomer, address: this.newAddress };
-    //   this.customerService.addCustomer(payload).subscribe(
-    //     (addedCustomer: Customer) => {
-    //       this.customers.push(addedCustomer);
-    //       console.log('Customer with address added successfully!');
-    //       this.newCustomer = {} as Customer;
-    //       this.newAddress = {} as Address;
-    //       this.errorMessage = null;
-    //     },
-    //     (error) => {
-    //       console.error('Error adding customer with address:', error);
-    //       this.errorMessage = 'Failed to add customer with address. Please try again.';
-    //     }
-    //   );
-    // }
+                // console.log(this.newCustomer);
+
+      
+      this.customerService.addCustomer(this.newAddress, this.newCustomer).subscribe(
+        (e) => {
+          // this.customers.push(addedCustomer);
+          console.log(this.newAddress);
+          console.log(this.newCustomer);
+          // this.newCustomer = {} as Customer;
+          // this.newAddress = {} as Address;
+          // this.errorMessage = null;
+        },
+        (error) => {
+          console.error('Error adding customer with address:', error);
+          this.errorMessage = 'Failed to add customer with address. Please try again.';
+        }
+      );
+    }
+
+    
     
     
 
-    // editCustomer(customer: Customer): void {
-    //   this.editCustomer = { ...customer };
-    // }
+
 
     // updateCustomer(): void {
     //   if (this.editCustomer) {
     //     const payload = { customer: this.editCustomer, address: this.newAddress };
-    //     this.customerService.updateCustomer(this.editCustomer.customerId, payload).subscribe(
+    //     this.customerService.updateCustomer(this.editCustomer.customerId).subscribe(
     //       (updatedCustomer: Customer) => {
     //         const index = this.customers.findIndex(c => c.customerId === updatedCustomer.customerId);
     //         if (index !== -1) {
@@ -83,6 +86,7 @@
     //     );
     //   }
     // }
-    // cancelEdit(): void {
-    //   this.editCustomer = null;
+    cancelEdit(): void {
+      this.editCustomer = null;
   }
+}

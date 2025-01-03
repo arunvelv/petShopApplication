@@ -101,17 +101,17 @@ public class CustomerController {
     }
     
     @PostMapping("/add")
-    public ResponseEntity<Object> addCustomerWithAddress(@RequestBody CustomerPayload payload) {
-        Address address = payload.getAddress();
+    public ResponseEntity<Customer> addCustomer(@RequestBody CustomerPayload payload) {
+    	Address address = payload.getAddress();
         Customer customer = payload.getCustomer();
-        if (address == null || customer == null) {
+          if (address == null || customer == null) {
             throw new InvalidInputException("VALIDATION_ERROR");
-        }
-        List<Customer> existingCustomers = customerService.findByAddress(address.getAddressId());
+       }
+       List<Customer> existingCustomers = customerService.findByAddress(address.getAddressId());
         if (!existingCustomers.isEmpty()) {
-            throw new InvalidInputException("ADD_FAILS");
-        }
-        customerService.saveCustomerAndAddress(customer, address);
-        return ResponseEntity.status(201).body(new Response("POST_SUCCESS", "Customer with address added successfully"));
+           throw new InvalidInputException("ADD_FAILS");
+       }
+       Customer createdCustomer = customerService.saveCustomer(customer, address);
+           return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
 }

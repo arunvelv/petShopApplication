@@ -16,7 +16,7 @@ public class CustomerService {
     private CustomerDAO customerDAO;
     
     @Autowired
-    private AddressDAO addressDAO;
+    private AddressDAO	addressDAO;
     
 
     public List<Customer> getAllCustomers() {
@@ -56,12 +56,12 @@ public class CustomerService {
     }
     
     public List<Customer> findByAddress(int addressId) {
-		return customerDAO.findByAddress_AddressId(addressId);
+		return customerDAO.findByAddressAddressId(addressId);
     	
     }
 
-    public Customer addCustomer(Customer customer) {
-        return customerDAO.save(customer);
+    public Customer addCustomer(Customer customers) {
+        return customerDAO.save(customers);
     }
 
     public Customer updateCustomer(int customerId, Customer customerDetails) {
@@ -77,16 +77,12 @@ public class CustomerService {
         return null;
     }
 
-    public void saveCustomerAndAddress(Customer customer, Address address) {
-        // Save the address first (if needed)
+    public Customer saveCustomer(Customer customers, Address address) {
         if (address.getAddressId() == 0) {
             addressDAO.save(address);
         }
-
-        // Associate the saved address with the customer
-        customer.setAddress(address);
-        customerDAO.save(customer);
+        customers.setAddress(address);
+        return customerDAO.save(customers);
     }
-
 
 }

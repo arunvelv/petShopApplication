@@ -35,6 +35,6 @@ public interface CustomerDAO extends JpaRepository<Customer, Integer> {
     @Query("SELECT p FROM Pets p JOIN p.transactions t WHERE t.customers.customerId = :customerId")
     List<Pets> findPetsByCustomerId(@Param("customerId") int customerId);
 
-	List<Customer> findByAddress_AddressId(int addressId);
+	List<Customer> findByAddressAddressId(int addressId);
 
 }

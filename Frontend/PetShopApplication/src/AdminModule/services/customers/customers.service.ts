@@ -9,11 +9,16 @@ import { Address } from '../../../models/Address';
 })
 export class CustomerService {
   private baseUrl = 'http://localhost:9999/api/v1/customers';
+  Address: any;
+  Customer: any;
 
   constructor(private http: HttpClient) { }
 
-  addCustomer(customer: Customer): Observable<Customer> {
-    return this.http.post<Customer>(this.baseUrl + "/add", customer, {
+
+
+  addCustomer(address: Address, customer: Customer): Observable<any> {
+      const payload = { address,customer};
+    return this.http.post(this.baseUrl + "/add", payload, {
       responseType: 'json'
     });
   }

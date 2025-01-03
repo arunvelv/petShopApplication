@@ -1,6 +1,7 @@
 package com.model;
 
 public class CustomerPayload {
+	
 	private Customer customer;
 	
 	private Address address;

@@ -9,7 +9,7 @@ import { AdminGroomingServicesService } from '../../services/AdminGroomingServic
   templateUrl: './admin-grooming-services.component.html',
   styleUrls: ['./admin-grooming-services.component.css']
 })
-export class GroomingServicesComponent implements OnInit {
+export class AdminGroomingServicesComponent implements OnInit {
   services: any[] = []; // All services
   newService: any = null; // New service being added
   editingIndex: number | null = null; // Index of the row being edited

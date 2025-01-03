@@ -1,4 +1,4 @@
-<!-- <div class="container">
+<div class="container">
   <h2>Customers</h2>
 
   <div class="form-group">
@@ -8,9 +8,17 @@
       <input
         type="text"
         class="form-control"
-        [(ngModel)]="newCustomer.name"
-        name="name"
-        placeholder="Customer Name"
+        [(ngModel)]="newCustomer.firstName"
+        name="firstName"
+        placeholder="Customer firstName"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newCustomer.lastName"
+        name="lastName"
+        placeholder="Customer lastName"
         required
       />
       <input
@@ -21,7 +29,14 @@
         placeholder="Customer Email"
         required
       />
-
+      <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newCustomer.phoneNumber"
+      name="phoneNumber"
+      placeholder="Customer phoneNumber"
+      required
+    />
       <h4>Address Details</h4>
       <input
         type="text"
@@ -73,18 +88,18 @@
       </thead>
       <tbody>
         <tr *ngFor="let customer of customers">
-          <td>{{ customer.name }}</td>
+          <td>{{ customer.firstName }} {{customer.lastName}}</td>
           <td>{{ customer.email }}</td>
-          <td>{{ customer.address?.street }}, {{ customer.address?.city }}</td>
+          <td>{{ customer.address.street }} {{ customer.address.city }} {{customer.address.state}} {{customer.address.zipCode}}</td>
           <td>
-            <button class="btn btn-warning" (click)="editCustomerWithAddress(customer)">Edit</button>
+            <!-- <button class="btn btn-warning" (click)="editCustomerWithAddress(customer)">Edit</button> -->
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  Edit Customer Form 
+  <!-- Edit Customer Form 
   <div *ngIf="editCustomer">
     <h3>Edit Customer</h3>
     <form (ngSubmit)="updateCustomer()">
@@ -107,5 +122,5 @@
       <button class="btn btn-primary" type="submit">Update</button>
       <button class="btn btn-secondary" type="button" (click)="cancelEdit()">Cancel</button>
     </form>
-  </div>
-</div> -->
+  </div> -->
+</div>
