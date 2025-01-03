@@ -1,0 +1,40 @@
+/* Full page background with gradient overlay */
+html, body {
+    height: 100%;                     
+    display: flex;
+    justify-content: center;         
+    align-items: center;              
+    margin: 0;                        
+    background-image: linear-gradient(to bottom right, #5b9aa0, #ffffff); 
+}
+
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fbefcc, #e2efff);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Style for the title */
+.vaccination-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #bd5734; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo style */
+.logo {
+    width: 100px;
+    height: 100px;
+}

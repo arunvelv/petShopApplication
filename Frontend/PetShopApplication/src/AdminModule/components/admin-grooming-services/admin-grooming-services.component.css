@@ -1,0 +1,132 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  /* Header Section */
+  header {
+    background: #FFDAB9;
+    color: #008080;
+    text-align: center;
+    padding: 20px 10px;
+    border-radius: 10px;
+  }
+  
+  header h1 {
+    font-size: 2.5rem;
+  }
+  
+  header h2 {
+    font-size: 1.5rem;
+  }
+  
+  /* Filter Buttons */
+  .filter-buttons button, .filter-buttons1 button {
+    background: #d4d478;
+    color: #008080;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    
+  }
+  
+  .filter-buttons button:hover, .filter-buttons1 button:hover {
+    background: #008080;
+    color: white;
+  }
+  
+  /* Forms Section */
+  .add-form, .update-form {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    max-width: 600px;
+  }
+  
+  .add-form h2, .update-form h2 {
+    font-size: 1.5rem;
+    color: #008080;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background: #FF7F50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background: #ffa07a;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    width: 80%;
+    padding: 10px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Service List */
+  .service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .service-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  
+  .service-info h2 {
+    font-size: 1.25rem;
+    color: #FF7F50;
+  }
+  
+  /* No Data Template */
+  ng-template {
+    text-align: center;
+    font-size: 1.25rem;
+    color: #777;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    header h1 {
+      font-size: 1.8rem;
+    }
+    header h2 {
+      font-size: 1.2rem;
+    }
+    .filter-buttons button, .filter-buttons1 button {
+      font-size: 0.9rem;
+      padding: 8px 15px;
+    }
+    .search-bar {
+      width: 90%;
+    }
+    .service-card {
+      padding: 10px;
+    }
+  }
+  

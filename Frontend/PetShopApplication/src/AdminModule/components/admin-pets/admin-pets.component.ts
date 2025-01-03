@@ -29,12 +29,7 @@ export class AdminPetsComponent implements OnInit  {
       categoryId: 0,         // Default ID for category
       name: '',              // Default name for category
       petsList: []           // Empty list of pets
-    },
-    groomingServices: [],    // Default empty array for grooming services
-    suppliers: [],           // Default empty array for suppliers
-    employees: [],           // Default empty array for employees
-    petFood: [],             // Default empty array for pet food
-    vaccinations: []         // Default empty array for vaccinations
+    }     
   };
  
   showAddForm = false; // Control visibility of "Add Pet" form
@@ -160,15 +155,8 @@ export class AdminPetsComponent implements OnInit  {
       price: 0,
       description: '',
       imageUrl: '',
-      category: { categoryId: 0, name: '', petsList: [] },
-      groomingServices: [],
-      suppliers: [],
-      employees: [],
-      petFood: [],
-      vaccinations: []
+      category: { categoryId: 0, name: '', petsList: [] }
+     
     };
   }
- 
- 
- 
-}
+ }

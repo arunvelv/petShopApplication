@@ -1,1 +1,121 @@
 <p>admin-grooming-services works!</p>
+<!-- Header Section -->
+<header>
+    <h1> Grooming Services</h1>
+    
+  </header>
+  
+  <!-- Filter Buttons -->
+  <section class="filter-buttons">
+    <button class="left-button"  (click)="filterAvailable()"> Available Services</button>
+    <button class="center-button" (click)="filterUnavailable()"> Unavailable Services</button>
+    <button class="right-button" (click)="showAll()"> All Services </button>
+  </section>
+  
+  <!-- Buttons to Add and Update Grooming Service -->
+  <section class="filter-buttons1">
+    <button class="left-button" (click)="startAddService()">Add Grooming Service</button>
+    <button class="right-button" (click)="startUpdate(services)">Update Grooming Service</button>
+  </section>
+  
+  <!-- Add Grooming Service Form -->
+  <div *ngIf="showAddForm" class="add-form">
+    <h2>Add New Grooming Service</h2>
+    <label>
+      Name:
+      <input [(ngModel)]="newService.name" />
+    </label>
+    <br />
+    <label>
+      Description:
+      <textarea [(ngModel)]="newService.description"></textarea>
+    </label>
+    <br />
+    <label>
+      Price:
+      <input [(ngModel)]="newService.price" type="number" />
+    </label>
+    <br />
+    <label>
+      Available:
+      <select [(ngModel)]="newService.available">
+        <option [value]="true">Yes</option>
+        <option [value]="false">No</option>
+      </select>
+    </label>
+    <br />
+    <button (click)="addService()">Save</button><br>
+    <button (click)="cancelAddService()">Cancel</button>
+  </div>
+
+  <!-- Update Grooming Service Form -->
+  <div *ngIf="selectedService" class="update-form">
+    <h2>Update Service</h2>
+  <label>
+    Service Id:
+    <input [(ngModel)]="selectedService.serviceId" type="number" />
+    <button (click)="fetchServiceDetailsById()">Fetch Service Details</button><br>
+    <button (click)="cancelUpdate()">Cancel</button>
+  </label>
+  <br />
+  
+  <!-- Show additional fields only if details are fetched -->
+  <!-- <div *ngIf="selectedService && selectedService.name"> -->
+    <div *ngIf="selectedService.name">
+    <label>
+      Name:
+      <input [(ngModel)]="selectedService.name" type="text" />
+    </label>
+    <br />
+    <label>
+      Description:
+      <textarea [(ngModel)]="selectedService.description"></textarea>
+    </label>
+    <br />
+    <label>
+      Price:
+      <input [(ngModel)]="selectedService.price" type="number" />
+    </label>
+    <br />
+    <label>
+      Available:
+      <select [(ngModel)]="selectedService.available">
+        <option [value]="true">Yes</option>
+        <option [value]="false">No</option>
+      </select>
+    </label>
+    <br />
+    <button (click)="updateService()">Save</button>
+    <button (click)="cancelUpdate()">Cancel</button>
+  </div>
+</div>
+  
+  <!-- Search Bar -->
+  <section>
+    <br />
+    <input
+      type="text"
+      class="search-bar"
+      placeholder="Search service..."
+      (input)="onSearch($event)"
+    />
+  </section>
+  
+  <!-- Grooming Services List (Updated) -->
+  <div class="service-list" *ngIf="services.length > 0; else noData">
+    <div class="service-card" *ngFor="let service of services">
+      <div class="service-info">
+        <h2>{{ service.name }}</h2>
+        <p><strong>Service Id:</strong> {{ service.serviceId }}</p>
+        <p><strong>Description:</strong> {{ service.description || 'No description available.' }}</p>
+        <p><strong>Price:</strong> {{ service.price }}</p>
+        <p><strong>Available:</strong> {{ service.available ? 'Yes' : 'No' }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- No Data Template -->
+  <ng-template #noData>
+    <p>No grooming services found.</p>
+  </ng-template>
+  
