@@ -1,3 +1,4 @@
+
 package com.filter;
  
 import io.jsonwebtoken.Claims;
@@ -12,7 +13,7 @@ public class JwtToken {
 	public JwtToken()
 	{
 	}
-	public void generateToken(String userName,String password,String role)
+	public String generateToken(String userName,String password,String role)
 	{
 		this.token=Jwts.builder()
 				   .claim("username",userName)
@@ -20,6 +21,7 @@ public class JwtToken {
 				   .claim("role",role)
 				   .signWith(SignatureAlgorithm.HS256,SECRETKEY)
 				   .compact();
+		return "generated-token";
 	}
 	public String getToken()
 	{

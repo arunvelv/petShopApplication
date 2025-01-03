@@ -1,3 +1,4 @@
+
 import { Employee } from "./Employee";
 import { GroomingService } from "./Grooming-Services";
 import { PetCategory } from "./PetCategory";
@@ -14,10 +15,13 @@ export interface Pets {
     description: string;
     imageUrl: string;
     category: PetCategory;
-    groomingServices: GroomingService[];
-    suppliers: Supplier[];
-    employees: Employee[];
-    petFood: PetFood[];
-    vaccinations: Vaccination[];
+    // groomingServices: GroomingService[];
+    // suppliers: Supplier;
+    // employees: Employee;
+    // petFood: PetFood;
+    // vaccinations: Vaccination;
   }
+
+  
+
   

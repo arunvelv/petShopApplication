@@ -1,0 +1,17 @@
+.background {
+    background-image: url('/assets/adminlog.jpg'); /* Path to your image */
+    background-size: cover;         /* Ensure the image covers the full area */
+    background-position: center;    /* Center the image */
+    background-repeat: no-repeat;   /* Avoid repeating the image */
+    height: 100vh;                  /* Full viewport height */
+    width: 100%;                    /* Full width of the page */
+    display: flex;                  /* Use flexbox for layout */
+    justify-content: flex-end;      /* Align content to the right */
+    align-items: center;            /* Center the content vertically */
+  }
+ 
+  .content {
+    max-width: 400px;               /* Limit the width of the login form */
+    width: 100%;                    /* Ensure responsiveness */
+    margin-right: 30px;             /* Add some spacing from the edge */
+  }

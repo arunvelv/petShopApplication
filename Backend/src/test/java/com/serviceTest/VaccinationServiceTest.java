@@ -66,18 +66,18 @@ class VaccinationServiceTest {
         verify(vaccinationDAO, times(1)).findById(1);
     }
 
-//    @Test
-//    void testGetByIdNotFound() {
-//        // Arrange
-//        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.empty());
-//
-//        // Act
-//        Vaccinations result = vaccinationService.getById(1);
-//
-//        // Assert
-//        assertNull(result);
-//        verify(vaccinationDAO, times(1)).findById(1);
-//    }
+    @Test
+    void testGetByIdNotFound() {
+        // Arrange
+        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.empty());
+
+        // Act
+        Vaccinations result = vaccinationService.getById(1);
+
+        // Assert
+        assertNull(result);
+        verify(vaccinationDAO, times(1)).findById(1);
+    }
 
     @Test
     void testFindAvailableVaccinations() {
@@ -119,27 +119,27 @@ class VaccinationServiceTest {
         verify(vaccinationDAO, times(1)).findByAvailable(false);
     }
 
-//    @Test
-//    void testUpdateVaccinations() {
-//        // Arrange
-//        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.of(vaccination));
-//        Vaccinations updatedVaccination = new Vaccinations();
-//        updatedVaccination.setName("Updated COVID-19 Vaccine");
-//        updatedVaccination.setDescription("Updated description");
-//        updatedVaccination.setPrice(25);
-//        updatedVaccination.setAvailable(false);
-//
-//        // Act
-//        Vaccinations result = vaccinationService.updateVaccinations(1, result);
-//
-//        // Assert
-//        assertNotNull(result);
-//        assertEquals("Updated COVID-19 Vaccine", result.getName());
-//        assertEquals("Updated description", result.getDescription());
-//        assertEquals(25.0, result.getPrice());
-//        assertFalse(result.isAvailable());
-//        verify(vaccinationDAO, times(1)).save(any(Vaccinations.class));
-//    }
+    @Test
+    void testUpdateVaccinations() {
+        // Arrange
+        when(vaccinationDAO.findById(anyInt())).thenReturn(Optional.of(vaccination));
+        Vaccinations updatedVaccination = new Vaccinations();
+        updatedVaccination.setName("Updated COVID-19 Vaccine");
+        updatedVaccination.setDescription("Updated description");
+        updatedVaccination.setPrice(25);
+        updatedVaccination.setAvailable(false);
+
+        // Act
+        Vaccinations result = vaccinationService.updateVaccinations(1, updatedVaccination);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("Updated COVID-19 Vaccine", result.getName());
+        assertEquals("Updated description", result.getDescription());
+        assertEquals(25.0, result.getPrice());
+        assertFalse(result.isAvailable());
+        verify(vaccinationDAO, times(1)).save(any(Vaccinations.class));
+    }
 
     @Test
     void testUpdateVaccinationsNotFound() {

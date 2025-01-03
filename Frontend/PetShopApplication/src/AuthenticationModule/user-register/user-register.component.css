@@ -1,0 +1,11 @@
+.background {
+    background-image: url('/assets/loginadmin.jpg'); /* Correct path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  

@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap');
+
+.navbar-brand {
+  font-family: 'Bubblegum Sans', cursive; /* Decorative font */
+  font-size: 48px; /* Larger size */
+  font-weight: bold;
+  color: #f84307; /* Orange color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Shadow effect */
+}
+
+.custom-link {
+    color: hwb(169 4% 39%); /* Choose your desired color */
+    text-decoration: none;
+    font-size: 18px; /* Increase the font size here */
+    font-weight: bold;
+  }
+  
+  .custom-link:hover {
+    color: #0c895d; /* Darker color on hover */
+    text-decoration: underline;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .background {
+    background-image: url('/assets/pet_image.jpg'); /* Path to the background image */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Keeps the background fixed during scrolling */
+    background-position: center; /* Centers the image */
+    min-height: 100vh; /* Ensures it covers the viewport height */
+    display: flex; /* Flexbox to center content if needed */
+    flex-direction: column; /* Content flows vertically */
+  }
+  
+  .navbar {
+    background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background for better visibility */
+  }
+  
+  .navbar-brand {
+    font-weight: bold;
+    font-size: 36px;
+  }
+  
+  .btn-outline-success {
+    margin-left: 10px;
+  }
+
+  .btn-outline-success {
+    color: #ffffff; /* Text color */
+    background-color: #ff5722; /* Background color */
+    border-color: #ff5722; /* Border color */
+    transition: all 0.3s ease; /* Smooth transition */
+  }
+  
+  .btn-outline-success:hover {
+    color: #ff5722; /* Text color on hover */
+    background-color: #ffffff; /* Background color on hover */
+    border-color: #ff5722; /* Border color on hover */
+  }
+  
+  

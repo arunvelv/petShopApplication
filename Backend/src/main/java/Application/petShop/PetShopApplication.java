@@ -1,5 +1,7 @@
 package Application.petShop;
 
+import java.util.List;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -7,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,32 +31,34 @@ public class PetShopApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PetShopApplication.class, args);
 	}
-	
 	@Bean
-	@DependsOn("userDetailsService")
-	public DaoAuthenticationProvider daoAuthenticationProvider() {
-	    CustomUserDetailService service=userDetailsService();
- 
-	  
-	    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	    
-	    provider.setUserDetailsService(service);
-	    provider.setPasswordEncoder(passwordEncoder());
-	    return provider;
-	}
- 
-	@Bean
-	public CustomUserDetailService userDetailsService() {
-		
-	
-	    return new CustomUserDetailService(); // Implement your own user details service
-	}
- 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder(); // Use a password encoder of your choice
-	}
-	
+    public CustomUserDetailService userDetailsService() {
+        return new CustomUserDetailService(); // Implement your own UserDetailsService
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(CustomUserDetailService userDetailsService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http, CustomUserDetailService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+        // Here we are creating and returning a custom AuthenticationManager
+        DaoAuthenticationProvider authenticationProvider = daoAuthenticationProvider(userDetailsService, passwordEncoder);
+        return new ProviderManager(authenticationProvider);
+    }
+
+   
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    System.out.println("invoked");
@@ -165,19 +170,12 @@ public class PetShopApplication {
 	                .requestMatchers(HttpMethod.PUT,"/api/v1/pet_foods/quantity/{food_id}").hasAnyRole("ADMIN")
 	               
 	              
-	            .anyRequest().authenticated()
-	            .and()
-	             .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
-	           
-	        .sessionManagement()
-	            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	            .and()
-	            .sessionManagement().disable()
-	            	
-	            
-	                
-	        .authenticationManager(new ProviderManager(daoAuthenticationProvider()));
-	        
+	                .anyRequest().authenticated()
+	                .and()
+	                .authenticationManager(authenticationManager(http, userDetailsService(), passwordEncoder()))
+	                .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
+	                .sessionManagement()
+	                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	
 	        
 	    return http.build();

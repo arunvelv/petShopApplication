@@ -22,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
  
-		com.model.User user = userdao.findByUsername(username).get();
+		com.model.User user = userdao.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 		Hibernate.initialize(user.getRoles());
 		
 		List<SimpleGrantedAuthority> authorities = user.getRoles().stream()

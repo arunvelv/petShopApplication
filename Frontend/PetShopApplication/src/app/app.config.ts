@@ -1,13 +1,16 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { JwtModule } from "@auth0/angular-jwt";
+import { JwtInterceptor, JwtModule } from "@auth0/angular-jwt";
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+
+
+
 export function tokenGetter() {
-  return localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  console.log("Token retrieved:", token);
+  return token;
 }
-
-
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideHttpClient(withFetch(), withInterceptorsFromDi()),
@@ -16,7 +19,8 @@ export const appConfig: ApplicationConfig = {
           tokenGetter: tokenGetter,
           allowedDomains: ["localhost:9999"],
       },
-  }),)
+  }),),
+  // { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
 };
  

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Pets {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pet_id", nullable=false)
     private int petId;
 
