@@ -1,1 +1,118 @@
-<p>admin-vaccinations works!</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccination Details</title>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <h1>Vaccinations Management</h1>
+      
+    </header>
+  
+    <!-- Filter Buttons -->
+    <section class="filter-buttons">
+      <div class="image-layout"></div>
+      <button (click)="filterAvailable()">View Available</button>
+      <button (click)="filterUnavailable()">View Unavailable</button>
+      <button (click)="showAll()">View All</button>
+      <button (click)="startAddVaccination()">Add Vaccination</button>
+    </section>
+  
+    <!-- Add Vaccination Form -->
+    <div *ngIf="showAddForm" class="add-form">
+      <h2>Add New Vaccination</h2>
+      <label>
+        Name:
+        <input [(ngModel)]="newVaccination.name" />
+      </label><br />
+      <label>
+        Description:
+        <textarea [(ngModel)]="newVaccination.description"></textarea>
+      </label><br />
+      <label>
+        Price:
+        <input [(ngModel)]="newVaccination.price" type="number" />
+      </label><br />
+      <label>
+        Available:
+        <select [(ngModel)]="newVaccination.available">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </label><br />
+      <button (click)="addVaccination()">Save</button>
+      <button (click)="cancelAddVaccination()">Cancel</button>
+    </div>
+  
+    <!-- Search Bar -->x
+    <section>
+      <br />
+      <input 
+        type="text" 
+        class="search-bar" 
+        placeholder="Search id..." 
+        (input)="onSearch($event)" 
+      />
+    </section>
+  
+    <!-- Update Form -->
+    <div *ngIf="selectedVaccination" class="update-form">
+      <h2>Update Vaccination</h2>
+      <label>
+        Name:
+        <input [(ngModel)]="selectedVaccination.name" />
+      </label><br />
+      <label>
+        Description:
+        <input [(ngModel)]="selectedVaccination.description" />
+      </label><br />
+      <label>
+        Price:
+        <input [(ngModel)]="selectedVaccination.price" type="number" />
+      </label><br />
+      <label>
+        Available:
+        <select [(ngModel)]="selectedVaccination.available">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </label><br />
+      <button (click)="updateVaccination()">Save</button>
+      <button (click)="cancelUpdate()">Cancel</button>
+    </div>
+  
+    <!-- Vaccination Table -->
+    <div class="vaccination-list" *ngIf="vaccinations.length > 0; else noData">
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Vaccination ID</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Available</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let vaccination of vaccinations">
+            <td>{{ vaccination.name }}</td>
+            <td>{{ vaccination.vaccinationId }}</td>
+            <td>{{ vaccination.description || 'No description available.' }}</td>
+            <td>{{ vaccination.price }}</td>
+            <td>{{ vaccination.available }}</td>
+            <td>
+              <button (click)="startUpdate(vaccination)">Update</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Data Template -->
+    <ng-template #noData>
+      <p>No vaccinations found.</p>
+    </ng-template>
+  </body>
+  

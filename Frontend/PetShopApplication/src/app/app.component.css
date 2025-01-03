@@ -1,3 +1,4 @@
+
 .navbar-brand {
     font-weight: bold;
     color: #007bff !important;
@@ -12,4 +13,14 @@
     font-weight: bold;
     color: #0056b3 !important;
   }
-  
+ /* Apply styles to the image */
+.styled-image {
+  width: 100%; /* Makes the image take up the full width of its container */
+  height: 100vh; /* Keeps the aspect ratio intact */
+  object-fit: contain; /* Ensures the image maintains its aspect ratio while fitting within the viewport */
+  display: block; /* Ensures the image is not inline */
+  border-radius: 10px; /* Optional: Adds rounded corners to the image */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Adds shadow for a 3D effect */
+  transition: transform 0.3s ease-in-out; /* Smooth zoom effect */
+}
+

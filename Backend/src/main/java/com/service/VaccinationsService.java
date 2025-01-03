@@ -21,7 +21,7 @@ public class VaccinationsService {
 	
 	public Vaccinations getById(int VaccinationId)
 	{
-		Vaccinations vac = VaccinationsDAO.findById(VaccinationId).get();
+		Vaccinations vac = VaccinationsDAO.findById(VaccinationId).orElse(null);
 		return vac;
 	}
 	
@@ -38,7 +38,7 @@ public class VaccinationsService {
 		List<Vaccinations> list = VaccinationsDAO.findByAvailable(false);
 		return list;
 	}
-	public void updateVaccinations(int vaccinationId, Vaccinations vaccinations)
+	public Vaccinations updateVaccinations(int vaccinationId, Vaccinations vaccinations)
 	{
 		Vaccinations vac = VaccinationsDAO.findById(vaccinationId).get();
 		vac.setName(vaccinations.getName());
@@ -47,6 +47,7 @@ public class VaccinationsService {
 		vac.setAvailable(vaccinations.isAvailable());
 		
 		VaccinationsDAO.save(vac);
+		return vac;
 		
 		
 	}

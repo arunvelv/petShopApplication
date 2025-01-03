@@ -1,0 +1,68 @@
+
+/* Style for the running message */
+.running-message {
+  font-size: 18px;
+  color: #07090b;
+  background-color: #f8f9fa;
+  padding: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow effect */
+  width: 100%;
+  position: relative;
+}
+
+
+
+.running-message span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrolling-message 20s linear infinite;
+}
+
+/* Scroll animation */
+@keyframes scrolling-message {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}/* Move the navigation links to the right side */
+.navigation-links {
+    margin-left: auto; /* Push the links to the right */
+    display: flex;
+    gap: 15px; /* Add spacing between links */
+  }
+  
+  /* Optional: Add custom styles for the navbar links */
+  .navigation-links .nav-link {
+    color: #007bff; /* Change link color */
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .navigation-links .nav-link:hover {
+    color: #0056b3; /* Hover effect color */
+  }
+  .styled-image {
+    display: block; /* Centers the image horizontally if it's a block element */
+    margin: 20px auto; /* Adds margin around the image */
+    max-width: 100%; /* Ensures the image is responsive */
+    height: auto; /* Maintains aspect ratio */
+    border-radius: 12px; /* Adds rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animates hover effects */
+  }
+  .styled-image {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  

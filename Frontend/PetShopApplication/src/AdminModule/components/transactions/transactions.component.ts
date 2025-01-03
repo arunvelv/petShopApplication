@@ -69,13 +69,7 @@ export class TransactionsComponent implements OnInit {
     );
   }
 
-  editTransaction(transaction: Transaction): void {
-    this.editingTransaction = {
-      ...transaction,
-      customer: transaction.customer || { customerId: 0, name: '', address: '' },
-      pet: transaction.pet || { petId: 0, petName: '' }
-    };
-  }
+  
 
   
 

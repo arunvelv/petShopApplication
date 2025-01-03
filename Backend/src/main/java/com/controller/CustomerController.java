@@ -98,16 +98,16 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     
-    @PostMapping("/add-with-address")
-    public ResponseEntity<Customer> addCustomerWithAddress(@RequestBody Customer customer) {
-        // Save address
-        Address savedAddress = addressService.save(customer.getAddress());
-        customer.setAddress(savedAddress); // Link saved address to customer
-        
-        // Save customer
-        Customer savedCustomer = customerService.addCustomer(customer);
-        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
-    }
+//    @PostMapping("/add-with-address")
+//    public ResponseEntity<Customer> addCustomerWithAddress(@RequestBody Customer customer) {
+//        // Save address
+//        Address savedAddress = addressService.save(customer.getAddress());
+//        customer.setAddress(savedAddress); // Link saved address to customer
+//        
+//        // Save customer
+//        Customer savedCustomer = customerService.addCustomer(customer);
+//        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+//    }
 
 
 

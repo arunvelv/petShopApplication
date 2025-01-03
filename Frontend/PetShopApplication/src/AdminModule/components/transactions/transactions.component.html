@@ -23,7 +23,7 @@
         <th>Status</th>
         <th>Customer Id</th>
         <th>Pet Id</th>
-        <th>Actions</th>
+        
       </tr>
     </thead>
     <tbody>
@@ -34,10 +34,7 @@
         <td>{{ transaction.transactionStatus }}</td>
         <td>{{ transaction.customer.customerId }} </td>
         <td>{{ transaction.pet.petId }}</td>
-        <td>
-          <button *ngIf="!editingTransaction || editingTransaction.transactionId !== transaction.transactionId"
-                  class="btn btn-warning btn-sm" (click)="editTransaction(transaction)">Edit</button>
-        </td>
+        
       </tr>
     </tbody>
   </table>

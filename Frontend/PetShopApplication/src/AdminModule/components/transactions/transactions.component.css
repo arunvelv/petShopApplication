@@ -1,0 +1,130 @@
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border: 1px solid #e0dcd5;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+    background-color: #fdfcfb; /* Soft off-white */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .table th {
+    background: linear-gradient(135deg, #d4b59e, #b58b77); /* Gradient for header */
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: bold;
+    padding: 16px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 2; /* For sticky header */
+  }
+
+  .table td {
+    padding: 14px;
+    border-bottom: 1px solid #ebe6df;
+    color: #3b3a36; /* Warm dark gray */
+    text-align: left;
+  }
+
+  .table tbody tr:nth-child(odd) {
+    background-color: #f7f4f2; /* Light taupe */
+  }
+
+  .table tbody tr:nth-child(even) {
+    background-color: #fdfcfb; /* Softer off-white */
+  }
+
+  .table tbody tr:hover {
+    background-color: #f0e6e1; /* Subtle peach hover */
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+  }
+
+  .table tbody tr td:first-child {
+    font-weight: bold;
+  }
+
+  .table tbody tr td .btn {
+    margin-right: 8px;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .table tbody tr td .btn-success {
+    background-color: #c5c0be; /* Soft green */
+    color: #ffffff;
+  }
+
+  .table tbody tr td .btn-success:hover {
+    background-color: #b7bdb7; /* Richer green */
+  }
+
+  .table tbody tr td .btn-danger {
+    background-color: #e57373; /* Soft coral red */
+    color: #ffffff;
+  }
+
+  .table tbody tr td .btn-danger:hover {
+    background-color: #d32f2f; /* Richer red */
+  }
+
+  .table tbody tr td .btn-warning {
+    background-color: #94908c; /* Soft orange */
+    color: #ffffff;
+  }
+
+  .table tbody tr td .btn-warning:hover {
+    background-color: #6d6b6a; /* Richer orange */
+  }
+
+  /* Search and Button Styles */
+  .input-group .form-control {
+    border-radius: 10px;
+    border: 1px solid #c8bdb5; /* Muted taupe */
+    padding: 12px;
+    font-size: 14px;
+    background-color: #fefcfb; /* Soft beige */
+    color: #3b3a36;
+  }
+
+  .input-group .btn {
+    background-color: #b58b77; /* Warm brown */
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .input-group .btn:hover {
+    background-color: #9e7765; /* Richer brown */
+    transform: translateY(-2px);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .table {
+      font-size: 12px;
+    }
+
+    .table th, .table td {
+      padding: 10px;
+    }
+
+    .input-group {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group .btn {
+      width: 100%;
+    }
+  }
