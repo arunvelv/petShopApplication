@@ -1,6 +1,7 @@
 import { Pets } from "./Pets";
 
 export interface PetFood {
+imageURL: string;
     foodId: number;
     name: string;
     brand: string;
