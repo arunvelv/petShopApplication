@@ -84,7 +84,7 @@ class SuppliersServiceTest {
  
         when(suppliersDAO.findByName("Supplier1")).thenReturn(suppliersList);
  
-        List<Suppliers> result = suppliersService.getByName("Supplier1");
+        List<Suppliers> result = suppliersService.findSuppliersByName("Supplier1");
         assertEquals(1, result.size());
         assertEquals("Supplier1", result.get(0).getName());
         verify(suppliersDAO, times(1)).findByName("Supplier1");

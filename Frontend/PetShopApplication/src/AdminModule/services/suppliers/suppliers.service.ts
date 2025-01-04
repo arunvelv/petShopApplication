@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Supplier } from '../../../models/Supplier';
+import { Address } from '../../../models/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +35,13 @@ export class SuppliersService {
     return this.http.get<Supplier[]>(`${this.baseUrl}/state/${state}`, { responseType: 'json' });
   }
 
-  addSupplier(supplier: Supplier): Observable<Supplier> {
-    return this.http.post<Supplier>(`${this.baseUrl}/add`, supplier, { responseType: 'json' });
+  addSupplier(supplier: Supplier, address: Address): Observable<any> {
+    const payload = { supplier, address };
+    return this.http.post<Supplier>(`${this.baseUrl}/add`, payload, { 
+      responseType: 'json'
+     });
   }
+
 
   updateSupplier(id: number, supplier: Supplier): Observable<Supplier> {
     return this.http.put<Supplier>(`${this.baseUrl}/update/${id}`, supplier, { responseType: 'json' });

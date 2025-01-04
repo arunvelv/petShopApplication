@@ -37,14 +37,14 @@
     <tbody>
       <tr *ngFor="let supplier of suppliers">
         <td>{{ supplier.supplierId }}</td>
-        <td>{{ supplier.name}}</td>
+        <td>{{ supplier.name }}</td>
         <td>{{ supplier.contactPerson }}</td>
         <td>{{ supplier.phoneNumber }}</td>
         <td>{{ supplier.email }}</td>
-        <td>{{ supplier.address?.street }}</td>
-        <td>{{ supplier.address?.city }}</td>
-        <td>{{ supplier.address?.state }}</td>
-        <td>{{ supplier.address?.zipCode }}</td>
+        <td>{{ supplier.address.street }}</td>
+        <td>{{ supplier.address.city }}</td>
+        <td>{{ supplier.address.state }}</td>
+        <td>{{ supplier.address.zipCode }}</td>
         <td>
           <button class="btn btn-warning btn-sm" (click)="editSelectedSupplier(supplier)">Edit</button>
         </td>
@@ -52,7 +52,7 @@
     </tbody>
   </table>
 
-  <!-- Add Supplier Section -->
+  <!-- Add Supplier Form -->
   <div *ngIf="showAddSupplierForm" class="mt-4">
     <h3>Add New Supplier</h3>
     <form (ngSubmit)="addSupplier()">
@@ -83,7 +83,6 @@
       <div class="mb-3">
         <label for="state" class="form-label">State</label>
         <input [(ngModel)]="newSupplier.address.state" name="state" id="state" class="form-control" required />
-
       </div>
       <div class="mb-3">
         <label for="zipCode" class="form-label">Zip Code</label>
@@ -93,10 +92,10 @@
     </form>
   </div>
 
-  <!-- Edit Supplier Section -->
-  <!-- <div *ngIf="showEditSupplierForm" class="mt-4">
+  <!-- Edit Supplier Form -->
+  <!-- <div *ngIf="editSupplier" class="mt-4">
     <h3>Edit Supplier</h3>
-    <form (ngSubmit)="updateSupplier(editSupplier.supplierId, editSupplier)">
+    <form (ngSubmit)="updateSupplier()">
       <div class="mb-3">
         <label for="editName" class="form-label">Name</label>
         <input [(ngModel)]="editSupplier.name" name="editName" id="editName" class="form-control" required />
@@ -130,11 +129,12 @@
         <input [(ngModel)]="editSupplier.address.zipCode" name="editZipCode" id="editZipCode" class="form-control" required />
       </div>
       <button type="submit" class="btn btn-primary">Update Supplier</button>
+      <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
     </form>
-  </div>
+  </div> -->
 
   <!-- Toggle Add Form Button -->
   <button class="btn btn-success mt-4" (click)="showAddSupplierForm = !showAddSupplierForm">
     {{ showAddSupplierForm ? 'Cancel' : 'Add New Supplier' }}
   </button>
-</div> -->
+</div>

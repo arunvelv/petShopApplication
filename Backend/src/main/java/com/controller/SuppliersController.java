@@ -1,6 +1,7 @@
 	package com.controller;
 	 
-	import com.model.*;
+	import com.exception.InvalidInputException;
+import com.model.*;
 	import com.service.SuppliersService;
 	 
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@
 	    }
 	 
 	    @GetMapping("/{id:[0-9]+}")
-	    public ResponseEntity<Suppliers> getCustomerById(@PathVariable("id") int suppliersId) {
+	    public ResponseEntity<Suppliers> getSuppliersById(@PathVariable("id") int suppliersId) {
 	    	Suppliers suppliers = suppliersService.getSuppliersById(suppliersId);
 	        if (suppliers != null) {
 	            return new ResponseEntity<>(suppliers, HttpStatus.OK);
@@ -35,7 +36,7 @@
 	    @GetMapping("/name/{name}")
 	    public ResponseEntity<List<Suppliers>> getsuppliersByName(
 	            @PathVariable("name") String name) {
-	        List<Suppliers> suppliers= suppliersService.getByName(name);
+	        List<Suppliers> suppliers= suppliersService.findSuppliersByName(name);
 	        return new ResponseEntity<>(suppliers, HttpStatus.OK);
 	    }
 	 
@@ -52,11 +53,22 @@
 	 
 	 
 	    @PostMapping("/add")
-	    public ResponseEntity<Suppliers> addCustomer(@RequestBody Suppliers suppliers) {
-	    	Suppliers createdSuppliers = suppliersService.addSuppliers(suppliers);
-	        return new ResponseEntity<>(createdSuppliers, HttpStatus.CREATED);
-	    }
-	 
+	    public ResponseEntity<Suppliers> addSuppliers(@RequestBody SupplierPayload payload) {
+	    	Address address = payload.getAddress();
+	        Suppliers suppliers = payload.getSuppliers();
+//	        if (address == null || suppliers == null) {
+//	            throw new InvalidInputException("VALIDATION_ERROR");
+//	       }
+	        List<Suppliers> existingEmployees = suppliersService.findByAddress(address.getAddressId());
+	        if (!existingEmployees.isEmpty()) {
+	           throw new InvalidInputException("ADD_FAILS");
+	        }
+	    	Suppliers createdSuppliers = suppliersService.saveSuppliers(suppliers, address);
+	        return new ResponseEntity<>(createdSuppliers, HttpStatus.OK);
+	        }
+	      
+	        
+	        
 	    @PutMapping("/update/{id:[0-9]+}")
 	    public ResponseEntity<Suppliers> updateCustomer(@PathVariable("id") int suppliersId, @RequestBody Suppliers suppliersDetails) {
 	    	Suppliers updatedSuppliers = suppliersService.updateSuppliers(suppliersId, suppliersDetails);

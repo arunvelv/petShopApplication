@@ -82,6 +82,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
+          <th>Phone Number</th>
           <th>Address</th>
           <th>Actions</th>
         </tr>
@@ -90,6 +91,7 @@
         <tr *ngFor="let customer of customers">
           <td>{{ customer.firstName }} {{customer.lastName}}</td>
           <td>{{ customer.email }}</td>
+          <td>{{customer.phoneNumber}}</td>
           <td>{{ customer.address.street }} {{ customer.address.city }} {{customer.address.state}} {{customer.address.zipCode}}</td>
           <td>
             <!-- <button class="btn btn-warning" (click)="editCustomerWithAddress(customer)">Edit</button> -->

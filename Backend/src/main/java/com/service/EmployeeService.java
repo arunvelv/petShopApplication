@@ -6,7 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dao.AddressDAO;
 import com.dao.EmployeeDAO;
+import com.model.Address;
+import com.model.Customer;
 import com.model.Employee;
 
 @Service
@@ -14,6 +17,9 @@ public class EmployeeService {
 
     @Autowired
     private EmployeeDAO employeeDAO;
+    
+    @Autowired
+    private AddressDAO addressDAO;
 
     public Employee addEmployee(Employee employee) {
         if (employee != null) {
@@ -62,5 +68,18 @@ public class EmployeeService {
             }
         }
         return List.of();
+    }
+    
+    public List<Employee> findByAddress(int addressId) {
+		return employeeDAO.findByAddressAddressId(addressId);
+    	
+    }
+    
+    public Employee saveCustomer(Employee employees, Address address) {
+        if (address.getAddressId() == 0) {
+            addressDAO.save(address);
+        }
+        employees.setAddress(address);
+        return employeeDAO.save(employees);
     }
 }

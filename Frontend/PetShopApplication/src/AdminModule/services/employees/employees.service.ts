@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Employee } from '../../../models/Employee';
+import { Address } from '../../../models/Address';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +18,15 @@ export class EmployeesService {
     });
   }
 
-  addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.baseUrl + "/add", employee, {
+  addEmployee(address: Address, employee: Employee): Observable<any> {
+    const payload = { address,employee};
+    return this.http.post(this.baseUrl + "/add", payload, {
       responseType: 'json'
     });
   }
+
+
+
 
   updateEmployee(employeeId: number, employee: Employee): Observable<Employee> {
     return this.http.put<Employee>(this.baseUrl + `/update/${employeeId}`, employee, {

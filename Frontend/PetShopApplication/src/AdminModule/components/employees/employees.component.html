@@ -1,157 +1,118 @@
 <div class="container">
-  <h2>Employee Management</h2>
+  <h2>Employees</h2>
 
-  <!-- Add Employee Button -->
-  <button class="btn btn-primary mb-3" (click)="toggleAddEmployeeForm()">Add Employee</button>
+  <div class="form-group">
+    <h3>Add Employee with Address</h3>
+    <form (ngSubmit)="addEmployee()">
+      <h4>Employee Details</h4>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newEmployee.name"
+        name="name"
+        placeholder="Employee Name"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newEmployee.position"
+        name="position"
+        placeholder="Position"
+        required
+      />
+      <input
+        type="date"
+        class="form-control"
+        [(ngModel)]="newEmployee.hireDate"
+        name="hireDate"
+        placeholder="Hire Date"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newEmployee.phoneNumber"
+        name="phoneNumber"
+        placeholder="Phone Number"
+        required
+      />
+      <input
+        type="email"
+        class="form-control"
+        [(ngModel)]="newEmployee.email"
+        name="email"
+        placeholder="Email"
+        required
+      />
+      <h4>Address Details</h4>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.street"
+        name="street"
+        placeholder="Street"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.city"
+        name="city"
+        placeholder="City"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.state"
+        name="state"
+        placeholder="State"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.zipCode"
+        name="zipCode"
+        placeholder="Zip Code"
+        required
+      />
 
-  <!-- Add Employee Form -->
-  <div *ngIf="showAddForm" class="mb-4">
-    <h3>Add New Employee</h3>
-    <form (ngSubmit)="addEmployee(newEmployee)" #addEmployeeForm="ngForm">
-      <div class="row mb-3">
-        <div class="col">
-          <label for="name" class="form-label">Name</label>
-          <input type="text" id="name" class="form-control" [(ngModel)]="newEmployee.name" name="name" required />
-        </div>
-        <div class="col">
-          <label for="position" class="form-label">Position</label>
-          <input type="text" id="position" class="form-control" [(ngModel)]="newEmployee.position" name="position" required />
-        </div>
-        <div class="col">
-          <label for="hireDate" class="form-label">Hire Date</label>
-          <input type="date" id="hireDate" class="form-control" [(ngModel)]="newEmployee.hireDate" name="hireDate" required />
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label for="phone" class="form-label">Phone</label>
-          <input type="text" id="phone" class="form-control" [(ngModel)]="newEmployee.phoneNumber" name="phone" required />
-        </div>
-        <div class="col">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" class="form-control" [(ngModel)]="newEmployee.email" name="email" required />
-        </div>
-        <div class="col">
-          <label for="address" class="form-label">Address</label>
-          <select id="address" class="form-select" [(ngModel)]="newEmployee.address" name="address" required>
-            <option value="" disabled>Select an address</option>
-            <option *ngFor="let address of addresses" [ngValue]="address">
-              {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.zipCode }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary">Add Employee</button>
+      <button class="btn btn-primary" type="submit">Add Employee</button>
     </form>
   </div>
 
-  <!-- Employee Table -->
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Employee ID</th>
-        <th>Name</th>
-        <th>Position</th>
-        <th>Hire Date</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let employee of employees">
-        <td>{{ employee.employeeId }}</td>
-        <td>
-          <input
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.name"
-            class="form-control"
-          />
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
-            {{ employee.name }}
-          </span>
-        </td>
-        <td>
-          <input
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.position"
-            class="form-control"
-          />
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
-            {{ employee.position }}
-          </span>
-        </td>
-        <td>
-          <input
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.hireDate"
-            type="date"
-            class="form-control"
-          />
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
-            {{ employee.hireDate }}
-          </span>
-        </td>
-        <td>
-          <input
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.phoneNumber"
-            class="form-control"
-          />
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
-            {{ employee.phoneNumber }}
-          </span>
-        </td>
-        <td>
-          <input
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.email"
-            type="email"
-            class="form-control"
-          />
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
-            {{ employee.email }}
-          </span>
-        </td>
-        <td>
-          <select
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            [(ngModel)]="editingEmployee.address"
-            class="form-select"
-          >
-            <option *ngFor="let address of addresses" [ngValue]="address">
-              {{ address.street }}, {{ address.city }}, {{ address.state }} - {{ address.zipCode }}
-            </option>
-          </select>
-          <span *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId">
+  <div *ngIf="employees.length">
+    <h3>Employee List</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Position</th>
+          <th>Hire Date</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.position }}</td>
+          <td>{{ employee.hireDate }}</td>
+          <td>{{ employee.phoneNumber }}</td>
+          <td>{{ employee.email }}</td>
+          <td>
             {{ employee.address.street }}, {{ employee.address.city }}, {{ employee.address.state }} - {{ employee.address.zipCode }}
-          </span>
-        </td>
-        <td>
-          <button
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            class="btn btn-primary btn-sm"
-            (click)="updateEmployee(editingEmployee)"
-          >
-            Save
-          </button>
-          <button
-            *ngIf="editingEmployee && editingEmployee.employeeId === employee.employeeId"
-            class="btn btn-secondary btn-sm"
-            (click)="cancelEdit()"
-          >
-            Cancel
-          </button>
-          <button
-            *ngIf="!editingEmployee || editingEmployee.employeeId !== employee.employeeId"
-            class="btn btn-success btn-sm"
-            (click)="editEmployee(employee)"
-          >
-            Edit
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+          <td>
+            <!-- Uncomment and implement the editEmployee method to enable editing -->
+            <!-- <button class="btn btn-warning" (click)="editEmployee(employee)">Edit</button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

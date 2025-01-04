@@ -14,7 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.exception.InvalidInputException;
+import com.model.Address;
+import com.model.Customer;
+import com.model.CustomerPayload;
 import com.model.Employee;
+import com.model.EmployeePayload;
 import com.service.EmployeeService;
 
 @RestController
@@ -25,14 +30,14 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @PostMapping("/add")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
-        Employee savedEmployee = employeeService.addEmployee(employee);
-        if (savedEmployee != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee data");
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
+//        Employee savedEmployee = employeeService.addEmployee(employee);
+//        if (savedEmployee != null) {
+//            return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee);
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid employee data");
+//    }
 
     @GetMapping
     public ResponseEntity<?> getAllEmployees() {
@@ -78,5 +83,20 @@ public class EmployeeController {
             return ResponseEntity.ok(updatedEmployee);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found or update failed");
+    }
+    
+    @PostMapping("/add")
+    public ResponseEntity<Employee> addEmployee(@RequestBody EmployeePayload payload) {
+    	Address address = payload.getAddress();
+        Employee employees = payload.getEmployee();
+          if (address == null || employees == null) {
+            throw new InvalidInputException("VALIDATION_ERROR");
+       }
+       List<Employee> existingEmployees = employeeService.findByAddress(address.getAddressId());
+        if (!existingEmployees.isEmpty()) {
+           throw new InvalidInputException("ADD_FAILS");
+       }
+        Employee createdEmployee = employeeService.saveCustomer(employees, address);
+           return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED);
     }
 }

@@ -1,5 +1,4 @@
 import { Address } from "./Address";
-import { Customer } from "./Customer";
 
 export interface Supplier {
   supplierId: number;

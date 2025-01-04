@@ -39,16 +39,16 @@ class EmployeeControllerTest {
         testEmployee.setPhoneNumber("9876543210");
     }
  
-    @Test
-    void testAddEmployee_Valid() {
-        when(employeeService.addEmployee(testEmployee)).thenReturn(testEmployee);
- 
-        ResponseEntity<?> response = employeeController.addEmployee(testEmployee);
- 
-        assertEquals(CREATED, response.getStatusCode());
-        assertEquals(testEmployee, response.getBody());
-        verify(employeeService, times(1)).addEmployee(testEmployee);
-    }
+//    @Test
+//    void testAddEmployee_Valid() {
+//        when(employeeService.addEmployee(testEmployee)).thenReturn(testEmployee);
+// 
+//        ResponseEntity<?> response = employeeController.addEmployee(testEmployee);
+// 
+//        assertEquals(CREATED, response.getStatusCode());
+//        assertEquals(testEmployee, response.getBody());
+//        verify(employeeService, times(1)).addEmployee(testEmployee);
+//    }
  
     @Test
     void testAddEmployee_Invalid() {

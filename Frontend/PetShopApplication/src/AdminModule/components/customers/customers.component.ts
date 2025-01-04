@@ -28,6 +28,7 @@
       this.customerService.getAllCustomers().subscribe(
         (data) => {
           this.customers = data;
+          
         },
         (error) => {
           console.error('Error fetching customers:', error);
@@ -46,13 +47,16 @@
 
       
       this.customerService.addCustomer(this.newAddress, this.newCustomer).subscribe(
-        (e) => {
+        (data) => {
           // this.customers.push(addedCustomer);
           console.log(this.newAddress);
           console.log(this.newCustomer);
           // this.newCustomer = {} as Customer;
           // this.newAddress = {} as Address;
           // this.errorMessage = null;
+          // this.newCustomer = data;
+          // this.newAddress = data;
+
         },
         (error) => {
           console.error('Error adding customer with address:', error);

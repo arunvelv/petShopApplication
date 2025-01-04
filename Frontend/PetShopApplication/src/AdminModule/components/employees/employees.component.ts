@@ -4,6 +4,7 @@ import { Employee } from '../../../models/Employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Address } from '../../../models/Address';
 
 @Component({
   selector: 'app-employees',
@@ -15,17 +16,19 @@ export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   newEmployee: Employee = {} as Employee;
   editingEmployee: Employee  | null = null;
+  newAddress: Address = {} as Address;
   // editingEmployee: Employee = {} as Employee;
   addresses: any[] = []; 
   addressesForEmployees: any[] = [];
   showAddForm: boolean = false;
   showEditForm: boolean = false;
+  errorMessage: string | null = null;
 
   constructor(private employeesService: EmployeesService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.getEmployees();
-    this.getAddresses();
+    // this.getAddresses();
   }
 
   getEmployees(): void {
@@ -39,34 +42,38 @@ export class EmployeesComponent implements OnInit {
     );
   }
 
-  getAddresses(): void {
-    this.http.get<any[]>('http://localhost:9999/api/v1/address').subscribe(
-      (data: any[]) => {
-        this.addresses = data;
-        this.addressesForEmployees = data; // Sync with dropdown
-      },
-      (error) => {
-        console.error('Error fetching addresses:', error);
-      }
-    );
-  }
+  // getAddresses(): void {
+  //   this.http.get<any[]>('http://localhost:9999/api/v1/address').subscribe(
+  //     (data: any[]) => {
+  //       this.addresses = data;
+  //       this.addressesForEmployees = data; // Sync with dropdown
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching addresses:', error);
+  //     }
+  //   );
+  // }
 
   toggleAddEmployeeForm(): void {
     this.showAddForm = !this.showAddForm;
     this.newEmployee = {} as Employee;
   }
 
-  addEmployee(employee: Employee): void {
-    this.employeesService.addEmployee(employee).subscribe(
-      (addedEmployee: Employee) => {
-        this.employees.push(addedEmployee);
-        this.toggleAddEmployeeForm();
-      },
-      (error) => {
-        console.error('Error adding employee:', error);
-      }
-    );
-  }
+  addEmployee(): void {
+    this.employeesService.addEmployee(this.newAddress, this.newEmployee).subscribe(
+      (data) => {
+          console.log(this.newAddress);
+          console.log(this.newEmployee);
+          this.newEmployee = {} as Employee;
+        this.newAddress = {} as Address;
+      this.getEmployees();
+        },
+        (error) => {
+          console.error('Error adding customer with address:', error);
+          this.errorMessage = 'Failed to add customer with address. Please try again.';
+        }
+      );
+    }
 
   editEmployee(employee: Employee): void {
     this.editingEmployee = { ...employee };

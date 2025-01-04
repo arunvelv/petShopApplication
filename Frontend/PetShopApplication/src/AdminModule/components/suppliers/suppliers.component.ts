@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Supplier } from '../../../models/Supplier';
 import { SuppliersService } from '../../services/suppliers/suppliers.service';
 import { FormsModule } from '@angular/forms';
+import { Address } from '../../../models/Address';
 
 @Component({
   selector: 'app-suppliers',
@@ -14,8 +15,10 @@ export class SuppliersComponent implements OnInit {
   suppliers: Supplier[] = [];
   newSupplier: Supplier = {} as Supplier;
   editSupplier: Supplier = {} as Supplier;
+  newAddress: Address = {} as Address;
   showAddSupplierForm: boolean = false;
   showEditSupplierForm: boolean = false;
+  errorMessage: string | null = null;
 
   searchParams: any = {
     name: '',
@@ -23,13 +26,14 @@ export class SuppliersComponent implements OnInit {
     state: ''
   };
 
+
   constructor(private suppliersService: SuppliersService) {}
 
   ngOnInit(): void {
-    this.getSupplierList();
+    this.getSuppliers();
   }
 
-  getSupplierList(): void {
+  getSuppliers(): void {
     this.suppliersService.getAllSuppliers().subscribe(
       (data: Supplier[]) => {
         this.suppliers = data;
@@ -74,18 +78,36 @@ export class SuppliersComponent implements OnInit {
   }
 
   addSupplier(): void {
-    this.suppliersService.addSupplier(this.newSupplier).subscribe(
-      (addedSupplier: Supplier) => {
-        this.suppliers.push(addedSupplier);
-        console.log('Supplier added successfully!');
-        this.newSupplier = {} as Supplier; // Reset the form
-        this.showAddSupplierForm = false; // Hide the form
+    this.suppliersService.addSupplier(this.newSupplier, this.newAddress).subscribe(
+      (data) => {
+        console.log(this.newSupplier);
+        console.log(this.newAddress);
+        // this.newSupplier = {} as Supplier;
+        // this.newAddress = {} as Address;
+        // this.getSuppliers();
       },
       (error) => {
-        console.error('Error adding supplier:', error);
+        console.error('Error adding customer with address:', error);
+          this.errorMessage = 'Failed to add customer with address. Please try again.';
       }
     );
   }
+
+  // addEmployee(): void {
+  //   this.employeesService.addEmployee(this.newAddress, this.newEmployee).subscribe(
+  //     (data) => {
+  //         console.log(this.newAddress);
+  //         console.log(this.newEmployee);
+  //         this.newEmployee = {} as Employee;
+  //       this.newAddress = {} as Address;
+  //     this.getEmployees();
+  //       },
+  //       (error) => {
+  //         console.error('Error adding customer with address:', error);
+  //         this.errorMessage = 'Failed to add customer with address. Please try again.';
+  //       }
+  //     );
+  //   }
 
   updateSupplier(): void {
     if (this.editSupplier && this.editSupplier.supplierId) {
