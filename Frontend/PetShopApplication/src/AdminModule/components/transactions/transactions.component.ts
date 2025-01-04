@@ -40,33 +40,44 @@ export class TransactionsComponent implements OnInit {
     );
   }
 
-  addTransaction(transaction: Transaction): void {
-    if (!transaction.customer) {
-      transaction.customer = { customerId: 0 } as any;  // Ensure customer is initialized
-    }
-    if (!transaction.pet) {
-      transaction.pet = { petId: 0 } as any;  // Ensure pet is initialized
-    }
+  addTransaction(): void {
+    console.log(this.newTransaction.customer.customerId)
+    if (!this.newTransaction.customer || !this.newTransaction.customer.customerId) {
 
-
-    this.transactionsService.addTransaction(transaction).subscribe(
+      console.error('Customer ID is required.');
+      this.errorMessage = 'Please provide a valid Customer ID.';
+      return;
+    }
+  
+    if (!this.newTransaction.pet || !this.newTransaction.pet.petId) {
+      console.error('Pet ID is required.');
+      this.errorMessage = 'Please provide a valid Pet ID.';
+      return;
+    }
+  
+    this.transactionsService.addTransaction(this.newTransaction).subscribe(
       (addedTransaction: Transaction) => {
-        this.transactions.push(addedTransaction); // Add the new transaction to the list
-        this.newTransaction = {
-          transactionId: 0,
-          transactionDate: '',
-          amount: 0,
-          transactionStatus: TransactionStatus.SUCCESS,
-          customer: { customerId: 1} as any,
-          pet: { petId: 1} as any
-        };
-        this.isAddTransactionFormVisible = false;
+        console.log('Transaction added successfully:', addedTransaction);
+        this.transactions.push(addedTransaction); // Update the table with the new transaction
+        this.resetTransactionForm(); // Reset the form after submission
+        this.isAddTransactionFormVisible = false; // Close the form
       },
       (error) => {
         console.error('Error adding transaction:', error);
-        this.errorMessage = 'Failed to add transaction.';
+        this.errorMessage = 'Failed to add transaction. Please try again.';
       }
     );
+  }
+
+  resetTransactionForm(): void {
+    this.newTransaction = {
+      transactionId: 0,
+      transactionDate: new Date().toISOString().split('T')[0], // Set default date as today
+      amount: 0,
+      transactionStatus: TransactionStatus.SUCCESS,
+      customer: { customerId: 1 } as any,  // Ensure customer object is initialized
+      pet: { petId: 1 } as any,            // Ensure pet object is initialized
+    };
   }
 
   editTransaction(transaction: Transaction): void {

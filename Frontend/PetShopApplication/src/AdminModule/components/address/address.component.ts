@@ -31,7 +31,7 @@
         },
         (error) => {
           console.error('Error fetching addresses:', error);
-          this.errorMessage = 'Failed to load addresses. Please try again later.';
+          // this.errorMessage = 'Failed to load addresses. Please try again later.';
         }
       );
     }

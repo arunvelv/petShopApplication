@@ -1,91 +1,111 @@
 <div class="container">
-  <h2>Employees</h2>
+  <h2>Employees Management</h2>
+  <div class="running-message">
+    <span>To change address of the employees <a href="address">click here</a></span>
+  </div>
 
-  <div class="form-group">
+  <br/>
+
+  <!-- Add Employee Button -->
+  <button class="btn btn-primary mb-3" (click)="toggleAddEmployeeForm()">
+    {{ showAddForm ? 'Close' : 'Add Employee' }}
+  </button>
+
+  <!-- Add Employee Form -->
+  <div *ngIf="showAddForm" class="card p-3 mb-4">
     <h3>Add Employee with Address</h3>
     <form (ngSubmit)="addEmployee()">
-      <h4>Employee Details</h4>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newEmployee.name"
-        name="name"
-        placeholder="Employee Name"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newEmployee.position"
-        name="position"
-        placeholder="Position"
-        required
-      />
-      <input
-        type="date"
-        class="form-control"
-        [(ngModel)]="newEmployee.hireDate"
-        name="hireDate"
-        placeholder="Hire Date"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newEmployee.phoneNumber"
-        name="phoneNumber"
-        placeholder="Phone Number"
-        required
-      />
-      <input
-        type="email"
-        class="form-control"
-        [(ngModel)]="newEmployee.email"
-        name="email"
-        placeholder="Email"
-        required
-      />
-      <h4>Address Details</h4>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.street"
-        name="street"
-        placeholder="Street"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.city"
-        name="city"
-        placeholder="City"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.state"
-        name="state"
-        placeholder="State"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.zipCode"
-        name="zipCode"
-        placeholder="Zip Code"
-        required
-      />
+      <div class="row">
+        <div class="col-md-6">
+          <h4>Employee Details</h4>
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newEmployee.name"
+            name="name"
+            placeholder="Employee Name"
+            required
+          />
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newEmployee.position"
+            name="position"
+            placeholder="Position"
+            required
+          />
+          <input
+            type="date"
+            class="form-control mb-2"
+            [(ngModel)]="newEmployee.hireDate"
+            name="hireDate"
+            placeholder="Hire Date"
+            required
+          />
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newEmployee.phoneNumber"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            required
+          />
+          <input
+            type="email"
+            class="form-control mb-2"
+            [(ngModel)]="newEmployee.email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+        </div>
 
-      <button class="btn btn-primary" type="submit">Add Employee</button>
+        <div class="col-md-6">
+          <h4>Address Details</h4>
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newAddress.street"
+            name="street"
+            placeholder="Street"
+            required
+          />
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newAddress.city"
+            name="city"
+            placeholder="City"
+            required
+          />
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newAddress.state"
+            name="state"
+            placeholder="State"
+            required
+          />
+          <input
+            type="text"
+            class="form-control mb-2"
+            [(ngModel)]="newAddress.zipCode"
+            name="zipCode"
+            placeholder="Zip Code"
+            required
+          />
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-success" type="submit">Add Employee</button>
+      </div>
     </form>
   </div>
 
+  <!-- Employee List -->
   <div *ngIf="employees.length">
     <h3>Employee List</h3>
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>Employee Name</th>
@@ -94,6 +114,7 @@
           <th>Phone</th>
           <th>Email</th>
           <th>Address</th>
+          <th>Address ID</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -107,9 +128,9 @@
           <td>
             {{ employee.address.street }}, {{ employee.address.city }}, {{ employee.address.state }} - {{ employee.address.zipCode }}
           </td>
+          <td>{{employee.address.addressId}}</td>
           <td>
-            <!-- Uncomment and implement the editEmployee method to enable editing -->
-            <!-- <button class="btn btn-warning" (click)="editEmployee(employee)">Edit</button> -->
+            <button class="btn btn-success btn-sm" (click)="editEmployee(employee)">Edit</button>
           </td>
         </tr>
       </tbody>

@@ -28,7 +28,7 @@ public class Customer {
 		@Column(name="phone_number", nullable=false, length=20)
 		private String phoneNumber;
 				
-		@OneToOne(fetch = FetchType.EAGER)
+		@OneToOne()
 		@JoinColumn(name="address_id")
 //		@JsonIgnore
 		private Address address;

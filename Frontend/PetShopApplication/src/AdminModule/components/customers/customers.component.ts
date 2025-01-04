@@ -40,6 +40,7 @@
   addCustomer(): void {
     this.customerService.addCustomer(this.newAddress, this.newCustomer).subscribe(
       (data) => {
+        console.log('Customer added successfully:', data);
         this.newCustomer = {} as Customer;
         this.newAddress = {} as Address;
         this.showAddCustomerForm = false;

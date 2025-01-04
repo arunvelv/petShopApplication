@@ -1,5 +1,10 @@
 <div class="container">
-  <h2>Customers</h2>
+  <h2>Customers Management</h2>
+  <div class="running-message">
+    <span>To change address of the customers <a href="address">click here</a></span>
+  </div>
+
+  <br/>
 
   <!-- Button to show the Add Customer form -->
   <button class="btn btn-success mb-3" (click)="toggleAddCustomerForm()">Add Customer</button>
@@ -113,6 +118,7 @@
           <th>Email</th>
           <th>Phone Number</th>
           <th>Address</th>
+          <th>Address Id</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -151,8 +157,9 @@
             <span *ngIf="editCustomerIndex !== i">{{ customer.phoneNumber }}</span>
           </td>
           <td>
-            {{ customer.address.street }} {{ customer.address.city }} {{ customer.address.state }} {{ customer.address.zipCode }}
+            {{ customer.address.street }}, {{ customer.address.city }}, {{ customer.address.state }} - {{ customer.address.zipCode }} 
           </td>
+          <td> {{customer.address.addressId}}</td>
           <td>
             <button *ngIf="editCustomerIndex !== i" class="btn btn-primary" (click)="editCustomer(i)">Edit</button>
             <button *ngIf="editCustomerIndex === i" class="btn btn-success" (click)="saveCustomer(i)">Save</button>

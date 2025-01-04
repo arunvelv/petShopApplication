@@ -42,17 +42,6 @@ export class EmployeesComponent implements OnInit {
     );
   }
 
-  // getAddresses(): void {
-  //   this.http.get<any[]>('http://localhost:9999/api/v1/address').subscribe(
-  //     (data: any[]) => {
-  //       this.addresses = data;
-  //       this.addressesForEmployees = data; // Sync with dropdown
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching addresses:', error);
-  //     }
-  //   );
-  // }
 
   toggleAddEmployeeForm(): void {
     this.showAddForm = !this.showAddForm;
@@ -62,11 +51,11 @@ export class EmployeesComponent implements OnInit {
   addEmployee(): void {
     this.employeesService.addEmployee(this.newAddress, this.newEmployee).subscribe(
       (data) => {
-          console.log(this.newAddress);
-          console.log(this.newEmployee);
-          this.newEmployee = {} as Employee;
+        console.log('Employee added successfully:', data);
+        this.newEmployee = {} as Employee;
         this.newAddress = {} as Address;
-      this.getEmployees();
+        this.showAddForm = false; // Close the form after successful addition
+        this.getEmployees(); // Refresh the employee list
         },
         (error) => {
           console.error('Error adding employee with address:', error);
@@ -81,19 +70,24 @@ export class EmployeesComponent implements OnInit {
   }
 
   updateEmployee(employee: Employee): void {
-    this.employeesService.updateEmployee(employee.employeeId, employee).subscribe(
-      (updatedEmployee: Employee) => {
-        const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
-        if (index !== -1) {
-          this.employees[index] = updatedEmployee;
+    if (this.editingEmployee) {
+      this.employeesService.updateEmployee(this.editingEmployee.employeeId, this.editingEmployee).subscribe(
+        (updatedEmployee: Employee) => {
+          const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
+          if (index !== -1) {
+            this.employees[index] = updatedEmployee;
+          }
+          this.editingEmployee = null; // Exit edit mode
+          this.getEmployees(); // Refresh list
+        },
+        (error) => {
+          console.error('Error updating employee:', error);
+          this.errorMessage = 'Failed to update employee. Please try again.';
         }
-        this.editingEmployee = null; // Exit edit mode
-      },
-      (error) => {
-        console.error('Error updating employee:', error);
-      }
-    );
+      );
+    }
   }
+  
   
   cancelEdit(): void {
     this.editingEmployee = null; // Exit edit mode without saving

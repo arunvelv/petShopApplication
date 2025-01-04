@@ -36,6 +36,7 @@
   <table class="table table-striped">
     <thead>
       <tr>
+        <th>Address ID</th>
         <th>Street</th>
         <th>City</th>
         <th>State</th>
@@ -45,6 +46,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let address of addresses">
+        <td> {{address.addressId}}</td>
         <td>
           <input
             *ngIf="editingAddress && editingAddress.addressId === address.addressId"

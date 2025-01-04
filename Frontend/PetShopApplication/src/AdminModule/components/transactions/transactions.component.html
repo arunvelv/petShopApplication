@@ -10,7 +10,7 @@
   <div class="mb-3">
     <div class="input-group">
       <input [(ngModel)]="customerId" class="form-control" placeholder="Enter Customer ID" type="number" />
-      <button class="btn btn-info" (click)="getTransactionsByCustomerId()">Search by Customer ID</button>
+      <!-- <button class="btn btn-info" (click)="getTransactionsByCustomerId()">Search by Customer ID</button> -->
     </div>
   </div>
 
@@ -44,29 +44,68 @@
 
   <button *ngIf="!isAddTransactionFormVisible" class="btn btn-primary" (click)="toggleAddTransactionForm()">Add Transaction</button>
 
-  <div *ngIf="isAddTransactionFormVisible">
-    <h2 class="mt-4">Add New Transaction</h2>
-    <form (ngSubmit)="addTransaction(newTransaction)" #transactionForm="ngForm">
+  <div *ngIf="isAddTransactionFormVisible" class="mt-4">
+    <h2>Add New Transaction</h2>
+    <form (ngSubmit)="addTransaction()" #transactionForm="ngForm">
       <div class="mb-3">
-        <label for="amount" class="form-label">Amount:</label>
-        <input [(ngModel)]="newTransaction.amount" name="amount" id="amount" class="form-control" type="number" required />
+        <label for="transactionDate" class="form-label">Transaction Date:</label>
+        <input
+          [(ngModel)]="newTransaction.transactionDate"
+          name="transactionDate"
+          id="transactionDate"
+          class="form-control"
+          type="date"
+          required
+        />
       </div>
       <div class="mb-3">
-        <label for="status" class="form-label">Status:</label>
-        <select [(ngModel)]="newTransaction.transactionStatus" name="status" id="status" class="form-select" required>
-          <option value="SUCCESS">Successful</option> 
+        <label for="amount" class="form-label">Amount:</label>
+        <input
+          [(ngModel)]="newTransaction.amount"
+          name="amount"
+          id="amount"
+          class="form-control"
+          type="number"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="status" class="form-label">Transaction Status:</label>
+        <select
+          [(ngModel)]="newTransaction.transactionStatus"
+          name="status"
+          id="status"
+          class="form-select"
+          required
+        >
+          <option value="SUCCESS">Successful</option>
           <option value="FAILED">Failed</option>
         </select>
       </div>
       <div class="mb-3">
         <label for="customerId" class="form-label">Customer ID:</label>
-        <input [(ngModel)]="newTransaction.customer.customerId" name="customerId" id="customerId" class="form-control" type="number" required />
+        <input
+          [(ngModel)]="newTransaction.customer.customerId"
+          name="customerId"
+          id="customerId"
+          class="form-control"
+          type="number"
+          required
+        />
       </div>
       <div class="mb-3">
         <label for="petId" class="form-label">Pet ID:</label>
-        <input [(ngModel)]="newTransaction.pet.petId" name="petId" id="petId" class="form-control" type="number" required />
+        <input
+          [(ngModel)]="newTransaction.pet.petId"
+          name="petId"
+          id="petId"
+          class="form-control"
+          type="number"
+          required
+        />
       </div>
-      <button type="submit" class="btn btn-primary">Add Transaction</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="toggleAddTransactionForm()">Cancel</button>
     </form>
   </div>
-</div>
+  

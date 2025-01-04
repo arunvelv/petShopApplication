@@ -78,8 +78,8 @@ export class SuppliersComponent implements OnInit {
   }
 
   addSupplier(): void {
+    console.log('Supplier:', this.newSupplier);
     console.log('Address:', this.newAddress);
-        console.log('Supplier:', this.newSupplier);
     this.suppliersService.addSupplier(this.newAddress, this.newSupplier).subscribe(
 
       (data) => {

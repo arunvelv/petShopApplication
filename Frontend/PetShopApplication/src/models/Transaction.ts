@@ -3,7 +3,7 @@ import { Pets } from "./Pets";
 
 export interface Transaction {
   transactionId: number;
-  transactionDate: string;  // Date string
+  transactionDate: string;
   amount: number;
   transactionStatus: string;
   customer: Customer;
