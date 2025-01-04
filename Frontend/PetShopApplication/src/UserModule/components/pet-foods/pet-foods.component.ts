@@ -4,7 +4,7 @@ import { PetFood } from '../../../models/PetFood';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-pet-foods',
-  imports: [ CommonModule],
+  imports: [CommonModule],
   templateUrl: './pet-foods.component.html',
   styleUrl: './pet-foods.component.css'
 })
