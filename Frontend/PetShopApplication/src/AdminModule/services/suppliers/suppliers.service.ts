@@ -35,12 +35,18 @@ export class SuppliersService {
     return this.http.get<Supplier[]>(`${this.baseUrl}/state/${state}`, { responseType: 'json' });
   }
 
-  addSupplier(supplier: Supplier, address: Address): Observable<any> {
-    const payload = { supplier, address };
-    return this.http.post<Supplier>(`${this.baseUrl}/add`, payload, { 
+  addSupplier(address: Address, supplier: Supplier): Observable<any> {
+    const payload = { address, supplier };
+    return this.http.post(this.baseUrl + "/add", payload, { 
       responseType: 'json'
      });
   }
+
+ 
+
+
+ 
+
 
 
   updateSupplier(id: number, supplier: Supplier): Observable<Supplier> {

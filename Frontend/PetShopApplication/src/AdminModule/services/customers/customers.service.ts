@@ -9,8 +9,6 @@ import { Address } from '../../../models/Address';
 })
 export class CustomerService {
   private baseUrl = 'http://localhost:9999/api/v1/customers';
-  Address: any;
-  Customer: any;
 
   constructor(private http: HttpClient) { }
 
@@ -60,7 +58,7 @@ export class CustomerService {
   }
 
   updateCustomer(customerId: number, customerDetails: Customer): Observable<Customer> {
-    return this.http.put<Customer>(this.baseUrl + `/update/${customerId}`, customerDetails, {
+    return this.http.put<Customer>(`${this.baseUrl}/update/${customerId}`, customerDetails, {
       responseType: 'json'
     });
   }

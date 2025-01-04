@@ -1,0 +1,44 @@
+
+/* Full page background with gradient overlay */
+html, body {
+    height: 100%;                     /* Full height for centering */
+    display: flex;
+    justify-content: center;          /* Center horizontally */
+    align-items: center; 
+    background-color: #5b9aa0;
+    margin: 0;                                /* Remove any default margin */
+    background-image: linear-gradient(to bottom right, #5b9aa0, #ffffff);             /* Center vertically */                        
+    
+}
+
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fbefcc, #e2efff);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Style for the grooming services title */
+.grooming-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #bd5734; /* Custom color, change as needed */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Logo style */
+  .logo {
+    width: 40px; /* Adjust the size of the logo */
+    height: auto;
+  }
+  

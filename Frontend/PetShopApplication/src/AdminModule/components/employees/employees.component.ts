@@ -69,8 +69,8 @@ export class EmployeesComponent implements OnInit {
       this.getEmployees();
         },
         (error) => {
-          console.error('Error adding customer with address:', error);
-          this.errorMessage = 'Failed to add customer with address. Please try again.';
+          console.error('Error adding employee with address:', error);
+          this.errorMessage = 'Failed to add employee with address. Please try again.';
         }
       );
     }

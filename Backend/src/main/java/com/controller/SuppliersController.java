@@ -12,6 +12,7 @@ import com.model.*;
 	import java.util.List;
 	 
 	@RestController
+	@CrossOrigin("*")
 	@RequestMapping("/api/v1/suppliers")
 	public class SuppliersController {
 	 
@@ -56,11 +57,13 @@ import com.model.*;
 	    public ResponseEntity<Suppliers> addSuppliers(@RequestBody SupplierPayload payload) {
 	    	Address address = payload.getAddress();
 	        Suppliers suppliers = payload.getSuppliers();
+	        System.out.println(suppliers);
+	        System.out.println(address);
 //	        if (address == null || suppliers == null) {
 //	            throw new InvalidInputException("VALIDATION_ERROR");
 //	       }
-	        List<Suppliers> existingEmployees = suppliersService.findByAddress(address.getAddressId());
-	        if (!existingEmployees.isEmpty()) {
+	        List<Suppliers> existingSuppliers = suppliersService.findByAddress(address.getAddressId());
+	        if (!existingSuppliers.isEmpty()) {
 	           throw new InvalidInputException("ADD_FAILS");
 	        }
 	    	Suppliers createdSuppliers = suppliersService.saveSuppliers(suppliers, address);

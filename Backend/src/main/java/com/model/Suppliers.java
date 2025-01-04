@@ -19,7 +19,7 @@ public class Suppliers {
 	
 	@Column(name="contact_person",  nullable=false, length=50)
     private String contactPerson;
-	
+		
 	@Column(name="phone_number",  nullable=false, length=20)
     private String phoneNumber;
 	

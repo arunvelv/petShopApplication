@@ -78,20 +78,24 @@ export class SuppliersComponent implements OnInit {
   }
 
   addSupplier(): void {
-    this.suppliersService.addSupplier(this.newSupplier, this.newAddress).subscribe(
+    console.log('Address:', this.newAddress);
+        console.log('Supplier:', this.newSupplier);
+    this.suppliersService.addSupplier(this.newAddress, this.newSupplier).subscribe(
+
       (data) => {
-        console.log(this.newSupplier);
-        console.log(this.newAddress);
+        console.log('Address:', this.newAddress);
+        console.log('Supplier:', this.newSupplier);
         // this.newSupplier = {} as Supplier;
         // this.newAddress = {} as Address;
         // this.getSuppliers();
       },
       (error) => {
-        console.error('Error adding customer with address:', error);
-          this.errorMessage = 'Failed to add customer with address. Please try again.';
+        console.error('Error adding suppliers with address:', error);
+          this.errorMessage = 'Failed to add supliers with address. Please try again.';
       }
     );
   }
+  
 
   // addEmployee(): void {
   //   this.employeesService.addEmployee(this.newAddress, this.newEmployee).subscribe(

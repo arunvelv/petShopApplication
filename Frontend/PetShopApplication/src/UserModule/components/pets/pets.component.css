@@ -36,8 +36,8 @@ html, body {
 
 /* Logo style */
 .logo {
-    width: 40px; /* Adjust the size of the logo */
-    height: auto;
+    width: 100px; /* Adjust the size of the logo */
+    height: 100px;
 }
 
 /* Search Bar styling */

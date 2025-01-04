@@ -1,0 +1,29 @@
+.container {
+    max-width: 100%;
+  }
+  
+  .form-control {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: center;
+  }
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .form-row .form-group {
+    flex: 1 1 45%; /* Flex properties to control width */
+  }
+  .btn {
+    margin-right: 5px;
+  }
+      

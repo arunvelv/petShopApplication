@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dao.AddressDAO;
 import com.dao.SuppliersDAO;
+import com.exception.InvalidInputException;
 import com.model.Address;
 import com.model.Customer;
 import com.model.Employee;
@@ -22,6 +23,7 @@ public class SuppliersService {
     
     @Autowired
     private AddressDAO addressDAO;
+    
  
     public List<Suppliers> getAllSuppliers() {
         return suppliersDAO.findAll();
@@ -55,21 +57,18 @@ public class SuppliersService {
     }
  
     public Suppliers saveSuppliers(Suppliers suppliers, Address address) {
+    	
         if (address.getAddressId() == 0) {
-            addressDAO.save(address);
+            addressDAO.save(address); 
         }
         suppliers.setAddress(address);
         return suppliersDAO.save(suppliers);
     }
     
-    
-//    public Customer saveCustomer(Customer customers, Address address) {
-//        if (address.getAddressId() == 0) {
-//            addressDAO.save(address);
-//        }
-//        customers.setAddress(address);
-//        return customerDAO.save(customers);
-//    }
+   
+
+   
+
     
     public Suppliers updateSuppliers(int suppliersId,Suppliers suppliersDetails) {
     	Suppliers suppliers = suppliersDAO.findBySuppliersId(suppliersId);

@@ -8,7 +8,7 @@ import com.model.GroomingService;
 import com.service.GroomingServiceService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
 @RequestMapping("/api/v1/services")
 public class GroomingServiceController {
     
