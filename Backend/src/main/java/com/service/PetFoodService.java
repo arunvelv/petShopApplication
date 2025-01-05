@@ -62,27 +62,15 @@ public class PetFoodService
 
 	  }
 
-	 public ResponseEntity<?> getPetFoodByName(String name) 
+	 public ResponseEntity<?> getPetFoodByName(String name) {
+		    List<PetFood> petFoods = petFoodDAO.findByName(name); // Updated to return a List
+		    if (!petFoods.isEmpty()) {
+		        return new ResponseEntity<>(petFoods, HttpStatus.OK);
+		    } else {
+		        return new ResponseEntity<>("No pet food found with name: " + name, HttpStatus.NOT_FOUND);
+		    }
+		}
 
-	 {
-
-	   Optional<PetFood> petFoods = petFoodDAO.findByName(name);
-
-	   if (!petFoods.isEmpty()) 
-
-	   { 
-
-		   return new ResponseEntity<>(petFoods, HttpStatus.OK);
-
-	   } else 
-
-	   {
-
-		   return new ResponseEntity<>("No pet food found with name: " + name, HttpStatus.NOT_FOUND);
-
-	   }
-
-	 }
 
 	 public ResponseEntity<?> getPetFoodByType(String type) {
 
@@ -138,68 +126,33 @@ public class PetFoodService
 
 	    }
 
-	 public ResponseEntity<?> updatePetFood(int foodId, PetFood updatedPetFood) 
+	 public ResponseEntity<?> updatePetFood(int foodId, PetFood updatedPetFood) {
+		    Optional<PetFood> existingPetFoodOptional = petFoodDAO.findById(foodId);
 
-	 {
+		    if (existingPetFoodOptional.isPresent()) {
+		        try {
+		            if (updatedPetFood == null) {
+		                return new ResponseEntity<>("Updated pet food cannot be null", HttpStatus.BAD_REQUEST);
+		            }
+		            PetFood existingPetFood = existingPetFoodOptional.get();
 
-	        Optional<PetFood> existingPetFoodOptional = petFoodDAO.findById(foodId);
- 
-	        if (existingPetFoodOptional.isPresent()) 
+		            // Update all fields, including imageURL
+		            existingPetFood.setName(updatedPetFood.getName());
+		            existingPetFood.setBrand(updatedPetFood.getBrand());
+		            existingPetFood.setType(updatedPetFood.getType());
+		            existingPetFood.setQuantity(updatedPetFood.getQuantity());
+		            existingPetFood.setPrice(updatedPetFood.getPrice());
+		            existingPetFood.setImageURL(updatedPetFood.getImageURL()); // Include this field
 
-	        {
-
-	            try 
-
-	            {
-
-	                if (updatedPetFood == null) 
-
-	                {
-
-	                    return new ResponseEntity<>("Updated pet food cannot be null", HttpStatus.BAD_REQUEST);
-
-	                }
-
-	                PetFood existingPetFood = existingPetFoodOptional.get();
- 
-	                // Update all fields
-
-	                existingPetFood.setName(updatedPetFood.getName());
-
-	                existingPetFood.setBrand(updatedPetFood.getBrand());
-
-	                existingPetFood.setType(updatedPetFood.getType());
-
-	                existingPetFood.setQuantity(updatedPetFood.getQuantity());
-
-	                existingPetFood.setPrice(updatedPetFood.getPrice());
- 
-	                PetFood savedPetFood = petFoodDAO.save(existingPetFood);
-
-	                return new ResponseEntity<>(savedPetFood, HttpStatus.OK);
-
-	            } 
-
-	            catch (Exception e) 
-
-	            {
-
-	                return new ResponseEntity<>("Failed to update pet food: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
-	            }
-
-	        } 
-
-	        else 
-
-	        {
-
-	            return new ResponseEntity<>("Pet food not found", HttpStatus.NOT_FOUND);
-
-	        }
-
-	    }
-
+		            PetFood savedPetFood = petFoodDAO.save(existingPetFood);
+		            return new ResponseEntity<>(savedPetFood, HttpStatus.OK);
+		        } catch (Exception e) {
+		            return new ResponseEntity<>("Failed to update pet food: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		        }
+		    } else {
+		        return new ResponseEntity<>("Pet food not found", HttpStatus.NOT_FOUND);
+		    }
+		}
 	 public ResponseEntity<?> updatePetFoodQuantity(int foodId, int newQuantity) 
 
 	 {

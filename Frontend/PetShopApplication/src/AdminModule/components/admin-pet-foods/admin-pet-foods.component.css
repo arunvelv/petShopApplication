@@ -1,0 +1,215 @@
+/* General container styling */
+.container {
+    background-color: #fdfcfb; /* Soft off-white */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 8px;
+    margin: 20px auto;
+  }
+ 
+  body {
+    background-color: #f7f4f2; /* Light taupe */
+    font-family: Arial, sans-serif; /* Keeps your existing font */
+    color: #3b3a36; /* Warm dark gray */
+    margin: 0;
+    padding: 0;
+  }
+ 
+  /* Search title */
+  .search-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+ 
+  .search-title h2 {
+    font-family: 'Times New Roman', Times, serif; /* Set to Times New Roman */
+    font-size: 2em;
+    color: #3b3a36;
+    text-transform: uppercase; /* Optional: Make the title uppercase */
+    letter-spacing: 1px;       /* Optional: Add letter spacing */
+  }
+ 
+  /* Search container */
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Adjusted to place the button to the right */
+    gap: 15px;
+    padding: 10px 15px;
+    background-color: #f9f5f0; /* Soft nude background */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Softer shadow */
+  }
+ 
+  .search-container input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ebe6df; /* Light taupe border matching table */
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fdfcfb; /* Slightly lighter nude for the input field */
+    color: #3b3a36; /* Warm dark gray */
+  }
+ 
+  .search-container input[type="text"]:focus {
+    border-color: #d4b59e; /* Highlight border */
+    outline: 0;
+    box-shadow: 0 0 5px rgba(212, 181, 158, 0.7);
+  }
+ 
+  .search-container select {
+    padding: 10px;
+    border: 1px solid #ebe6df; /* Light taupe border */
+    border-radius: 5px;
+    background-color: #fdfcfb; /* Lighter nude background */
+    font-size: 16px;
+    color: #3b3a36;
+    cursor: pointer;
+  }
+ 
+  .search-container button {
+    padding: 10px 16px;
+    background-color: #d4b59e; /* Warm beige button color */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.15s ease-in-out;
+  }
+ 
+  .search-container button:hover {
+    background-color: #b58b77; /* Richer beige on hover */
+  }
+ 
+  /* Add and edit form styling */
+  .add-form, .edit-form {
+    border: 1px solid #ebe6df;
+    padding: 30px;
+    margin: 30px auto;
+    max-width: 600px;
+    background-color: #fdfcfb;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+ 
+  .add-form h3, .edit-form h3 {
+    font-size: 1.8em;
+    color: #3b3a36;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+ 
+  .add-form form div, .edit-form form div {
+    margin-bottom: 20px;
+  }
+ 
+  .add-form label, .edit-form label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #3b3a36; /* Warm dark gray */
+    font-weight: bold;
+  }
+ 
+  .add-form input, .edit-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ebe6df;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #fdfcfb;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+ 
+  .add-form button, .edit-form button {
+    padding: 12px 20px;
+    background-color: #8a8786; /* Soft beige-green */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+ 
+  .add-form button:hover, .edit-form button:hover {
+    background-color: #343734; /* Richer green-gray */
+    transform: translateY(-2px);
+  }
+ 
+  .edit-form button:last-child {
+    background-color: #e57373; /* Soft coral red */
+  }
+ 
+  .edit-form button:last-child:hover {
+    background-color: #d32f2f; /* Richer red */
+  }
+ 
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fdfcfb; /* Soft off-white */
+  }
+ 
+  .pet-food-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+ 
+  th,
+  td {
+    border-right: 1px solid #ebe6df;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+    color: #3b3a36;
+  }
+ 
+  th {
+    background-color: #d4b59e; /* Beige header */
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+ 
+  tr:nth-child(even) {
+    background-color: #f7f4f2; /* Light taupe for even rows */
+  }
+ 
+  tr:hover {
+    background-color: #f0e6e1; /* Subtle peach on hover */
+  }
+ 
+  td:last-child, th:last-child {
+    border-right: none;
+  }
+ 
+  /* Search results styling */
+  .search-results {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ebe6df;
+    border-radius: 8px;
+    background: #fdfcfb;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+  }
+ 
+  .search-results h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #3b3a36;
+  }
+ 
+  .search-results p {
+    font-size: 16px;
+    color: #3b3a36;
+  }
+ 

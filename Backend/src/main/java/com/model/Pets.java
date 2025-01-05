@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Pets {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pet_id", nullable=false)
     private int petId;
 
@@ -50,7 +50,7 @@ public class Pets {
     
     private PetCategories category;
 
-    @OneToMany(mappedBy = "pets", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Transactions> transactions;
 
