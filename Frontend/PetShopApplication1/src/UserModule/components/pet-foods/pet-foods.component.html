@@ -1,0 +1,24 @@
+<div class="container">
+    <h2>Pet Foods</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let petFood of petFoods">
+      <div class="col">
+        <div class="card h-100">
+          <!-- <img src="assets/images/pet-food.jpg" class="card-img-top" alt="Pet Food"> -->
+          <div class="card-body">
+            <h5 class="card-title">{{ petFood.name }}</h5>
+            <p class="card-text">Brand: {{ petFood.brand }}</p>
+            <p class="card-text">Type: {{ petFood.type }}</p>
+              <p class="card-text">Quantity: {{ petFood.quantity }}</p>
+              <p class="card-text">Price: {{ petFood.price }}</p>
+            <!-- <p class="card-text">Suitable for Pets:</p>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item" *ngFor="let pet of petFood.pets">
+                {{ pet.name }}
+              </li>
+            </ul> -->
+              <button type="button" (click)="payNow(petFood.price)" class="btn btn-primary">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

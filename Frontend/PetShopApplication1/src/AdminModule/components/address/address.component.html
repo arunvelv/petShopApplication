@@ -1,0 +1,116 @@
+<div class="container">
+  <h2>Address Management</h2>
+
+  <!-- Add Address Form -->
+  <div class="mb-4">
+    <h3>Add New Address</h3>
+    <form (ngSubmit)="addAddress()" #addAddressForm="ngForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="street" class="form-label">Street</label>
+          <input type="text" id="street" class="form-control" [(ngModel)]="newAddress.street" name="street" required />
+        </div>
+        <div class="col">
+          <label for="city" class="form-label">City</label>
+          <input type="text" id="city" class="form-control" [(ngModel)]="newAddress.city" name="city" required />
+        </div>
+        <div class="col">
+          <label for="state" class="form-label">State</label>
+          <input type="text" id="state" class="form-control" [(ngModel)]="newAddress.state" name="state" required />
+        </div>
+        <div class="col">
+          <label for="zipCode" class="form-label">Zip Code</label>
+          <input type="text" id="zipCode" class="form-control" [(ngModel)]="newAddress.zipCode" name="zipCode" required />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Address</button>
+    </form>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Address Table -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Address ID</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip Code</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let address of addresses">
+        <td>{{ address.addressId }}</td>
+        <td>
+          <input
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            [(ngModel)]="editingAddress.street"
+            class="form-control"
+          />
+          <span *ngIf="!editingAddress || editingAddress.addressId !== address.addressId">
+            {{ address.street }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            [(ngModel)]="editingAddress.city"
+            class="form-control"
+          />
+          <span *ngIf="!editingAddress || editingAddress.addressId !== address.addressId">
+            {{ address.city }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            [(ngModel)]="editingAddress.state"
+            class="form-control"
+          />
+          <span *ngIf="!editingAddress || editingAddress.addressId !== address.addressId">
+            {{ address.state }}
+          </span>
+        </td>
+        <td>
+          <input
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            [(ngModel)]="editingAddress.zipCode"
+            class="form-control"
+          />
+          <span *ngIf="!editingAddress || editingAddress.addressId !== address.addressId">
+            {{ address.zipCode }}
+          </span>
+        </td>
+        <td>
+          <button
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            class="btn btn-primary btn-sm"
+            (click)="updateAddress()"
+          >
+            Save
+          </button>
+          <button
+            *ngIf="editingAddress && editingAddress.addressId === address.addressId"
+            class="btn btn-secondary btn-sm"
+            (click)="cancelEdit()"
+          >
+            Cancel
+          </button>
+          <button
+            *ngIf="!editingAddress || editingAddress.addressId !== address.addressId"
+            class="btn btn-success btn-sm"
+            (click)="editAddress(address)"
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

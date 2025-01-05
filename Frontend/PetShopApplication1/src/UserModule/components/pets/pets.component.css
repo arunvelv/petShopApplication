@@ -1,0 +1,114 @@
+/* Full page background with gradient overlay */
+html, body {
+    height: 100%; /* Full height for centering */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    background-color: #f2f2f2;
+    margin: 0; /* Remove any default margin */
+    background-image: linear-gradient(to bottom right, #5b9aa0, #ffffff); /* Soft gradient */
+}
+
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fdfbfb, #ebedee); /* Light gradient for a clean look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Style for the Pets Management title */
+.pets-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #bd5734; /* Blue tone for pets theme */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo style */
+.logo {
+    width: 40px; /* Adjust the size of the logo */
+    height: auto;
+}
+
+/* Search Bar styling */
+.custom-search-bar {
+    background-color: #1f9d55;
+    color: white;
+    font-size: 16px;
+    border-radius: 20px;
+    width: 300px;
+    height: 40px;
+    border: none;
+    padding: 0 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+}
+
+.custom-search-bar:focus {
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.custom-search-bar::placeholder {
+    color: white;
+    opacity: 0.8;
+}
+
+/* Pets card-specific styles */
+.card-img-top {
+    border-bottom: 1px solid #ddd;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 1.25rem;
+    text-transform: capitalize;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #34495e;
+}
+
+.badge {
+    padding: 0.3em 0.6em;
+    border-radius: 10px;
+}
+
+.badge.bg-success {
+    background-color: #1f9d55;
+    color: white;
+}
+
+.badge.bg-danger {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* Buy Now button styling */
+.btn-primary {
+    background-color: #3366cc;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5em 1.5em;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #254a8b;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}

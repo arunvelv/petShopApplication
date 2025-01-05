@@ -1,0 +1,128 @@
+<div class="container">
+  <h2>Customers</h2>
+
+  <div class="form-group">
+    <h3>Add Customer with Address</h3>
+    <form (ngSubmit)="addCustomer()">
+      <h4>Customer Details</h4>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newCustomer.firstName"
+        name="firstName"
+        placeholder="Customer firstName"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newCustomer.lastName"
+        name="lastName"
+        placeholder="Customer lastName"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newCustomer.email"
+        name="email"
+        placeholder="Customer Email"
+        required
+      />
+      <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newCustomer.phoneNumber"
+      name="phoneNumber"
+      placeholder="Customer phoneNumber"
+      required
+    />
+      <h4>Address Details</h4>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.street"
+        name="street"
+        placeholder="Street"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.city"
+        name="city"
+        placeholder="City"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.state"
+        name="state"
+        placeholder="State"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newAddress.zipCode"
+        name="zipCode"
+        placeholder="Zip Code"
+        required
+      />
+
+      <button class="btn btn-primary" type="submit">Add Customer</button>
+    </form>
+  </div>
+
+  <div *ngIf="customers.length">
+    <h3>Customer List</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of customers">
+          <td>{{ customer.firstName }} {{customer.lastName}}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{customer.phoneNumber}}</td>
+          <td>{{ customer.address.street }} {{ customer.address.city }} {{customer.address.state}} {{customer.address.zipCode}}</td>
+          <td>
+            <!-- <button class="btn btn-warning" (click)="editCustomerWithAddress(customer)">Edit</button> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Customer Form 
+  <div *ngIf="editCustomer">
+    <h3>Edit Customer</h3>
+    <form (ngSubmit)="updateCustomer()">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="editCustomer.name"
+        name="name"
+        placeholder="Customer Name"
+        required
+      />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="editCustomer.email"
+        name="email"
+        placeholder="Customer Email"
+        required
+      />
+      <button class="btn btn-primary" type="submit">Update</button>
+      <button class="btn btn-secondary" type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div> -->
+</div>

@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <h1>Transaction Management</h1>
+
+  <div class="mb-3">
+    <button class="btn btn-primary me-2" (click)="getAllTransactions()">Show All Transactions</button>
+    <button class="btn btn-success me-2" (click)="getSuccessfulTransactions()">Show Successful Transactions</button>
+    <button class="btn btn-danger me-2" (click)="getFailedTransactions()">Show Failed Transactions</button>
+  </div>
+
+  <div class="mb-3">
+    <div class="input-group">
+      <input [(ngModel)]="customerId" class="form-control" placeholder="Enter Customer ID" type="number" />
+      <button class="btn btn-info" (click)="getTransactionsByCustomerId()">Search by Customer ID</button>
+    </div>
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Customer Id</th>
+        <th>Pet Id</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.transactionId }}</td>
+        <td>{{ transaction.transactionDate | date:'shortDate' }}</td>
+        <td>{{ transaction.amount }}</td>
+        <td>{{ transaction.transactionStatus }}</td>
+        <td>{{ transaction.customer.customerId }} </td>
+        <td>{{ transaction.pet.petId }}</td>
+        <td>
+          <button *ngIf="!editingTransaction || editingTransaction.transactionId !== transaction.transactionId"
+                  class="btn btn-warning btn-sm" (click)="editTransaction(transaction)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button *ngIf="!isAddTransactionFormVisible" class="btn btn-primary" (click)="toggleAddTransactionForm()">Add Transaction</button>
+
+  <div *ngIf="isAddTransactionFormVisible">
+    <h2 class="mt-4">Add New Transaction</h2>
+    <form (ngSubmit)="addTransaction(newTransaction)" #transactionForm="ngForm">
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount:</label>
+        <input [(ngModel)]="newTransaction.amount" name="amount" id="amount" class="form-control" type="number" required />
+      </div>
+      <div class="mb-3">
+        <label for="status" class="form-label">Status:</label>
+        <select [(ngModel)]="newTransaction.transactionStatus" name="status" id="status" class="form-select" required>
+          <option value="SUCCESS">Successful</option> 
+          <option value="FAILED">Failed</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="customerId" class="form-label">Customer ID:</label>
+        <input [(ngModel)]="newTransaction.customer.customerId" name="customerId" id="customerId" class="form-control" type="number" required />
+      </div>
+      <div class="mb-3">
+        <label for="petId" class="form-label">Pet ID:</label>
+        <input [(ngModel)]="newTransaction.pet.petId" name="petId" id="petId" class="form-control" type="number" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Add Transaction</button>
+    </form>
+  </div>
+</div>
