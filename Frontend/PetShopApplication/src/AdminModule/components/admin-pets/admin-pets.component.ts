@@ -1,134 +1,124 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Pets } from '../../../models/Pets';
-import {AdminPetsService } from '../../services/AdminPets/admin-pets.service';
+import { AdminPetsService } from '../../services/AdminPets/admin-pets.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PetCategory } from '../../../models/PetCategory';
-import { AdminPetsCategoriesService } from '../../services/AdminPets/admin-pets-categories.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-pets',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule ],
   templateUrl: './admin-pets.component.html',
-  styleUrl: './admin-pets.component.css'
+  styleUrls: ['./admin-pets.component.css']
 })
-export class AdminPetsComponent implements OnInit  {
-  pets: Pets[] = []; // Array to store all pets
+export class AdminPetsComponent implements OnInit {
+  pets: Pets[] = [];
+  filteredPets: Pets[] = []; // For search results
   categories: PetCategory[] = [];
-  originalPets: Pets[] = []; // A copy of the original list for filtering
-  selectedPet: Pets | null = null; // Pet selected for update
-  newPet: Pets = {
-    petId: 0,
-    name: '',
-    breed: '',
-    age: 0,
-    price: 0,
-    description: '',
-    imageUrl: '',
-    category: {
-      categoryId: 0,         // Default ID for category
-      name: '',              // Default name for category
-      petsList: []           // Empty list of pets
-    },
-    // groomingServices: [],    // Default empty array for grooming services
-    // suppliers: [],           // Default empty array for suppliers
-    // employees: [],           // Default empty array for employees
-    // petFood: [],             // Default empty array for pet food
-    // vaccinations: []         // Default empty array for vaccinations
-  };
- 
-  showAddForm = false; // Control visibility of "Add Pet" form
- 
-  constructor(private petService:  AdminPetsService,
-    private petCatService :AdminPetsCategoriesService ) {}
- 
+  newPet: Pets = this.getDefaultPet();
+  selectedPet: Pets | null = null;
+  showAddForm = false; // Initialized correctly
+  searchQuery = ''; // Bind this to the search input
+
+  constructor(
+    private petService: AdminPetsService,
+    private http: HttpClient
+  ) {}
+
   ngOnInit(): void {
-    this.loadPets(); // Load pets on component initialization
+    this.loadPets();
     this.loadCategories();
   }
- 
-  // Fetches the list of all pets from the backend
+
+  // Default pet object to avoid undefined errors
+  private getDefaultPet(): Pets {
+    return {
+      petId: 0,
+      name: '',
+      breed: '',
+      age: 0,
+      price: 0,
+      description: '',
+      imageUrl: '',
+      category: { categoryId: 0, name: 'Uncategorized', petsList: [] },
+    };
+  }
+
   loadPets(): void {
-    this.petService.getAllPets().subscribe({
-      next: (data: Pets[]) => {
+    this.petService.getAllPets().subscribe(
+      (data: Pets[]) => {
         this.pets = data;
-        this.originalPets = [...data]; // Keep a copy of the original data for filtering
+        this.filteredPets = data; // Initialize filteredPets
       },
-      error: (err: any) => {
-        console.error('Error fetching pets:', err);
-        alert('Failed to load pets. Please try again later.');
-      },
-    });
-  }
- 
-  loadCategories(): void {
-    this.petCatService.getCategories().subscribe((data: any[]) => (this.categories = data));
-  }
- 
- 
-  onSearch(event: Event): void {
-    const inputElement = event.target as HTMLInputElement; // Cast to HTMLInputElement
-    const searchTerm = inputElement.value.toLowerCase();
- 
-    // Filter the pets list based on the search term across multiple fields
-    this.pets = this.originalPets.filter((pet) =>
-      pet.name.toLowerCase().includes(searchTerm) ||
-      pet.breed.toLowerCase().includes(searchTerm) ||
-      pet.category.name.toLowerCase().includes(searchTerm) ||
-      pet.description.toLowerCase().includes(searchTerm)
+      (error) => {
+        console.error('Error fetching pets:', error);
+      }
     );
   }
- 
- 
- 
- 
-  // Opens the "Add Pet" form
-  startAddPet(): void {
-    this.showAddForm = true;
+
+  loadCategories(): void {
+    this.http.get<PetCategory[]>('http://localhost:9999/api/v1/categories').subscribe(
+      (data: PetCategory[]) => {
+        this.categories = data.map(category => ({
+          ...category,
+          name: category.name || 'Unnamed Category',
+        }));
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
   }
- 
+
   addPet(): void {
-    this.petService.addPet(this.newPet).subscribe({
-      next: () => {
-        this.loadPets(); // Refresh the list
-        this.resetNewPetForm();
-        this.showAddForm = false; // Hide the form
-        alert('Pet added successfully');
+    this.petService.addPet(this.newPet).subscribe(
+      (addedPet: Pets) => {
+        this.pets.push(addedPet);
+        this.filteredPets = [...this.pets]; // Update filtered list
+        this.cancelAction();
+        this.loadPets();
+        alert("Pet added successfully");
       },
-      error: (err: any) => {
-        console.error('Error adding pet:', err);
-        if (err.status === 403) {
-          alert('You do not have permission to add a pet. Please check your authorization.');
-        } else {      
-          alert('Failed to add pet. Please check your input.');
-        }
-      },
-    });
+      (error) => {
+        console.error('Error adding pet:', error);
+      }
+    );
   }
- 
- 
-  // Resets the "Add Pet" form
+
   cancelAddPet(): void {
-    this.resetNewPetForm();
+    this.getDefaultPet();
     this.showAddForm = false; // Hide the form
   }
- 
-  // Prepares the selected pet for updating
+
+  startAddPet(): void {
+    this.showAddForm = true; // Show Add Form
+    this.selectedPet = null; // Clear edit state
+    this.newPet = this.getDefaultPet(); // Reset new pet
+  }
+
   startUpdate(pet: Pets): void {
     this.selectedPet = { ...pet }; // Clone the pet to avoid modifying the original
+    this.showAddForm = false; // Hide add form
   }
- 
-  // Updates the selected pet
+
+  cancelAction(): void {
+    this.showAddForm = false; // Hide add form
+    this.selectedPet = null; // Clear edit state
+    this.newPet = this.getDefaultPet(); // Reset new pet
+  }
+
   updatePet(): void {
     if (!this.selectedPet) return;
- 
+
     this.petService.updatePet(this.selectedPet).subscribe({
       next: (updatedPet: Pets) => {
-        // Update both lists (original and filtered)
         this.pets = this.pets.map((p) =>
           p.petId === updatedPet.petId ? updatedPet : p
         );
-        this.originalPets = this.originalPets.map((p) =>
+        this.filteredPets = this.filteredPets.map((p) =>
           p.petId === updatedPet.petId ? updatedPet : p
         );
         this.selectedPet = null; // Clear the selected pet
@@ -140,35 +130,23 @@ export class AdminPetsComponent implements OnInit  {
       },
     });
   }
- 
-  // Cancels the update process
+
   cancelUpdate(): void {
     this.selectedPet = null; // Clear the selected pet
   }
- 
-  // Displays all pets
-  showAll(): void {
-    this.pets = [...this.originalPets];
+
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement; // Cast to HTMLInputElement
+    const searchTerm = inputElement.value.toLowerCase();
+
+    // Filter the pets list based on the search term across multiple fields
+    this.pets = this.filteredPets.filter((pet) =>
+      pet.name.toLowerCase().includes(searchTerm) ||
+      pet.breed.toLowerCase().includes(searchTerm) ||
+      pet.category.name.toLowerCase().includes(searchTerm) ||
+      pet.description.toLowerCase().includes(searchTerm) ||
+      pet.age.toString().includes(searchTerm) || // Include age
+      pet.price.toString().includes(searchTerm)  // Include price
+    );
   }
- 
-  private resetNewPetForm(): void {
-    this.newPet = {
-      petId: 0,
-      name: '',
-      breed: '',
-      age: 0,
-      price: 0,
-      description: '',
-      imageUrl: '',
-      category: { categoryId: 0, name: '', petsList: [] },
-      // groomingServices: [],
-      // suppliers: [],
-      // employees: [],
-      // petFood: [],
-      // vaccinations: []
-    };
-  }
- 
- 
- 
 }

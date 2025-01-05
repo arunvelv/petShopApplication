@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
  
-import com.controller.GroomingServiceController;
+import com.controller.*;
 import com.model.GroomingService;
 import com.service.GroomingServiceService;
  
@@ -54,20 +55,37 @@ class GroomingServiceControllerTest {
         assertNotNull(response.getBody());
     }
  
-//    @Test
-//    void testGetById() {
-//        int id = 1;
-// 
-//        List<GroomingService> mockServices = List.of(new GroomingService());
-//        ResponseEntity<List<GroomingService>> mockResponse = ResponseEntity.ok(mockServices);
-// 
-//        doReturn(mockResponse).when(groomingServiceService).findById(id);
-// 
-//        ResponseEntity<?> response = groomingServiceController.getById(id);
-// 
-//        assertEquals(200, response.getStatusCodeValue());
-//        assertNotNull(response.getBody());
-//    }
+    @Test
+    void testFindByServiceId() {
+        // Arrange
+        int serviceId = 1;
+        GroomingService mockService = new GroomingService();
+        mockService.setServiceId(serviceId);
+        mockService.setName("Full Grooming");
+        mockService.setDescription("Complete grooming package for pets");
+        mockService.setPrice(50.0f);
+        mockService.setAvailable(true);
+
+        ResponseEntity<GroomingService> mockResponse = ResponseEntity.ok(mockService);
+
+        // Use doReturn instead of when-thenReturn to avoid type mismatch issues
+        doReturn(mockResponse).when(groomingServiceService).findByServiceId(serviceId);
+
+        // Act
+        ResponseEntity<?> response = groomingServiceController.findByServiceId(serviceId);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody() instanceof GroomingService);
+
+        GroomingService returnedService = (GroomingService) response.getBody();
+        assertEquals(serviceId, returnedService.getServiceId());
+        assertEquals("Full Grooming", returnedService.getName());
+        assertEquals("Complete grooming package for pets", returnedService.getDescription());
+        assertEquals(50.0f, returnedService.getPrice());
+        assertTrue(returnedService.isAvailable());
+    }
  
     @Test
     void testGetByAvailable() {

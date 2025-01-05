@@ -1,172 +1,111 @@
 package com.serviceTest;
- 
- 
-import static org.junit.jupiter.api.Assertions.*;
 
-import static org.mockito.Mockito.*;
- 
-import java.util.Arrays;
-
-import java.util.List;
-
-import java.util.Optional;
- 
-import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.Test;
-
-import org.mockito.InjectMocks;
-
-import org.mockito.Mock;
-
-import org.mockito.MockitoAnnotations;
-
-import org.springframework.http.HttpStatus;
-
-import org.springframework.http.ResponseEntity;
- 
 import com.dao.AddressDAO;
-
 import com.model.Address;
-
 import com.service.AddressService;
- 
-class AddressServiceTest {
- 
-    @Mock
 
-    private AddressDAO addressDAO;
- 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class) // Use this to initialize mocks
+public class AddressServiceTest {
+
     @InjectMocks
+    private AddressService addressService; // Automatically inject mocks into this service
 
-    private AddressService addressService;
- 
+    @Mock
+    private AddressDAO addressDAO; // Mock AddressDAO to be injected into AddressService
+
+    private Address address;
+
     @BeforeEach
-
     void setUp() {
-
-        MockitoAnnotations.openMocks(this);
-
+        // Initialize the address object for each test
+        address = new Address(1, "123 Main St", "New York", "NY", "10001");
     }
- 
-//    @Test
-//
-//    void testAddAddress() {
-//
-//        Address address = new Address(1, "123 Main St", "City1", "State1", "12345");
-// 
-//        when(addressDAO.save(address)).thenReturn(address);
-// 
-//        ResponseEntity<String> response = addressService.addAddress(address);
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-//
-//        assertEquals("Address added successfully", response.getBody());
-//
-//        verify(addressDAO, times(1)).save(address);
-//
-//    }
- 
-    @Test
 
+
+
+    @Test
+    void testAddAddress() {
+        // Arrange
+        when(addressDAO.save(address)).thenReturn(address);
+
+        // Act
+        ResponseEntity<Address> response = addressService.addAddress(address);
+
+        // Assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Status should be CREATED");
+        verify(addressDAO, times(1)).save(address); // Verify that save was called once
+    }
+
+    @Test
     void testGetAllAddresses() {
+        // Arrange
+        when(addressDAO.findAll()).thenReturn(Arrays.asList(address));
 
-        List<Address> addressList = Arrays.asList(
-
-            new Address(1, "123 Main St", "City1", "State1", "12345"),
-
-            new Address(2, "456 Elm St", "City2", "State2", "67890")
-
-        );
- 
-        when(addressDAO.findAll()).thenReturn(addressList);
- 
+        // Act
         ResponseEntity<List<Address>> response = addressService.getAllAddresses();
- 
-        assertNotNull(response);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        assertEquals(addressList, response.getBody());
-
-        verify(addressDAO, times(1)).findAll();
-
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status should be OK");
+        assertFalse(response.getBody().isEmpty(), "Address list should not be empty");
+        verify(addressDAO, times(1)).findAll(); // Verify that findAll was called once
     }
- 
-//    @Test
-//
-//    void testUpdateAddressSuccess() {
-//
-//        Address existingAddress = new Address(1, "123 Main St", "City1", "State1", "12345");
-//
-//        Address updatedAddress = new Address(1, "789 Oak St", "City3", "State3", "54321");
-// 
-//        when(addressDAO.findById(existingAddress.getAddressId())).thenReturn(Optional.of(existingAddress));
-//
-//        when(addressDAO.save(updatedAddress)).thenReturn(updatedAddress);
-// 
-//        ResponseEntity<Address> response = addressService.updateAddress(updatedAddress);
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//
-//        assertEquals("Address updated successfully", response.getBody());
-//
-//        verify(addressDAO, times(1)).findById(existingAddress.getAddressId());
-//
-//        verify(addressDAO, times(1)).save(updatedAddress);
-//
-//    }
- 
-//    @Test
-//
-//    void testUpdateAddressNotFound() {
-//
-//        Address updatedAddress = new Address(1, "789 Oak St", "City3", "State3", "54321");
-// 
-//        when(addressDAO.findById(updatedAddress.getAddressId())).thenReturn(Optional.empty());
-// 
-//        ResponseEntity<Address> response = addressService.updateAddress(updatedAddress);
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//
-//        assertEquals("Address not found", response.getBody());
-//
-//        verify(addressDAO, times(1)).findById(updatedAddress.getAddressId());
-//
-//        verify(addressDAO, never()).save(updatedAddress);
-//
-//    }
- 
+
     @Test
+    void testUpdateAddressFound() {
+        // Arrange
+        when(addressDAO.findById(address.getAddressId())).thenReturn(Optional.of(address));
+        when(addressDAO.save(address)).thenReturn(address);
 
-    void testFindAddressByAddressId() {
+        // Act
+        ResponseEntity<Address> response = addressService.updateAddress(address);
 
-        List<Address> addressList = Arrays.asList(
-
-            new Address(1, "123 Main St", "City1", "State1", "12345")
-
-        );
- 
-        when(addressDAO.findByAddressId(1)).thenReturn(addressList);
- 
-        ResponseEntity<List<Address>> response = addressService.findAddressByAddressId(1);
- 
-        assertNotNull(response);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        assertEquals(addressList, response.getBody());
-
-        verify(addressDAO, times(1)).findByAddressId(1);
-
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status should be OK");
+        verify(addressDAO, times(1)).findById(address.getAddressId()); // Verify that findById was called once
+        verify(addressDAO, times(1)).save(address); // Verify that save was called once
     }
 
+    @Test
+    void testUpdateAddressNotFound() {
+        // Arrange
+        when(addressDAO.findById(address.getAddressId())).thenReturn(Optional.empty());
+
+        // Act
+        ResponseEntity<Address> response = addressService.updateAddress(address);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode(), "Status should be NOT_FOUND");
+        verify(addressDAO, times(1)).findById(address.getAddressId()); // Verify that findById was called once
+        verify(addressDAO, times(0)).save(address); // Verify that save was not called
+    }
+
+    @Test
+    void testFindAddressByAddressId() {
+        // Arrange
+        when(addressDAO.findByAddressId(address.getAddressId())).thenReturn(Arrays.asList(address));
+
+        // Act
+        ResponseEntity<List<Address>> response = addressService.findAddressByAddressId(address.getAddressId());
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Status should be OK");
+        assertFalse(response.getBody().isEmpty(), "Address list should not be empty");
+        verify(addressDAO, times(1)).findByAddressId(address.getAddressId()); // Verify that findByAddressId was called once
+    }
 }
- 
- 

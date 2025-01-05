@@ -1,140 +1,156 @@
 package com.serviceTest;
- 
- 
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.mockito.Mockito.*;
- 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
 import java.util.List;
- 
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
- 
+
+import com.dao.AddressDAO;
 import com.dao.SuppliersDAO;
+import com.exception.InvalidInputException;
 import com.model.Address;
 import com.model.Suppliers;
 import com.service.SuppliersService;
- 
-class SuppliersServiceTest {
- 
+
+public class SupplierServiceTest {
+
     @InjectMocks
     private SuppliersService suppliersService;
- 
+
     @Mock
     private SuppliersDAO suppliersDAO;
- 
+
+    @Mock
+    private AddressDAO addressDAO;
+
+    private Suppliers supplier;
+    private Address address;
+
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        address = new Address();
+        address.setAddressId(1);
+        address.setStreet("123 Main St");
+        address.setCity("Springfield");
+        address.setState("IL");
+        address.setZipCode("12345");
+
+        supplier = new Suppliers(1, "Supplier Name", "John Doe", "1234567890", "supplier@example.com", address);
     }
- 
+
     @Test
-    void testGetAllSuppliers() {
-        Address address1 = new Address(1, "Street1", "City1", "State1", "12345");
-        Address address2 = new Address(2, "Street2", "City2", "State2", "67890");
- 
-        List<Suppliers> suppliersList = Arrays.asList(
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address1),
-            new Suppliers(2, "Supplier2", "Jane Doe", "0987654321", "email2@example.com", address2)
-        );
- 
+    public void testGetAllSuppliers() {
+        List<Suppliers> suppliersList = new ArrayList<>();
+        suppliersList.add(supplier);
+
         when(suppliersDAO.findAll()).thenReturn(suppliersList);
- 
+
         List<Suppliers> result = suppliersService.getAllSuppliers();
-        assertEquals(2, result.size());
+
+        assertEquals(1, result.size());
         verify(suppliersDAO, times(1)).findAll();
     }
- 
+
     @Test
-    void testAddSuppliers() {
-        Address address = new Address(3, "Street3", "City3", "State3", "54321");
-        Suppliers newSupplier = new Suppliers(3, "Supplier3", "John Smith", "1231231234", "email3@example.com", address);
- 
-        when(suppliersDAO.save(newSupplier)).thenReturn(newSupplier);
- 
-        Suppliers result = suppliersService.addSuppliers(newSupplier);
-        assertNotNull(result);
-        assertEquals("Supplier3", result.getName());
-        verify(suppliersDAO, times(1)).save(newSupplier);
+    public void testAddSuppliers() {
+        when(suppliersDAO.save(supplier)).thenReturn(supplier);
+
+        Suppliers result = suppliersService.addSuppliers(supplier);
+
+        assertEquals(supplier, result);
+        verify(suppliersDAO, times(1)).save(supplier);
     }
- 
+
     @Test
-    void testGetSuppliersById() {
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-        Suppliers supplier = new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address);
- 
+    public void testGetSuppliersById() {
         when(suppliersDAO.findBySuppliersId(1)).thenReturn(supplier);
- 
+
         Suppliers result = suppliersService.getSuppliersById(1);
-        assertNotNull(result);
-        assertEquals(1, result.getSuppliersId());
+
+        assertEquals(supplier, result);
         verify(suppliersDAO, times(1)).findBySuppliersId(1);
     }
- 
+
     @Test
-    void testGetByName() {
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-        List<Suppliers> suppliersList = Arrays.asList(
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
-        );
- 
-        when(suppliersDAO.findByName("Supplier1")).thenReturn(suppliersList);
- 
-        List<Suppliers> result = suppliersService.findSuppliersByName("Supplier1");
+    public void testFindSuppliersByName() {
+        List<Suppliers> suppliersList = new ArrayList<>();
+        suppliersList.add(supplier);
+
+        when(suppliersDAO.findByName("Supplier Name")).thenReturn(suppliersList);
+
+        List<Suppliers> result = suppliersService.findSuppliersByName("Supplier Name");
+
         assertEquals(1, result.size());
-        assertEquals("Supplier1", result.get(0).getName());
-        verify(suppliersDAO, times(1)).findByName("Supplier1");
+        verify(suppliersDAO, times(1)).findByName("Supplier Name");
     }
- 
+
     @Test
-    void testFindSupplierByCity() {
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-        List<Suppliers> suppliersList = Arrays.asList(
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
-        );
- 
-        when(suppliersDAO.findByCity("City1")).thenReturn(suppliersList);
- 
-        ResponseEntity<?> response = suppliersService.findSupplierByCity("City1");
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        verify(suppliersDAO, times(1)).findByCity("City1");
+    public void testFindSupplierByCity() {
+        List<Suppliers> suppliersList = new ArrayList<>();
+        suppliersList.add(supplier);
+
+        when(suppliersDAO.findByCity("Springfield")).thenReturn(suppliersList);
+
+        ResponseEntity<?> result = suppliersService.findSupplierByCity("Springfield");
+
+        assertEquals(200, result.getStatusCodeValue());
+        verify(suppliersDAO, times(1)).findByCity("Springfield");
     }
- 
+
+
+//    @Test
+//    public void testSaveSuppliers_InvalidInput() {
+//        Exception exception = assertThrows(InvalidInputException.class, () -> {
+//            suppliersService.saveSuppliers(null, null);
+//        });
+//
+//        assertEquals("Suppliers or Address cannot be null", exception.getMessage());
+//    }
+
     @Test
-    void testFindSupplierByState() {
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-        List<Suppliers> suppliersList = Arrays.asList(
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
-        );
- 
-        when(suppliersDAO.findByState("State1")).thenReturn(suppliersList);
- 
-        ResponseEntity<?> response = suppliersService.findSupplierByState("State1");
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
-        verify(suppliersDAO, times(1)).findByState("State1");
-    }
- 
-    @Test
-    void testUpdateSuppliers() {
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-        Suppliers existingSupplier = new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address);
-        Suppliers updatedDetails = new Suppliers(1, "UpdatedSupplier", "Jane Smith", "9876543210", "updated@example.com", address);
- 
-        when(suppliersDAO.findBySuppliersId(1)).thenReturn(existingSupplier);
-        when(suppliersDAO.save(existingSupplier)).thenReturn(updatedDetails);
- 
-        Suppliers result = suppliersService.updateSuppliers(1, updatedDetails);
-        assertNotNull(result);
-        assertEquals("UpdatedSupplier", result.getName());
+    public void testUpdateSuppliers() {
+        when(suppliersDAO.findBySuppliersId(1)).thenReturn(supplier);
+        when(suppliersDAO.save(supplier)).thenReturn(supplier);
+
+        Suppliers updatedSupplier = new Suppliers();
+        updatedSupplier.setName("Updated Name");
+        updatedSupplier.setContactPerson("Updated Person");
+        updatedSupplier.setPhoneNumber("9876543210");
+        updatedSupplier.setEmail("updated@example.com");
+        updatedSupplier.setAddress(address);
+
+        Suppliers result = suppliersService.updateSuppliers(1, updatedSupplier);
+
+        assertEquals("Updated Name", result.getName());
+        assertEquals("Updated Person", result.getContactPerson());
+        assertEquals("9876543210", result.getPhoneNumber());
+        assertEquals("updated@example.com", result.getEmail());
         verify(suppliersDAO, times(1)).findBySuppliersId(1);
-        verify(suppliersDAO, times(1)).save(existingSupplier);
+        verify(suppliersDAO, times(1)).save(supplier);
+    }
+
+    @Test
+    public void testUpdateSuppliers_NotFound() {
+        when(suppliersDAO.findBySuppliersId(1)).thenReturn(null);
+
+        Suppliers updatedSupplier = new Suppliers();
+        updatedSupplier.setName("Updated Name");
+
+        Suppliers result = suppliersService.updateSuppliers(1, updatedSupplier);
+
+        assertNull(result);
+        verify(suppliersDAO, times(1)).findBySuppliersId(1);
+        verify(suppliersDAO, times(0)).save(any(Suppliers.class));
     }
 }
- 
- 

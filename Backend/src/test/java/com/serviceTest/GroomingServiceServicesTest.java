@@ -22,7 +22,7 @@ import com.model.GroomingService;
 
 import com.service.GroomingServiceService;
  
-class GroomingServiceServiceTest {
+public class GroomingServiceServicesTest {
  
     @Mock
 
@@ -32,7 +32,7 @@ class GroomingServiceServiceTest {
 
     private GroomingServiceService groomingServiceService;
  
-    GroomingServiceServiceTest() {
+    GroomingServiceServicesTest() {
 
         MockitoAnnotations.openMocks(this);
 

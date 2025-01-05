@@ -1,6 +1,6 @@
 package com.controllerTest;
 
-import com.controller.CustomerController;
+import com.controller.*;
 import com.model.*;
 import com.model.Transactions.TransactionStatus;
 import com.service.CustomerService;
@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -140,16 +142,42 @@ public class CustomerControllerTest {
         assertEquals(mockPets, response.getBody());
     }
 
-//    @Test
-//    void testAddCustomer() {
-//        Customer mockCustomer = new Customer();
-//        when(customerService.addCustomer(mockCustomer)).thenReturn(mockCustomer);
-//
-//        ResponseEntity<Customer> response = customerController.addCustomerWithAddress(mockCustomer);
-//
-//        assertEquals(201, response.getStatusCodeValue());
-//        assertEquals(mockCustomer, response.getBody());
-//    }
+    @Test
+    void testAddCustomer() {
+        // Create mock Address and Customer objects
+        Address mockAddress = new Address();
+        mockAddress.setAddressId(1);
+        mockAddress.setStreet("123 Main St");
+        mockAddress.setCity("New York");
+        mockAddress.setState("NY");
+        mockAddress.setZipCode("10001");
+
+        Customer mockCustomer = new Customer();
+        mockCustomer.setFirstName("John");
+        mockCustomer.setLastName("Doe");
+        mockCustomer.setEmail("john.doe@example.com");
+        mockCustomer.setPhoneNumber("1234567890");
+
+        // Create a CustomerPayload object with the mock Customer and Address
+        CustomerPayload mockPayload = new CustomerPayload();
+        mockPayload.setCustomer(mockCustomer);
+        mockPayload.setAddress(mockAddress);
+
+        // Mock the service layer behavior
+        when(customerService.findByAddress(mockAddress.getAddressId())).thenReturn(Collections.emptyList());
+        when(customerService.saveCustomer(mockCustomer, mockAddress)).thenReturn(mockCustomer);
+
+        // Call the controller method directly
+        ResponseEntity<Customer> response = customerController.addCustomer(mockPayload);
+
+        // Assert the response status and body
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(mockCustomer, response.getBody());
+        assertEquals("John", response.getBody().getFirstName());
+        assertEquals("Doe", response.getBody().getLastName());
+    }
+
+
 
     @Test
     void testUpdateCustomer_Found() {

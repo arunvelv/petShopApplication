@@ -44,6 +44,10 @@ public class PetFood
 	
 	@Column(name = "price",  nullable=false)
 	private float price;
+	
+	@Size(max = 255)
+	@Column(name = "image_url")
+	private String imageURL;
 		
 	@OneToMany(mappedBy = "pet_food", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -63,6 +67,18 @@ public class PetFood
 		this.quantity = quantity;
 		this.price = price;
 		this.pets = pets;
+	}
+
+
+
+	public String getImageURL() {
+		return imageURL;
+	}
+
+
+
+	public void setImageURL(String imageURL) {
+		this.imageURL = imageURL;
 	}
 
 

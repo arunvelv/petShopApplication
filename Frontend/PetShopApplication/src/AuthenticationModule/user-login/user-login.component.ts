@@ -33,13 +33,13 @@ username: any;
       localStorage.setItem('token', this.token);
       localStorage.setItem('role', this.user.role);
       this.router.navigate(["/"])
-    },
+    },  
     (error) => {
       if (error.status === 403) {
         alert('Invalid username or password.');
       } else {
         console.error('Error during login:', error);
-        alert('Login failed. Please try again.');
+        alert('Incorrect Password or Username');
       }
     });
       

@@ -1,281 +1,197 @@
 package com.controllerTest;
- 
- 
-import static org.junit.jupiter.api.Assertions.*;
+
+import com.controller.*;
+import com.exception.InvalidInputException;
+import com.model.Address;
+import com.model.SupplierPayload;
+import com.model.Suppliers;
+import com.service.SuppliersService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
- 
-import java.util.Arrays;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.List;
- 
-import org.junit.jupiter.api.BeforeEach;
+class SuppliersControllerTest {
 
-import org.junit.jupiter.api.Test;
+    private MockMvc mockMvc;
 
-import org.mockito.InjectMocks;
-
-import org.mockito.Mock;
-
-import org.mockito.MockitoAnnotations;
-
-import org.springframework.http.HttpStatus;
-
-import org.springframework.http.ResponseEntity;
- 
-import com.controller.SuppliersController;
-
-import com.model.Address;
-
-import com.model.Suppliers;
-
-import com.service.SuppliersService;
- 
-class SupplierControllerTest {
- 
-    @InjectMocks
-
-    private SuppliersController supplierController;
- 
     @Mock
-
     private SuppliersService suppliersService;
- 
+
+    @InjectMocks
+    private SuppliersController suppliersController;
+
     @BeforeEach
-
     void setUp() {
-
         MockitoAnnotations.openMocks(this);
-
+        mockMvc = MockMvcBuilders.standaloneSetup(suppliersController).build();
     }
- 
+
     @Test
+    void testGetAllSuppliers() throws Exception {
+        // Mock data
+        Suppliers supplier1 = new Suppliers(1, "Supplier A", "John Doe", "1234567890", "supplierA@example.com", null);
+        Suppliers supplier2 = new Suppliers(2, "Supplier B", "Jane Smith", "0987654321", "supplierB@example.com", null);
+        List<Suppliers> suppliersList = Arrays.asList(supplier1, supplier2);
 
-    void testGetAllSuppliers() {
-
-        Address address1 = new Address(1, "Street1", "City1", "State1", "12345");
-
-        Address address2 = new Address(2, "Street2", "City2", "State2", "67890");
- 
-        List<Suppliers> suppliersList = Arrays.asList(
-
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address1),
-
-            new Suppliers(2, "Supplier2", "Jane Doe", "0987654321", "email2@example.com", address2)
-
-        );
- 
+        // Mock service response
         when(suppliersService.getAllSuppliers()).thenReturn(suppliersList);
- 
-        ResponseEntity<List<Suppliers>> response = supplierController.getAllSuppliers();
- 
-        assertNotNull(response);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        // Perform GET request
+        mockMvc.perform(get("/api/v1/suppliers"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].name").value("Supplier A"))
+                .andExpect(jsonPath("$[1].name").value("Supplier B"));
 
-        assertEquals(2, response.getBody().size());
-
+        // Verify service interaction
         verify(suppliersService, times(1)).getAllSuppliers();
-
     }
- 
-//    @Test
-//
-//    void testGetCustomerById() {
-//
-//        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-//
-//        Suppliers supplier = new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address);
-// 
-//        when(suppliersService.getSuppliersById(1)).thenReturn(supplier);
-// 
-//        ResponseEntity<Suppliers> response = supplierController.getCustomerById(1);
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//
-//        assertEquals(1, response.getBody().getSuppliersId());
-//
-//        verify(suppliersService, times(1)).getSuppliersById(1);
-//
-//    }
-// 
-//    @Test
-//
-//    void testGetCustomerById_NotFound() {
-//
-//        when(suppliersService.getSuppliersById(1)).thenReturn(null);
-// 
-//        ResponseEntity<Suppliers> response = supplierController.getCustomerById(1);
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-//
-//        verify(suppliersService, times(1)).getSuppliersById(1);
-//
-//    }
- 
-//    @Test
-//
-//    void testGetSuppliersByName() {
-//
-//        Address address = new Address(1, "Street1", "City1", "State1", "12345");
-//
-//        List<Suppliers> suppliersList = Arrays.asList(
-//
-//            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
-//
-//        );
-// 
-//        when(suppliersService.getByName("Supplier1")).thenReturn(suppliersList);
-// 
-//        ResponseEntity<List<Suppliers>> response = supplierController.getsuppliersByName("Supplier1");
-// 
-//        assertNotNull(response);
-//
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//
-//        assertEquals(1, response.getBody().size());
-//
-//        verify(suppliersService, times(1)).getByName("Supplier1");
-//
-//    }
-// 
+
     @Test
+    void testGetSuppliersById() throws Exception {
+        // Mock data
+        Suppliers supplier = new Suppliers(1, "Supplier A", "John Doe", "1234567890", "supplierA@example.com", null);
 
-    void testGetByCity() {
+        // Mock service response
+        when(suppliersService.getSuppliersById(1)).thenReturn(supplier);
 
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
+        // Perform GET request
+        mockMvc.perform(get("/api/v1/suppliers/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Supplier A"));
 
-        List<Suppliers> suppliersList = Arrays.asList(
-
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
-
-        );
- 
-        // Create a ResponseEntity explicitly as ResponseEntity<?>
-
-        ResponseEntity<?> expectedResponse = new ResponseEntity<>(suppliersList, HttpStatus.OK);
- 
-        // Use Mockito's type-safe stubbing
-
-        when(suppliersService.findSupplierByCity("City1"))
-
-            .thenAnswer(invocation -> expectedResponse);
- 
-        // Call the controller method
-
-        ResponseEntity<?> response = supplierController.getByCity("City1");
- 
-        // Assertions
-
-        assertNotNull(response);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        assertEquals(suppliersList, response.getBody());
-
-        verify(suppliersService, times(1)).findSupplierByCity("City1");
-
+        // Verify service interaction
+        verify(suppliersService, times(1)).getSuppliersById(1);
     }
- 
- 
- 
+
     @Test
+    void testAddSuppliers() throws Exception {
+        // Mocking the Address
+        Address mockAddress = new Address();
+        mockAddress.setAddressId(1);
+        mockAddress.setCity("Mock City");
+        mockAddress.setState("Mock State");
 
-    void testGetByState() {
+        // Mocking the Suppliers
+        Suppliers mockSuppliers = new Suppliers();
+        mockSuppliers.setSuppliersId(1);
+        mockSuppliers.setName("Supplier A");
+        mockSuppliers.setContactPerson("John Doe");
+        mockSuppliers.setPhoneNumber("1234567890");
+        mockSuppliers.setEmail("supplierA@example.com");
+        mockSuppliers.setAddress(mockAddress);
 
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
+        // Mocking the service methods
+        when(suppliersService.findByAddress(1)).thenReturn(Arrays.asList());
+        when(suppliersService.saveSuppliers(any(Suppliers.class), any(Address.class))).thenReturn(mockSuppliers);
 
-        List<Suppliers> suppliersList = Arrays.asList(
+        // Payload for the test
+        String payload = "{ \"suppliers\": { \"name\": \"Supplier A\", \"contactPerson\": \"John Doe\", \"phoneNumber\": \"1234567890\", \"email\": \"supplierA@example.com\" }, \"address\": { \"addressId\": 1, \"city\": \"Mock City\", \"state\": \"Mock State\" } }";
 
-            new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address)
+        // Perform POST request and expect HTTP 200
+        mockMvc.perform(post("/api/v1/suppliers/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isOk()) // Expect HTTP 200
+                .andExpect(jsonPath("$.name").value("Supplier A")) // Verify the name
+                .andExpect(jsonPath("$.contactPerson").value("John Doe")) // Verify the contact person
+                .andExpect(jsonPath("$.phoneNumber").value("1234567890")) // Verify the phone number
+                .andExpect(jsonPath("$.email").value("supplierA@example.com")) // Verify the email
+                .andExpect(jsonPath("$.address.city").value("Mock City")) // Verify the address city
+                .andExpect(jsonPath("$.address.state").value("Mock State")); // Verify the address state
 
-        );
-
-        ResponseEntity<?> expectedResponse = new ResponseEntity<>(suppliersList, HttpStatus.OK);
- 
-        when(suppliersService.findSupplierByState("State1"))
-
-           .thenAnswer(invocation -> expectedResponse);
- 
-        ResponseEntity<?> response = supplierController.getByState("State1");
- 
-        assertNotNull(response);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        assertEquals(suppliersList, response.getBody());
-
-        verify(suppliersService, times(1)).findSupplierByState("State1");
-
+        // Verify service calls
+        verify(suppliersService, times(1)).findByAddress(1);
+        verify(suppliersService, times(1)).saveSuppliers(any(Suppliers.class), any(Address.class));
     }
- 
+
 //    @Test
-
-//    void testAddCustomer() {
+//    void testAddSuppliersWithExistingSuppliers() throws Exception {
+//        // Mock service to simulate existing suppliers
+//        Address mockAddress = new Address();
+//        mockAddress.setAddressId(1);
 //
-//        Address address = new Address(1, "Street1", "City1", "State1", "12345");
+//        Suppliers existingSupplier = new Suppliers();
+//        existingSupplier.setSuppliersId(2);
+//        existingSupplier.setName("Existing Supplier");
+//        existingSupplier.setAddress(mockAddress);
 //
-//        Suppliers newSupplier = new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address);
-// 
-//        when(suppliersService.addSuppliers(newSupplier)).thenReturn(newSupplier);
-// 
-//        ResponseEntity<Suppliers> response = supplierController.addCustomer(newSupplier);
-// 
-//        assertNotNull(response);
+//        when(suppliersService.findByAddress(1)).thenReturn(Arrays.asList(existingSupplier));
 //
-//        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+//        Suppliers mockSuppliers = new Suppliers();
+//        mockSuppliers.setName("Supplier A");
+//        mockSuppliers.setContactPerson("John Doe");
+//        mockSuppliers.setPhoneNumber("1234567890");
+//        mockSuppliers.setEmail("supplierA@example.com");
+//        mockSuppliers.setAddress(mockAddress);
 //
-//        assertEquals("Supplier1", response.getBody().getName());
+//        when(suppliersService.saveSuppliers(any(Suppliers.class), any(Address.class))).thenReturn(mockSuppliers);
 //
-//        verify(suppliersService, times(1)).addSuppliers(newSupplier);
-
+//        // Payload for the test
+//        String payload = "{ \"suppliers\": { \"name\": \"Supplier A\", \"contactPerson\": \"John Doe\", \"phoneNumber\": \"1234567890\", \"email\": \"supplierA@example.com\" }, \"address\": { \"addressId\": 1, \"city\": \"Mock City\", \"state\": \"Mock State\" } }";
+//
+//        // Perform POST request and expect HTTP 200
+//        mockMvc.perform(post("/api/v1/suppliers/add")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(payload))
+//                .andExpect(status().isOk()) // Expect HTTP 200
+//                .andExpect(jsonPath("$.name").value("Supplier A")) // Verify the name
+//                .andExpect(jsonPath("$.contactPerson").value("John Doe")) // Verify the contact person
+//                .andExpect(jsonPath("$.phoneNumber").value("1234567890")) // Verify the phone number
+//                .andExpect(jsonPath("$.email").value("supplierA@example.com")); // Verify the email
+//
+//        // Verify that the service methods were called as expected
+//        verify(suppliersService, times(1)).findByAddress(1);
+//        verify(suppliersService, times(1)).saveSuppliers(any(Suppliers.class), any(Address.class));
 //    }
- 
+
+
+
+
     @Test
-    void testUpdateCustomer() {
+    void testUpdateCustomer() throws Exception {
+        // Mock data
+        Suppliers supplier = new Suppliers(1, "Supplier A Updated", "John Doe", "1234567890", "supplierA@example.com", null);
 
-        Address address = new Address(1, "Street1", "City1", "State1", "12345");
+        // Mock service response
+        when(suppliersService.updateSuppliers(eq(1), any(Suppliers.class))).thenReturn(supplier);
 
-        Suppliers existingSupplier = new Suppliers(1, "Supplier1", "John Doe", "1234567890", "email1@example.com", address);
+        // Perform PUT request
+        mockMvc.perform(put("/api/v1/suppliers/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"name\": \"Supplier A Updated\", \"contactPerson\": \"John Doe\", \"phoneNumber\": \"1234567890\", \"email\": \"supplierA@example.com\" }"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Supplier A Updated"));
 
-        Suppliers updatedSupplier = new Suppliers(1, "UpdatedSupplier", "Jane Doe", "9876543210", "updated@example.com", address);
- 
-        when(suppliersService.updateSuppliers(1, updatedSupplier)).thenReturn(updatedSupplier);
- 
-        ResponseEntity<Suppliers> response = supplierController.updateCustomer(1, updatedSupplier);
- 
-        assertNotNull(response);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        assertEquals("UpdatedSupplier", response.getBody().getName());
-
-        verify(suppliersService, times(1)).updateSuppliers(1, updatedSupplier);
-
-    }
- 
-    @Test
-
-    void testUpdateCustomer_NotFound() {
-
-        Suppliers updatedSupplier = new Suppliers();
- 
-        when(suppliersService.updateSuppliers(1, updatedSupplier)).thenReturn(null);
- 
-        ResponseEntity<Suppliers> response = supplierController.updateCustomer(1, updatedSupplier);
- 
-        assertNotNull(response);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-
-        verify(suppliersService, times(1)).updateSuppliers(1, updatedSupplier);
-
+        // Verify service interaction
+        verify(suppliersService, times(1)).updateSuppliers(eq(1), any(Suppliers.class));
     }
 
+    @Test
+    void testUpdateCustomerNotFound() throws Exception {
+        // Mock service response
+        when(suppliersService.updateSuppliers(eq(1), any(Suppliers.class))).thenReturn(null);
+
+        // Perform PUT request
+        mockMvc.perform(put("/api/v1/suppliers/update/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"name\": \"Supplier A Updated\", \"contactPerson\": \"John Doe\", \"phoneNumber\": \"1234567890\", \"email\": \"supplierA@example.com\" }"))
+                .andExpect(status().isNotFound());
+
+        // Verify service interaction
+        verify(suppliersService, times(1)).updateSuppliers(eq(1), any(Suppliers.class));
+    }
 }
-
- 

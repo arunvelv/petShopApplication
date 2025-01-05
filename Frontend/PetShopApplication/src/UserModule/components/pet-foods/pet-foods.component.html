@@ -1,24 +1,60 @@
 <div class="container">
-    <h2>Pet Foods</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4" *ngFor="let petFood of petFoods">
-      <div class="col">
+  <div class="header d-flex flex-column align-items-center mb-4">
+    <img
+      src="assets/images/petlogo.jpg"
+      alt="Logo"
+      class="logo"
+      style="width: 125px; height: 125px;"
+    />
+    <h2 class="pets-title mt-3">Pet Foods</h2>
+  </div>
+
+  <div class="search-section d-flex justify-content-between align-items-center my-4">
+    <input
+      type="text"
+      class="custom-search-bar"
+      placeholder="Search for pet food..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+    />
+    <select class="form-select custom-search-select ms-3" [(ngModel)]="selectedCategory">
+      <!-- <option value="name">Name</option> -->
+      <option value="brand">Brand</option>
+      <option value="type">Type</option>
+    </select>
+  </div>
+
+  <div *ngIf="petFoods.length > 0; else noData">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col" *ngFor="let petFood of filteredPetFoods">
         <div class="card h-100">
-          <!-- <img src="assets/images/pet-food.jpg" class="card-img-top" alt="Pet Food"> -->
+          <img
+            class="card-img-top"
+            [src]="petFood.imageURL"
+            alt="Pet Food Image"
+          />
           <div class="card-body">
-            <h5 class="card-title">{{ petFood.name }}</h5>
-            <p class="card-text">Brand: {{ petFood.brand }}</p>
-            <p class="card-text">Type: {{ petFood.type }}</p>
-              <p class="card-text">Quantity: {{ petFood.quantity }}</p>
-              <p class="card-text">Price: {{ petFood.price }}</p>
-            <!-- <p class="card-text">Suitable for Pets:</p>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item" *ngFor="let pet of petFood.pets">
-                {{ pet.name }}
-              </li>
-            </ul> -->
-              <button type="button" (click)="payNow(petFood.price)" class="btn btn-primary">Buy Now</button>
+            <h4 class="card-title">{{ petFood.name }}</h4>
+            <p class="card-text"><strong>Brand:</strong> {{ petFood.brand }}</p>
+            <p class="card-text"><strong>Type:</strong> {{ petFood.type }}</p>
+            <p class="card-text"><strong>Quantity:</strong> {{ petFood.quantity }}</p>
+            <p class="card-text">
+              <strong>Price:</strong> {{ petFood.price | currency: 'INR' }}
+            </p>
+            <button
+              type="button"
+              class="btn btn-primary w-100"
+              (click)="payNow(petFood.price)"
+            >
+              Buy Now
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <ng-template #noData>
+    <p class="text-danger text-center mt-4">No pet foods found.</p>
+  </ng-template>
+</div>

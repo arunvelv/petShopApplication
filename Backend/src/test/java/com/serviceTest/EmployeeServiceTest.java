@@ -17,7 +17,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
  
-class  EmployeeServiceTest {
+public class  EmployeeServiceTest {
  
     @Mock
     private EmployeeDAO employeeDAO;

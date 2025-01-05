@@ -1,45 +1,47 @@
 <div class="container">
-  <h2>Customers Management</h2>
-  <div class="running-message">
-    <span>To change address of the customers <a href="address">click here</a></span>
+  <h2 class="text-center my-4">Customers Management</h2>
+
+  <div class="running-message text-center mb-3">
+    <span>To change the address of the customers, <a href="address">click here</a> Note the address ID and change in the address page</span>
   </div>
 
-  <br/>
-
   <!-- Button to show the Add Customer form -->
-  <button class="btn btn-success mb-3" (click)="toggleAddCustomerForm()">Add Customer</button>
+  <div class="text-center">
+    <button class="btn btn-outline-success mb-3" (click)="toggleAddCustomerForm()">Add Customer</button>
+  </div>
 
   <!-- Add Customer Form -->
-  <div *ngIf="showAddCustomerForm">
+  <div *ngIf="showAddCustomerForm" class="card p-4 my-4 mx-auto" style="max-width: 800px;">
     <form (ngSubmit)="addCustomer()">
-      <h4>Customer Details</h4>
+      <h4 class="mb-3">Customer Details</h4>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
             [(ngModel)]="newCustomer.firstName"
             name="firstName"
-            placeholder="Customer firstName"
+            placeholder="Customer First Name"
             required
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
             [(ngModel)]="newCustomer.lastName"
             name="lastName"
-            placeholder="Customer lastName"
+            placeholder="Customer Last Name"
             required
           />
         </div>
       </div>
-      <!-- Repeat for other fields, grouping inputs into rows and columns -->
+
+      <!-- Customer Contact -->
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
-            type="text"
+            type="email"
             class="form-control"
             [(ngModel)]="newCustomer.email"
             name="email"
@@ -47,22 +49,21 @@
             required
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
             [(ngModel)]="newCustomer.phoneNumber"
             name="phoneNumber"
-            placeholder="Customer phoneNumber"
+            placeholder="Customer Phone Number"
             required
           />
         </div>
       </div>
 
-      <h4>Address Details</h4>
-      <!-- Address fields (similar layout) -->
+      <h4 class="mb-3">Address Details</h4>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
@@ -72,7 +73,7 @@
             required
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
@@ -82,35 +83,36 @@
             required
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
             [(ngModel)]="newAddress.state"
-            name="city"
+            name="state"
             placeholder="State"
             required
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
           <input
             type="text"
             class="form-control"
             [(ngModel)]="newAddress.zipCode"
-            name="city"
+            name="zipCode"
             placeholder="Pin Code"
             required
           />
         </div>
       </div>
-      <button class="btn btn-primary" type="submit">Add Customer</button>
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit">Add Customer</button>
+      </div>
     </form>
   </div>
 
   <!-- Table for displaying customers -->
   <div *ngIf="customers.length">
-    <h3>Customer List</h3>
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>First Name</th>
@@ -118,7 +120,7 @@
           <th>Email</th>
           <th>Phone Number</th>
           <th>Address</th>
-          <th>Address Id</th>
+          <th>Address ID</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -131,8 +133,8 @@
               class="form-control"
             />
             <span *ngIf="editCustomerIndex !== i">{{ customer.firstName }}</span>
-            </td>
-            <td>
+          </td>
+          <td>
             <input
               *ngIf="editCustomerIndex === i"
               [(ngModel)]="customer.lastName"
@@ -147,8 +149,8 @@
               class="form-control"
             />
             <span *ngIf="editCustomerIndex !== i">{{ customer.email }}</span>
-            </td>
-            <td>
+          </td>
+          <td>
             <input
               *ngIf="editCustomerIndex === i"
               [(ngModel)]="customer.phoneNumber"
@@ -157,16 +159,17 @@
             <span *ngIf="editCustomerIndex !== i">{{ customer.phoneNumber }}</span>
           </td>
           <td>
-            {{ customer.address.street }}, {{ customer.address.city }}, {{ customer.address.state }} - {{ customer.address.zipCode }} 
+            {{ customer.address.street }}, {{ customer.address.city }}, {{ customer.address.state }} - {{ customer.address.zipCode }}
           </td>
-          <td> {{customer.address.addressId}}</td>
+          <td>{{ customer.address.addressId }}</td>
           <td>
-            <button *ngIf="editCustomerIndex !== i" class="btn btn-primary" (click)="editCustomer(i)">Edit</button>
-            <button *ngIf="editCustomerIndex === i" class="btn btn-success" (click)="saveCustomer(i)">Save</button>
-            <button *ngIf="editCustomerIndex === i" class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
+            <button *ngIf="editCustomerIndex !== i" class="btn btn-warning btn-sm" (click)="editCustomer(i)">Edit</button>
+            <button *ngIf="editCustomerIndex === i" class="btn btn-success btn-sm" (click)="saveCustomer(i)">Save</button>
+            <button *ngIf="editCustomerIndex === i" class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
+
 </div>

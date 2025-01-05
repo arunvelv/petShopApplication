@@ -1,0 +1,124 @@
+/* General Container Styling */
+.container {
+    margin-top: 20px;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Styling */
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .pets-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #5b9aa0;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+  }
+  
+  .logo {
+    max-width: 125px;
+    max-height: 125px;
+    border-radius: 50%;
+  }
+  
+  /* Search Section Styling */
+  .search-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .custom-search-bar {
+    flex: 1;
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #dfe1e5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, border 0.3s ease;
+  }
+  
+  .custom-search-bar:focus {
+    border: 1px solid #4a90e2;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+  }
+  
+  .custom-search-select {
+    border-radius: 20px;
+    padding: 10px;
+    border: 1px solid #dfe1e5;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .custom-search-select:focus {
+    border: 1px solid #4a90e2;
+    box-shadow: 0 4px 10px rgba(74, 144, 226, 0.2);
+  }
+  
+  /* Card Grid Styling */
+  .card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #fdfbfb, #ebedee);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: #555555;
+  }
+  
+  /* Button Styling */
+  .btn-primary {
+    background-color: #3366cc;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #254a8b;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* No Data Message */
+  .text-danger {
+    font-size: 1.25rem;
+    color: #e74c3c;
+  }
+  

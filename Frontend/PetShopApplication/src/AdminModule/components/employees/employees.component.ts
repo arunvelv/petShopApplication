@@ -3,7 +3,6 @@ import { EmployeesService } from '../../services/employees/employees.service';
 import { Employee } from '../../../models/Employee';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Address } from '../../../models/Address';
 
 @Component({
@@ -15,25 +14,21 @@ import { Address } from '../../../models/Address';
 export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   newEmployee: Employee = {} as Employee;
-  editingEmployee: Employee  | null = null;
+  editingEmployeeIndex: any | null = null;
   newAddress: Address = {} as Address;
-  // editingEmployee: Employee = {} as Employee;
-  addresses: any[] = []; 
-  addressesForEmployees: any[] = [];
-  showAddForm: boolean = false;
-  showEditForm: boolean = false;
+  showAddEmployeeForm: boolean = false;
   errorMessage: string | null = null;
+  showEditForm: boolean = false;
 
-  constructor(private employeesService: EmployeesService, private http: HttpClient) {}
+  constructor(private employeesService: EmployeesService) {}
 
   ngOnInit(): void {
     this.getEmployees();
-    // this.getAddresses();
   }
 
   getEmployees(): void {
     this.employeesService.getAllEmployees().subscribe(
-      (data: Employee[]) => {
+      (data) => {
         this.employees = data;
       },
       (error) => {
@@ -42,43 +37,38 @@ export class EmployeesComponent implements OnInit {
     );
   }
 
-
   toggleAddEmployeeForm(): void {
-    this.showAddForm = !this.showAddForm;
-    this.newEmployee = {} as Employee;
+    this.showAddEmployeeForm = !this.showAddEmployeeForm;
+    // this.newEmployee = {} as Employee;
   }
 
   addEmployee(): void {
     this.employeesService.addEmployee(this.newAddress, this.newEmployee).subscribe(
-      (data) => {
-        console.log('Employee added successfully:', data);
+      () => {
+        console.log('Employee added successfully:');
         this.newEmployee = {} as Employee;
         this.newAddress = {} as Address;
-        this.showAddForm = false; // Close the form after successful addition
-        this.getEmployees(); // Refresh the employee list
-        },
-        (error) => {
-          console.error('Error adding employee with address:', error);
-          this.errorMessage = 'Failed to add employee with address. Please try again.';
-        }
-      );
-    }
-
-  editEmployee(employee: Employee): void {
-    this.editingEmployee = { ...employee };
-    this.showEditForm = true;
+        this.showAddEmployeeForm = false;
+        this.getEmployees();
+      },
+      (error) => {
+        console.error('Error adding employee:', error);
+        this.errorMessage = 'Failed to add employee. Please try again.';
+      }
+    );
   }
 
-  updateEmployee(employee: Employee): void {
-    if (this.editingEmployee) {
-      this.employeesService.updateEmployee(this.editingEmployee.employeeId, this.editingEmployee).subscribe(
-        (updatedEmployee: Employee) => {
-          const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
-          if (index !== -1) {
-            this.employees[index] = updatedEmployee;
-          }
-          this.editingEmployee = null; // Exit edit mode
-          this.getEmployees(); // Refresh list
+  editEmployee(index: number): void {
+    this.editingEmployeeIndex = index;
+    // this.newEmployee = { ...this.employees[index] };
+  }
+
+  updateEmployee(index: number): void {
+    const updatedEmployee = this.employees[index]
+      this.employeesService.updateEmployee(updatedEmployee.employeeId, updatedEmployee).subscribe(
+        () => {
+          
+          this.editingEmployeeIndex = null; // Exit edit mode
         },
         (error) => {
           console.error('Error updating employee:', error);
@@ -86,13 +76,8 @@ export class EmployeesComponent implements OnInit {
         }
       );
     }
-  }
-  
   
   cancelEdit(): void {
-    this.editingEmployee = null; // Exit edit mode without saving
+    this.editingEmployeeIndex = null;
   }
-  
-
-
 }

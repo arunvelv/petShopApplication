@@ -1,154 +1,139 @@
-<header>
-    <h1>Pets</h1>
-  </header>
- 
-  <section class="filter-buttons my-3">
-    <button class="btn btn-outline-success" (click)="startAddPet()">Add Pet</button>
-  </section>
- 
-  <!-- Add New Pet Form -->
-  <div *ngIf="showAddForm" class="add-form card p-3 my-4">
-    <h2>Add New Pet</h2>
-    <div class="mb-2">
-        <label>Pet ID:</label>
-        <input [(ngModel)]="newPet.petId" type="number" class="form-control" />
-      </div>
-    <div class="mb-2">
-      <label>Name:</label>
-      <input [(ngModel)]="newPet.name" class="form-control" />
+<header class="text-center my-4">
+  <h1>Pets Management</h1>
+</header>
+
+<section class="text-center my-3">
+  <button class="btn btn-outline-success" (click)="startAddPet()">Add Pet</button>
+</section>
+
+<!-- Add Pet Form -->
+<div *ngIf="showAddForm" class="add-form card p-4 my-4 mx-auto" style="max-width: 800px;">
+  <h2>Add New Pet</h2>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="petId">Pet ID:</label>
+      <input [(ngModel)]="newPet.petId" type="number" id="petId" class="form-control" />
     </div>
-    <div class="mb-2">
-      <label>Breed:</label>
-      <input [(ngModel)]="newPet.breed" class="form-control" />
-    </div>
-    <div class="mb-2">
-        <label>Category:</label>
-        <select [(ngModel)]="newPet.category.categoryId" class="form-control">
-          <option *ngFor="let category of categories" [value]="category.categoryId">
-            {{ category.name }}
-          </option>
-        </select>
-      </div>
-    <div class="mb-2">
-      <label>Age:</label>
-      <input [(ngModel)]="newPet.age" type="number" class="form-control" />
-    </div>
-    <div class="mb-2">
-      <label>Price:</label>
-      <input [(ngModel)]="newPet.price" type="number" class="form-control" />
-    </div>
-    <div class="mb-2">
-      <label>Description:</label>
-      <textarea [(ngModel)]="newPet.description" class="form-control"></textarea>
-    </div>
-    <div class="mb-2">
-      <label>Image URL:</label>
-      <input [(ngModel)]="newPet.imageUrl" class="form-control" />
-    </div>
-    <div class="mt-3">
-      <button class="btn btn-success me-2" (click)="addPet()">Save</button>
-      <button class="btn btn-secondary" (click)="cancelAddPet()">Cancel</button>
+    <div class="col-md-6 mb-3">
+      <label for="name">Name:</label>
+      <input [(ngModel)]="newPet.name" id="name" class="form-control" />
     </div>
   </div>
- 
-  <!-- Search Bar -->
-  <input
-  type="text"
-  class="form-control search-bar custom-search-bar"
-  placeholder="Search"
-  (input)="onSearch($event)"
-  style="background-color: #20c220; color: white; font-size: 16px; width: 250px; height: 40px;"
-/>
- 
-  <style>
-    /* Placeholder text color */
-    .custom-search-bar::placeholder {
-      color: white;
-    }
-  </style>
- 
-  <!-- Update Pet Form -->
-  <div *ngIf="selectedPet" class="update-form card p-3 my-4">
-    <h2>Update Pet</h2>
-    <div class="mb-2">
-      <label>Name:</label>
-      <input [(ngModel)]="selectedPet.name" class="form-control" />
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="breed">Breed:</label>
+      <input [(ngModel)]="newPet.breed" id="breed" class="form-control" />
     </div>
-    <div class="mb-2">
-      <label>Breed:</label>
-      <input [(ngModel)]="selectedPet.breed" class="form-control" />
-    </div>
-     <div class="mb-2">
-        <label>Category:</label>
-        <select [(ngModel)]="selectedPet.category.categoryId" class="form-control">
-          <option *ngFor="let category of categories" [value]="category.categoryId">
-            {{ category.name }}
-          </option>
-        </select>
-      </div>
-    <div class="mb-2">
-      <label>Age:</label>
-      <input [(ngModel)]="selectedPet.age" type="number" class="form-control" />
-    </div>
-    <div class="mb-2">
-      <label>Price:</label>
-      <input [(ngModel)]="selectedPet.price" type="number" class="form-control" />
-    </div>
-    <div class="mb-2">
-      <label>Description:</label>
-      <textarea [(ngModel)]="selectedPet.description" class="form-control"></textarea>
-    </div>
-    <div class="mb-2">
-      <label>Image URL:</label>
-      <input [(ngModel)]="selectedPet.imageUrl" class="form-control" />
-    </div>
-    <div class="mt-3">
-      <button class="btn btn-success me-2" (click)="updatePet()">Save</button>
-      <button class="btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
+    <div class="col-md-6 mb-3">
+      <label for="category">Category:</label>
+      <select [(ngModel)]="newPet.category" id="category" class="form-select">
+        <option *ngFor="let category of categories" [ngValue]="category">
+          {{ category.name }}
+        </option>
+      </select>
     </div>
   </div>
- 
- 
-  <!-- Pet Cards -->
-  <div class="container">
-    <h2>Pets</h2>
-    <div *ngIf="pets.length > 0; else noData">
-      <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col" *ngFor="let pet of pets">
-          <div class="card h-100 d-flex flex-row align-items-stretch">
-            <!-- Image -->
-            <img
-              src="{{ pet.imageUrl }}"
-              class="img-fluid"
-              alt="{{ pet.name }}"
-              style="width: 200px; object-fit: cover;"
-            />
- 
-            <!-- Details -->
-            <div class="card-body" style="flex: 1;">
-              <h5 class="card-title">{{ pet.name }}</h5>
-              <p class="card-text"><strong>Breed:</strong> {{ pet.breed }}</p>
-              <p class="card-text"><strong>Description:</strong> {{ pet.description }}</p>
-              <p class="card-text"><strong>Category</strong>: {{ pet.category.name}}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <p><strong>Age:</strong> {{ pet.age }}</p>
-                <p><strong>Price:</strong> ₹{{ pet.price }}</p>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <button type="button" class="btn btn-primary">Buy Now</button>
-                <button (click)="startUpdate(pet)" class="btn btn-secondary">Update</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label for="age">Age:</label>
+      <input [(ngModel)]="newPet.age" type="number" id="age" class="form-control" />
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="price">Price:</label>
+      <input [(ngModel)]="newPet.price" type="number" id="price" class="form-control" />
     </div>
   </div>
- 
-  <!-- No Pets Found -->
-  <ng-template #noData>
-    <p>No pets found.</p>
-  </ng-template>
- 
- 
- 
+  <div class="mb-3">
+    <label for="description">Description:</label>
+    <textarea [(ngModel)]="newPet.description" id="description" class="form-control"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="imageUrl">Image URL:</label>
+    <input [(ngModel)]="newPet.imageUrl" id="imageUrl" class="form-control" />
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-success me-2" (click)="addPet()">Save</button>
+    <button class="btn btn-secondary" (click)="cancelAction()">Cancel</button>
+  </div>
+</div>
+
+<!-- Update Pet Form -->
+<div *ngIf="selectedPet" class="update-form card p-4 my-4 mx-auto" style="max-width: 800px;">
+  <h2>Update Pet</h2>
+  <div class="mb-3">
+    <label for="updateName">Name:</label>
+    <input [(ngModel)]="selectedPet.name" id="updateName" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="updateBreed">Breed:</label>
+    <input [(ngModel)]="selectedPet.breed" id="updateBreed" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="updateCategory">Category:</label>
+    <select [(ngModel)]="selectedPet.category.categoryId" id="updateCategory" class="form-control">
+      <option *ngFor="let category of categories" [value]="category.categoryId">
+        {{ category.name }}
+      </option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="updateAge">Age:</label>
+    <input [(ngModel)]="selectedPet.age" type="number" id="updateAge" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="updatePrice">Price:</label>
+    <input [(ngModel)]="selectedPet.price" type="number" id="updatePrice" class="form-control" />
+  </div>
+  <div class="mb-3">
+    <label for="updateDescription">Description:</label>
+    <textarea [(ngModel)]="selectedPet.description" id="updateDescription" class="form-control"></textarea>
+  </div>
+  <div class="mb-3">
+    <label for="updateImageUrl">Image URL:</label>
+    <input [(ngModel)]="selectedPet.imageUrl" id="updateImageUrl" class="form-control" />
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-success me-2" (click)="updatePet()">Save</button>
+    <button class="btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
+  </div>
+</div>
+
+<!-- Pets Table -->
+<div class="container my-4">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Pet ID</th>
+        <th>Name</th>
+        <th>Breed</th>
+        <th>Category</th>
+        <th>Age</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pet of pets">
+        <td>{{ pet.petId }}</td>
+        <td>{{ pet.name }}</td>
+        <td>{{ pet.breed }}</td>
+        <td>{{ pet?.category?.name || 'Uncategorized' }}</td>
+        <td>{{ pet.age }}</td>
+        <td>₹{{ pet.price }}</td>
+        <td>{{ pet.description }}</td>
+        <td><img [src]="pet.imageUrl" alt="{{ pet.name }}" style="width: 80px; height: 60px; object-fit: cover;" /></td>
+        <td>
+          <button (click)="startUpdate(pet)" class="btn btn-secondary btn-sm">Update</button>
+          <!-- <button (click)="deletePet(pet.petId)" class="btn btn-danger btn-sm">Delete</button> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- No Pets Found -->
+<ng-template #noData>
+  <p class="text-center">No pets found.</p>
+</ng-template>

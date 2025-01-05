@@ -1,130 +1,206 @@
 package com.controllerTest;
- 
-import com.controller.EmployeeController;
-import com.model.Employee;
-import com.service.EmployeeService;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
- 
-import java.util.Arrays;
-import java.util.List;
- 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.*;
- 
+
+import com.controller.*;
+import com.exception.InvalidInputException;
+import com.model.Address;
+import com.model.Employee;
+import com.model.EmployeePayload;
+import com.service.EmployeeService;
+
 class EmployeeControllerTest {
- 
+
     @Mock
     private EmployeeService employeeService;
- 
+
     @InjectMocks
     private EmployeeController employeeController;
- 
-    private Employee testEmployee;
- 
+
+    private Employee employee;
+    private Address address;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
- 
-        testEmployee = new Employee();
-        testEmployee.setEmployeeId(1);
-        testEmployee.setName("John");
-        testEmployee.setPosition("Manager");
-        testEmployee.setEmail("john.doe@example.com");
-        testEmployee.setPhoneNumber("9876543210");
+
+        address = new Address();
+        address.setAddressId(1);
+        address.setCity("New York");
+
+        employee = new Employee();
+        employee.setEmployeeId(1);
+        employee.setName("John Doe");
+        employee.setPosition("Manager");
+        employee.setPhoneNumber("1234567890");
+        employee.setEmail("john.doe@example.com");
+        employee.setAddress(address);
     }
- 
-//    @Test
-//    void testAddEmployee_Valid() {
-//        when(employeeService.addEmployee(testEmployee)).thenReturn(testEmployee);
-// 
-//        ResponseEntity<?> response = employeeController.addEmployee(testEmployee);
-// 
-//        assertEquals(CREATED, response.getStatusCode());
-//        assertEquals(testEmployee, response.getBody());
-//        verify(employeeService, times(1)).addEmployee(testEmployee);
-//    }
- 
+
     @Test
-    void testAddEmployee_Invalid() {
-        when(employeeService.addEmployee(null)).thenReturn(null);
- 
-        ResponseEntity<?> response = employeeController.addEmployee(null);
- 
-        assertEquals(BAD_REQUEST, response.getStatusCode());
-        verify(employeeService, times(1)).addEmployee(null);
-    }
- 
-    @Test
-    void testGetAllEmployees_Found() {
-        when(employeeService.getAllEmployees()).thenReturn(Arrays.asList(testEmployee));
- 
+    void testGetAllEmployees() {
+        when(employeeService.getAllEmployees()).thenReturn(Arrays.asList(employee));
+
         ResponseEntity<?> response = employeeController.getAllEmployees();
- 
-        assertEquals(OK, response.getStatusCode());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         List<Employee> employees = (List<Employee>) response.getBody();
+        assertNotNull(employees);
         assertEquals(1, employees.size());
-        assertEquals("John", employees.get(0).getName());
-        verify(employeeService, times(1)).getAllEmployees();
+        assertEquals("John Doe", employees.get(0).getName());
     }
- 
+
     @Test
-    void testGetAllEmployees_NotFound() {
-        when(employeeService.getAllEmployees()).thenReturn(List.of());
- 
+    void testGetAllEmployeesNoContent() {
+        when(employeeService.getAllEmployees()).thenReturn(Arrays.asList());
+
         ResponseEntity<?> response = employeeController.getAllEmployees();
- 
-        assertEquals(NO_CONTENT, response.getStatusCode());
-        verify(employeeService, times(1)).getAllEmployees();
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals("No employees found", response.getBody());
     }
- 
+
     @Test
-    void testGetByEmployeeId_Found() {
-        when(employeeService.findByEmployeeId(1)).thenReturn(testEmployee);
- 
+    void testGetByEmployeeIdFound() {
+        when(employeeService.findByEmployeeId(1)).thenReturn(employee);
+
         ResponseEntity<?> response = employeeController.getByEmployeeId(1);
- 
-        assertEquals(OK, response.getStatusCode());
-        assertEquals(testEmployee, response.getBody());
-        verify(employeeService, times(1)).findByEmployeeId(1);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Employee responseEmployee = (Employee) response.getBody();
+        assertNotNull(responseEmployee);
+        assertEquals("John Doe", responseEmployee.getName());
     }
- 
+
     @Test
-    void testGetByEmployeeId_NotFound() {
-        when(employeeService.findByEmployeeId(1)).thenReturn(null);
- 
-        ResponseEntity<?> response = employeeController.getByEmployeeId(1);
- 
-        assertEquals(NOT_FOUND, response.getStatusCode());
-        verify(employeeService, times(1)).findByEmployeeId(1);
+    void testGetByEmployeeIdNotFound() {
+        when(employeeService.findByEmployeeId(2)).thenReturn(null);
+
+        ResponseEntity<?> response = employeeController.getByEmployeeId(2);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Employee not found", response.getBody());
     }
- 
+
     @Test
-    void testGetByName_Found() {
-        when(employeeService.findByName("John")).thenReturn(List.of(testEmployee));
- 
-        ResponseEntity<?> response = employeeController.getByName("John");
- 
-        assertEquals(OK, response.getStatusCode());
+    void testGetByNameFound() {
+        when(employeeService.findByName("John Doe")).thenReturn(Arrays.asList(employee));
+
+        ResponseEntity<?> response = employeeController.getByName("John Doe");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         List<Employee> employees = (List<Employee>) response.getBody();
+        assertNotNull(employees);
         assertEquals(1, employees.size());
-        verify(employeeService, times(1)).findByName("John");
+        assertEquals("John Doe", employees.get(0).getName());
     }
- 
+
     @Test
-    void testGetByName_NotFound() {
-        when(employeeService.findByName("Unknown")).thenReturn(List.of());
- 
-        ResponseEntity<?> response = employeeController.getByName("Unknown");
- 
-        assertEquals(NOT_FOUND, response.getStatusCode());
-        verify(employeeService, times(1)).findByName("Unknown");
+    void testGetByNameNotFound() {
+        when(employeeService.findByName("Jane Doe")).thenReturn(Arrays.asList());
+
+        ResponseEntity<?> response = employeeController.getByName("Jane Doe");
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("No employees found with name: Jane Doe", response.getBody());
+    }
+
+    @Test
+    void testGetByPositionFound() {
+        when(employeeService.findByPosition("Manager")).thenReturn(Arrays.asList(employee));
+
+        ResponseEntity<?> response = employeeController.getByPosition("Manager");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        List<Employee> employees = (List<Employee>) response.getBody();
+        assertNotNull(employees);
+        assertEquals(1, employees.size());
+        assertEquals("John Doe", employees.get(0).getName());
+    }
+
+    @Test
+    void testGetByPositionNotFound() {
+        when(employeeService.findByPosition("Engineer")).thenReturn(Arrays.asList());
+
+        ResponseEntity<?> response = employeeController.getByPosition("Engineer");
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("No employees found with position: Engineer", response.getBody());
+    }
+
+    @Test
+    void testUpdateEmployeeSuccess() {
+        when(employeeService.updateEmployee(any(Employee.class))).thenReturn(employee);
+
+        ResponseEntity<?> response = employeeController.updateEmployee(1, employee);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Employee responseEmployee = (Employee) response.getBody();
+        assertNotNull(responseEmployee);
+        assertEquals("John Doe", responseEmployee.getName());
+    }
+
+    @Test
+    void testUpdateEmployeeNotFound() {
+        when(employeeService.updateEmployee(any(Employee.class))).thenReturn(null);
+
+        ResponseEntity<?> response = employeeController.updateEmployee(2, employee);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Employee not found or update failed", response.getBody());
+    }
+
+    @Test
+    void testAddEmployeeSuccess() {
+        EmployeePayload payload = new EmployeePayload();
+        payload.setEmployee(employee);
+        payload.setAddress(address);
+
+        when(employeeService.findByAddress(1)).thenReturn(Arrays.asList());
+        when(employeeService.saveCustomer(any(Employee.class), any(Address.class))).thenReturn(employee);
+
+        ResponseEntity<Employee> response = employeeController.addEmployee(payload);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        Employee responseEmployee = response.getBody();
+        assertNotNull(responseEmployee);
+        assertEquals("John Doe", responseEmployee.getName());
+    }
+
+    @Test
+    void testAddEmployeeInvalidInput() {
+        EmployeePayload payload = new EmployeePayload();
+        payload.setEmployee(null);
+        payload.setAddress(null);
+
+        assertThrows(InvalidInputException.class, () -> {
+            employeeController.addEmployee(payload);
+        });
+    }
+
+    @Test
+    void testAddEmployeeConflict() {
+        EmployeePayload payload = new EmployeePayload();
+        payload.setEmployee(employee);
+        payload.setAddress(address);
+
+        when(employeeService.findByAddress(1)).thenReturn(Arrays.asList(employee));
+
+        assertThrows(InvalidInputException.class, () -> {
+            employeeController.addEmployee(payload);
+        });
     }
 }
- 
- 

@@ -16,7 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Pets {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "pet_id", nullable=false)
     private int petId;
 
@@ -39,7 +39,8 @@ public class Pets {
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-
+    
+	
     @Size(max = 255)
     @Column(name = "image_url", nullable = false)
     private String imageUrl;

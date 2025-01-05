@@ -1,116 +1,185 @@
- package com.controllerTest;
+package com.controllerTest;
 
-import com.controller.TransactionsController;
-import com.model.Transactions;
-import com.service.TransactionsService;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.mockito.*;
+import org.springframework.http.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.test.web.servlet.setup.*;
 
-import java.util.Arrays;
-import java.util.List;
+import com.controller.*;
+import com.model.Vaccinations;
+import com.service.VaccinationsService;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import java.util.*;
 
-class TransactionsControllerTest {
-
-    @InjectMocks
-    private TransactionsController transactionsController;
+class VaccinationsControllerTest {
 
     @Mock
-    private TransactionsService transactionService;
+    private VaccinationsService vaccinationsService;
+
+    private MockMvc mockMvc;
+    
+    @InjectMocks
+    private VaccinationsController vaccinationsController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(vaccinationsController).build();
+    }
+
+    @Test
+    void testAddVaccinations() throws Exception {
+        Vaccinations newVaccination = new Vaccinations();
+        newVaccination.setName("Rabies");
+        newVaccination.setDescription("Rabies vaccine for pets");
+        newVaccination.setPrice(20.0f);
+        newVaccination.setAvailable(true);
+
+        // Mocking service using doNothing() since addVaccinations is a void method
+        doNothing().when(vaccinationsService).addVaccinations(any(Vaccinations.class));
+
+        // Perform POST request to add vaccination
+        mockMvc.perform(post("/api/v1/vaccinations/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"Rabies\",\"description\":\"Rabies vaccine for pets\",\"price\":20.0,\"available\":true}"))
+                .andExpect(status().isAccepted())
+                .andExpect(content().string("Vaccination added"));
+
+        // Verify the service method was called once
+        verify(vaccinationsService, times(1)).addVaccinations(any(Vaccinations.class));
+    }
+
+
+    @Test
+    void testGetVaccinationsById() throws Exception {
+        Vaccinations vaccination = new Vaccinations();
+        vaccination.setVaccinationId(1);
+        vaccination.setName("Rabies");
+        vaccination.setDescription("Rabies vaccine for pets");
+        vaccination.setPrice(20.0f);
+        vaccination.setAvailable(true);
+
+        // Mocking service
+        when(vaccinationsService.getById(1)).thenReturn(vaccination);
+
+        // Perform GET request to retrieve vaccination by ID
+        mockMvc.perform(get("/api/v1/vaccinations/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Rabies"));
+
+        verify(vaccinationsService, times(1)).getById(1);
     }
 
 //    @Test
-//    void testAddTransaction() {
-//        Transactions transaction = new Transactions(); // Create a Transactions instance
+//    void testGetVaccinationsByIdNotFound() throws Exception {
+//        // Mocking service to return null for non-existing vaccination
+//        when(vaccinationsService.getById(999)).thenReturn(null);
 //
-//        ResponseEntity<String> response = transactionsController.addTransaction(transaction);
+//        // Perform GET request with non-existent ID
+//        mockMvc.perform(get("/api/v1/vaccinations/999"))
+//                .andExpect(status().isNotFound());
 //
-//        assertEquals("Transactions added", response.getBody());
-//        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
-//        verify(transactionService, times(1)).saveTransaction(transaction);
+//        verify(vaccinationsService, times(1)).getById(999);
+//    }
+
+    @Test
+    void testGetAvailableVaccinations() throws Exception {
+        List<Vaccinations> availableVaccinations = Arrays.asList(
+                new Vaccinations(1, "Rabies", "Rabies vaccine for pets", 20.0f, true, null),
+                new Vaccinations(2, "Distemper", "Distemper vaccine for pets", 15.0f, true, null)
+        );
+
+        // Mocking service to return available vaccinations
+        when(vaccinationsService.findAvailableVaccinations()).thenReturn(availableVaccinations);
+
+        // Perform GET request to retrieve available vaccinations
+        mockMvc.perform(get("/api/v1/vaccinations/available"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(2));
+
+        verify(vaccinationsService, times(1)).findAvailableVaccinations();
+    }
+
+    @Test
+    void testGetUnavailableVaccinations() throws Exception {
+        List<Vaccinations> unavailableVaccinations = Arrays.asList(
+                new Vaccinations(3, "Hepatitis", "Hepatitis vaccine for pets", 25.0f, false, null)
+        );
+
+        // Mocking service to return unavailable vaccinations
+        when(vaccinationsService.findUnavailableVaccinations()).thenReturn(unavailableVaccinations);
+
+        // Perform GET request to retrieve unavailable vaccinations
+        mockMvc.perform(get("/api/v1/vaccinations/unavailable"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(1));
+
+        verify(vaccinationsService, times(1)).findUnavailableVaccinations();
+    }
+
+//    @Test
+//    void testUpdateVaccinations() throws Exception {
+//        Vaccinations updatedVaccination = new Vaccinations();
+//        updatedVaccination.setName("Updated Rabies");
+//        updatedVaccination.setDescription("Updated description of Rabies vaccine");
+//        updatedVaccination.setPrice(25.0f);
+//        updatedVaccination.setAvailable(true);
+//
+//        // Mocking service to return the updated vaccination
+//        doReturn(updatedVaccination).when(vaccinationsService).updateVaccinations(eq(1), any(Vaccinations.class));
+//
+//        // Perform PUT request to update vaccination
+//        mockMvc.perform(put("/api/v1/vaccinations/update/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"name\":\"Updated Rabies\",\"description\":\"Updated description of Rabies vaccine\",\"price\":25.0,\"available\":true}"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("Vaccinations updated"));
+//
+//        verify(vaccinationsService, times(1)).updateVaccinations(eq(1), any(Vaccinations.class));
 //    }
 
 //    @Test
-//    void testGetTransactionsByIdFound() {
-//        Transactions transaction = new Transactions();
-//        when(transactionService.getTransactionById(anyInt())).thenReturn(transaction);
+//    void testUpdateVaccinationsNotFound() throws Exception {
+//        Vaccinations updatedVaccination = new Vaccinations();
+//        updatedVaccination.setName("Updated Rabies");
+//        updatedVaccination.setDescription("Updated description of Rabies vaccine");
+//        updatedVaccination.setPrice(25.0f);
+//        updatedVaccination.setAvailable(true);
 //
-//        ResponseEntity<Transactions> response = (ResponseEntity<Transactions>)transactionsController.getTransactionById(1);
+//        // Mocking service to simulate "not found" behavior
+//        doReturn(null).when(vaccinationsService).updateVaccinations(eq(999), any(Vaccinations.class));
 //
-//        assertEquals(transaction, response.getBody());
-//        assertEquals(HttpStatus.OK, response.getStatusCode());
-//        verify(transactionService, times(1)).getTransactionById(1);
+//        // Perform PUT request to update vaccination that doesn't exist
+//        mockMvc.perform(put("/api/v1/vaccinations/update/999")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"name\":\"Updated Rabies\",\"description\":\"Updated description of Rabies vaccine\",\"price\":25.0,\"available\":true}"))
+//                .andExpect(status().isNotFound())
+//                .andExpect(content().string("Vaccination not found"));
+//
+//        verify(vaccinationsService, times(1)).updateVaccinations(eq(999), any(Vaccinations.class));
 //    }
-
-
     @Test
-    void testGetSuccessTransaction() {
-        Transactions transaction1 = new Transactions();
-        Transactions transaction2 = new Transactions();
-        List<Transactions> transactions = Arrays.asList(transaction1, transaction2);
+    void testGetAllVaccinations() throws Exception {
+        List<Vaccinations> vaccinationsList = Arrays.asList(
+                new Vaccinations(1, "Rabies", "Rabies vaccine for pets", 20.0f, true, null),
+                new Vaccinations(2, "Distemper", "Distemper vaccine for pets", 15.0f, true, null)
+        );
 
-        when(transactionService.getSuccessTransactions()).thenReturn(transactions);
+        // Mocking service
+        when(vaccinationsService.getAll()).thenReturn(vaccinationsList);
 
-        ResponseEntity<List<Transactions>> response = transactionsController.getSuccessfulTransactions();
+        // Perform GET request to retrieve all vaccinations
+        mockMvc.perform(get("/api/v1/vaccinations"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(2));
 
-        assertEquals(2, response.getBody().size());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(transactionService, times(1)).getSuccessTransactions();
-    }
-
-    @Test
-    void testGetFailedTransaction() {
-        Transactions transaction1 = new Transactions();
-        List<Transactions> transactions = Arrays.asList(transaction1);
-
-        when(transactionService.getFailedTransactions()).thenReturn(transactions);
-
-        ResponseEntity<List<Transactions>> response = (ResponseEntity<List<Transactions>>) transactionsController.getFailedTransactions();
-
-        assertEquals(1, response.getBody().size());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(transactionService, times(1)).getFailedTransactions();
-    }
-
-    @Test
-    void testGetTransactionsByCusId() {
-        Transactions transaction1 = new Transactions();
-        List<Transactions> transactions = Arrays.asList(transaction1);
-
-        when(transactionService.getTransactionsByCustomerId(anyInt())).thenReturn(transactions);
-
-        ResponseEntity<List<Transactions>> response1 = (ResponseEntity<List<Transactions>>) transactionsController.getTransactionsByCustomerId(1);
-
-        assertEquals(1, response1.getBody().size());
-        assertEquals(HttpStatus.OK, response1.getStatusCode());
-        verify(transactionService, times(1)).getTransactionsByCustomerId(1);
-    }
-
-    @Test
-    void testGetAllTransactions() {
-        Transactions transaction1 = new Transactions();
-        Transactions transaction2 = new Transactions();
-        List<Transactions> transactions = Arrays.asList(transaction1, transaction2);
-
-        when(transactionService.getAllTransactions()).thenReturn(transactions);
-
-        ResponseEntity<List<Transactions>> response = transactionsController.getAllTransactions();
-
-        assertEquals(2, response.getBody().size());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        verify(transactionService, times(1)).getAllTransactions();
+        verify(vaccinationsService, times(1)).getAll();
     }
 }

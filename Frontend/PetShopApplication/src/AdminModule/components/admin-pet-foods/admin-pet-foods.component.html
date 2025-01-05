@@ -1,1 +1,102 @@
-<p>admin-pet-foods works!</p>
+<div class="search-container">
+    <div class="search-inputs">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+        placeholder="Search Pet Food by name, brand, type, or ID..."
+      />
+      <select [(ngModel)]="selectedCategory" (change)="onSearch()">
+        <option value="name">Name</option>
+        <option value="brand">Brand</option>
+        <option value="type">Type</option>
+        <option value="id">ID</option>
+      </select>
+    </div>
+    <button class="add-button" (click)="toggleAddForm()">Add Pet Food</button>
+  </div>
+  
+  <div class="form-container" *ngIf="showAddForm">
+    <h3>Add Pet Food</h3>
+    <form>
+      <div>
+        <label for="addName">Name:</label>
+        <input id="addName" [(ngModel)]="newPetFood.name" name="addName" />
+      </div>
+      <div>
+        <label for="addBrand">Brand:</label>
+        <input id="addBrand" [(ngModel)]="newPetFood.brand" name="addBrand" />
+      </div>
+      <div>
+        <label for="addType">Type:</label>
+        <input id="addType" [(ngModel)]="newPetFood.type" name="addType" />
+      </div>
+      <div>
+        <label for="addQuantity">Quantity:</label>
+        <input id="addQuantity" [(ngModel)]="newPetFood.quantity" name="addQuantity" type="number" />
+      </div>
+      <div>
+        <label for="addPrice">Price:</label>
+        <input id="addPrice" [(ngModel)]="newPetFood.price" name="addPrice" type="number" />
+      </div>
+      <button type="button" (click)="addPetFood()">Add</button>
+    </form>
+  </div>
+  
+  <div class="form-container" *ngIf="editingPetFood">
+    <h3>Edit Pet Food</h3>
+    <form>
+      <div>
+        <label for="editName">Name:</label>
+        <input id="editName" [(ngModel)]="editingPetFood.name" name="editName" />
+      </div>
+      <div>
+        <label for="editBrand">Brand:</label>
+        <input id="editBrand" [(ngModel)]="editingPetFood.brand" name="editBrand" />
+      </div>
+      <div>
+        <label for="editType">Type:</label>
+        <input id="editType" [(ngModel)]="editingPetFood.type" name="editType" />
+      </div>
+      <div>
+        <label for="editQuantity">Quantity:</label>
+        <input id="editQuantity" [(ngModel)]="editingPetFood.quantity" name="editQuantity" type="number" />
+      </div>
+      <div>
+        <label for="editPrice">Price:</label>
+        <input id="editPrice" [(ngModel)]="editingPetFood.price" name="editPrice" type="number" />
+      </div>
+      <button type="button" (click)="updatePetFood()">Save</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+  
+  <div class="container">
+    <table class="PetFood-table">
+      <thead>
+        <tr>
+          <th>Food ID</th>
+          <th>Name</th>
+          <th>Brand</th>
+          <th>Type</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let petFood of filteredPetFoods">
+          <td>{{ petFood.foodId }}</td>
+          <td>{{ petFood.name }}</td>
+          <td>{{ petFood.brand }}</td>
+          <td>{{ petFood.type }}</td>
+          <td>{{ petFood.quantity }}</td>
+          <td>{{ petFood.price }}</td>
+          <td>
+            <button (click)="editPetFood(petFood)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

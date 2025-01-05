@@ -18,7 +18,8 @@
   editCustomerIndex: number | null = null;  // Track the index of the customer being edited
   showAddCustomerForm: boolean = false;
   errorMessage: string | null = null;
-
+ showEditForm: boolean = false;
+ 
   constructor(private customerService: CustomerService) {}
 
   ngOnInit(): void {

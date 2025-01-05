@@ -4,101 +4,31 @@
     <span>To change address of the employees <a href="address">click here</a></span>
   </div>
 
-  <br/>
-
   <!-- Add Employee Button -->
   <button class="btn btn-primary mb-3" (click)="toggleAddEmployeeForm()">
-    {{ showAddForm ? 'Close' : 'Add Employee' }}
+    {{ showAddEmployeeForm ? 'Close' : 'Add Employee' }}
   </button>
 
   <!-- Add Employee Form -->
-  <div *ngIf="showAddForm" class="card p-3 mb-4">
+  <div *ngIf="showAddEmployeeForm" class="card p-3 mb-4">
     <h3>Add Employee with Address</h3>
     <form (ngSubmit)="addEmployee()">
       <div class="row">
         <div class="col-md-6">
-          <h4>Employee Details</h4>
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newEmployee.name"
-            name="name"
-            placeholder="Employee Name"
-            required
-          />
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newEmployee.position"
-            name="position"
-            placeholder="Position"
-            required
-          />
-          <input
-            type="date"
-            class="form-control mb-2"
-            [(ngModel)]="newEmployee.hireDate"
-            name="hireDate"
-            placeholder="Hire Date"
-            required
-          />
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newEmployee.phoneNumber"
-            name="phoneNumber"
-            placeholder="Phone Number"
-            required
-          />
-          <input
-            type="email"
-            class="form-control mb-2"
-            [(ngModel)]="newEmployee.email"
-            name="email"
-            placeholder="Email"
-            required
-          />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newEmployee.name" name="name" placeholder="Name" required />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newEmployee.position" name="position" placeholder="Position" required />
+          <input type="date" class="form-control mb-2" [(ngModel)]="newEmployee.hireDate" name="hireDate" required />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newEmployee.phoneNumber" name="phone" placeholder="Phone" required />
+          <input type="email" class="form-control mb-2" [(ngModel)]="newEmployee.email" name="email" placeholder="Email" required />
         </div>
-
         <div class="col-md-6">
-          <h4>Address Details</h4>
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newAddress.street"
-            name="street"
-            placeholder="Street"
-            required
-          />
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newAddress.city"
-            name="city"
-            placeholder="City"
-            required
-          />
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newAddress.state"
-            name="state"
-            placeholder="State"
-            required
-          />
-          <input
-            type="text"
-            class="form-control mb-2"
-            [(ngModel)]="newAddress.zipCode"
-            name="zipCode"
-            placeholder="Zip Code"
-            required
-          />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newAddress.street" name="street" placeholder="Street" required />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newAddress.city" name="city" placeholder="City" required />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newAddress.state" name="state" placeholder="State" required />
+          <input type="text" class="form-control mb-2" [(ngModel)]="newAddress.zipCode" name="zipCode" placeholder="Zip Code" required />
         </div>
       </div>
-      <div class="text-center">
-        <button class="btn btn-success" type="submit">Add Employee</button>
-      </div>
+      <button class="btn btn-success">Add Employee</button>
     </form>
   </div>
 
@@ -108,29 +38,44 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Employee Name</th>
+          <th>Name</th>
           <th>Position</th>
           <th>Hire Date</th>
           <th>Phone</th>
           <th>Email</th>
           <th>Address</th>
-          <th>Address ID</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let employee of employees">
-          <td>{{ employee.name }}</td>
-          <td>{{ employee.position }}</td>
-          <td>{{ employee.hireDate }}</td>
-          <td>{{ employee.phoneNumber }}</td>
-          <td>{{ employee.email }}</td>
+        <tr *ngFor="let employee of employees let i =index">
+          <td>
+            <input *ngIf="editingEmployeeIndex === i" [(ngModel)]="editingEmployeeIndex.name" class="form-control" />
+            <span *ngIf="editingEmployeeIndex !== i">{{ employee.name }}</span>
+          </td>
+          <td>
+            <input *ngIf="editingEmployeeIndex === i" [(ngModel)]="editingEmployeeIndex.position" class="form-control" />
+            <span *ngIf="editingEmployeeIndex !== i">{{ employee.position }}</span>
+          </td>
+          <td>
+            <input *ngIf="editingEmployeeIndex === i" [(ngModel)]="editingEmployeeIndex.hireDate" class="form-control" type="date" />
+            <span *ngIf="editingEmployeeIndex !== i">{{ employee.hireDate }}</span>
+          </td>
+          <td>
+            <input *ngIf="editingEmployeeIndex === i" [(ngModel)]="editingEmployeeIndex.phoneNumber" class="form-control" />
+            <span *ngIf="editingEmployeeIndex !== i">{{ employee.phoneNumber }}</span>
+          </td>
+          <td>
+            <input *ngIf="editingEmployeeIndex === i" [(ngModel)]="editingEmployeeIndex.email" class="form-control" />
+            <span *ngIf="editingEmployeeIndex !== i">{{ employee.email }}</span>
+          </td>
           <td>
             {{ employee.address.street }}, {{ employee.address.city }}, {{ employee.address.state }} - {{ employee.address.zipCode }}
           </td>
-          <td>{{employee.address.addressId}}</td>
           <td>
-            <button class="btn btn-success btn-sm" (click)="editEmployee(employee)">Edit</button>
+            <button *ngIf="editingEmployeeIndex !== i" class="btn btn-warning btn-sm" (click)="editEmployee(i)">Edit</button>
+            <button *ngIf="editingEmployeeIndex === i" class="btn btn-success btn-sm" (click)="updateEmployee(i)">Save</button>
+            <button *ngIf="editingEmployeeIndex === i" class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
           </td>
         </tr>
       </tbody>

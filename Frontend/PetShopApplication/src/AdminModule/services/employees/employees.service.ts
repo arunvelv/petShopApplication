@@ -31,8 +31,9 @@ export class EmployeesService {
 
 
   updateEmployee(employeeId: number, employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(this.baseUrl + `/update/${employeeId}`, employee, {
+    return this.http.put<Employee>(`${this.baseUrl}/update/${employeeId}`, employee, {
       responseType: 'json'
     });
   }
+
 }

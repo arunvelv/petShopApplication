@@ -21,7 +21,7 @@ import com.model.Customer;
 import com.model.Transactions.TransactionStatus;
 import com.service.CustomerService;
  
-class CustomerServiceTest {
+public class CustomerServiceTest {
  
     @InjectMocks
     private CustomerService customerService;
@@ -98,16 +98,20 @@ class CustomerServiceTest {
         verify(customerDAO, times(1)).findByAddressCity("City1");
     }
  
-//    @Test
-//    void testAddCustomer() {
-//        when(addressDAO.findById(1)).thenReturn(Optional.of(address));
-//        when(customerDAO.save(customer)).thenReturn(customer);
-//        Customer result = customerService.addCustomer(customer);
-//        assertNotNull(result);
-//        assertEquals(customer.getFirstName(), result.getFirstName());
-//        verify(addressDAO, times(1)).findById(1);
-//        verify(customerDAO, times(1)).save(customer);
-//    }
+    @Test
+    void testSaveCustomer() {
+        // Set address ID to 0 to ensure the save method is called
+        address.setAddressId(0); // This will trigger the save on addressDAO
+        when(addressDAO.save(address)).thenReturn(address); // Mock save of address
+        when(customerDAO.save(customer)).thenReturn(customer); // Mock save of customer
+ 
+        Customer savedCustomer = customerService.saveCustomer(customer, address);
+ 
+        assertNotNull(savedCustomer);
+        assertEquals(1, savedCustomer.getCustomerId()); // Assuming the customer ID gets set
+        verify(addressDAO, times(1)).save(address); // Ensure addressDAO.save() was called
+        verify(customerDAO, times(1)).save(customer); // Ensure customerDAO.save() was called
+    }
 
  
     @Test

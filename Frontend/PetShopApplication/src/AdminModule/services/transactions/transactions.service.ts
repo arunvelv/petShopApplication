@@ -18,8 +18,10 @@ export class TransactionsService {
     });
   }
 
-  addTransaction(transaction: Transaction): Observable<Transaction> {
-    return this.http.post<Transaction>(`${this.baseUrl}/add`, transaction, {
+  
+
+  addTransaction(transaction: Transaction): Observable<any> {
+    return this.http.post(`${this.baseUrl}/add`, transaction, {
       responseType: 'json'
     });
   }

@@ -29,8 +29,12 @@ export class AdminLoginComponent {
       localStorage.setItem('role', this.user.role);
       this.router.navigate(["/admin-dashboard"])
     },(error) => {
-      console.error('Error saving user:', error);
-      alert(JSON.stringify(error));
+      if (error.status === 403) {
+        alert('Invalid username or password.');
+      } else {
+        console.error('Error during login:', error);
+        alert('Incorrect Password or Username');
+      }
     });
 }
 }

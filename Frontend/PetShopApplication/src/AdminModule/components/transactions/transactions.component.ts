@@ -3,6 +3,8 @@ import { Transaction, TransactionStatus } from '../../../models/Transaction';
 import { TransactionsService } from '../../services/transactions/transactions.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Customer } from '../../../models/Customer';
+import { Pets } from '../../../models/Pets';
 
 @Component({
   selector: 'app-transactions',
@@ -14,7 +16,8 @@ export class TransactionsComponent implements OnInit {
   transactions: Transaction[] = [];
   newTransaction: Transaction = {} as Transaction;
   editingTransaction: Transaction | null = null;
-  customerId: number | null = null;
+customers: Customer = {} as Customer;
+pets: Pets = {} as Pets;
   errorMessage: string | null = null;
   isAddTransactionFormVisible = false;
 
@@ -41,9 +44,8 @@ export class TransactionsComponent implements OnInit {
   }
 
   addTransaction(): void {
-    console.log(this.newTransaction.customer.customerId)
+    console.log(this.newTransaction);
     if (!this.newTransaction.customer || !this.newTransaction.customer.customerId) {
-
       console.error('Customer ID is required.');
       this.errorMessage = 'Please provide a valid Customer ID.';
       return;
@@ -55,6 +57,11 @@ export class TransactionsComponent implements OnInit {
       return;
     }
   
+    // Ensure the transaction date is formatted as yyyy-MM-dd
+    this.newTransaction.transactionDate = new Date(this.newTransaction.transactionDate)
+      .toISOString()
+      .split('T')[0]; // Format the date
+    
     this.transactionsService.addTransaction(this.newTransaction).subscribe(
       (addedTransaction: Transaction) => {
         console.log('Transaction added successfully:', addedTransaction);
@@ -68,18 +75,19 @@ export class TransactionsComponent implements OnInit {
       }
     );
   }
+  
 
   resetTransactionForm(): void {
     this.newTransaction = {
       transactionId: 0,
-      transactionDate: new Date().toISOString().split('T')[0], // Set default date as today
+      transactionDate: new Date().toISOString().split('T')[0], // Default to today's date in yyyy-MM-dd
       amount: 0,
       transactionStatus: TransactionStatus.SUCCESS,
       customer: { customerId: 1 } as any,  // Ensure customer object is initialized
       pet: { petId: 1 } as any,            // Ensure pet object is initialized
     };
   }
-
+  
   editTransaction(transaction: Transaction): void {
     this.editingTransaction = {
       ...transaction,
@@ -115,8 +123,8 @@ export class TransactionsComponent implements OnInit {
   }
 
   getTransactionsByCustomerId(): void {
-    if (this.customerId != null) {
-      this.transactionsService.getTransactionsByCustomerId(this.customerId).subscribe(
+    if (this.customers != null) {
+      this.transactionsService.getTransactionsByCustomerId(this.customers.customerId).subscribe(
         (data: Transaction[]) => {
           this.transactions = data;
         },

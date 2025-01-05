@@ -8,11 +8,26 @@ import { PetFood } from '../../../models/PetFood';
 })
 
 export class PetFoodsService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient) {}
   baseUrl: string = 'http://localhost:9999/api/v1/pet_foods';
 
   getAllPetFoods(): Observable<PetFood[]> {
-    return this.httpClient.get<PetFood[]>(this.baseUrl);
+    return this.http.get<PetFood[]>(this.baseUrl);
   }
+  searchByName(name: string): Observable<PetFood[]> {
+    const url = `${this.baseUrl}/pet_foods/search?name=${encodeURIComponent(name)}`;
+    return this.http.get<PetFood[]>(url);
+}
+ 
+  searchByBrand(brand: string): Observable<PetFood[]> {
+    const url = `${this.baseUrl}/brand/${brand}`;
+    return this.http.get<PetFood[]>(url);
+  }
+ 
+  searchByType(type: string): Observable<PetFood[]> {
+    const url = `${this.baseUrl}/food_type/${type}`;
+    return this.http.get<PetFood[]>(url);
+  }
+ 
 
 }
