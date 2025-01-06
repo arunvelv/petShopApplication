@@ -27,8 +27,6 @@ public class TransactionsController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addTransaction(@RequestBody Transactions transaction) {
-    	System.out.println("Customer ID: " + transaction.getCustomer().getCustomerId());
-        System.out.println("Pet ID: " + transaction.getPet().getPetId());
         transactionsService.saveTransaction(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).body("Transaction added successfully.");
     }

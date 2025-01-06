@@ -12,7 +12,11 @@ import com.model.Suppliers;
 	 
 	@Repository
 	public interface SuppliersDAO extends JpaRepository<Suppliers,Integer>{
+		
+		List<Suppliers> findAll();
+		
 		Suppliers findBySuppliersId(int SuppliersId);
+		
 		List<Suppliers> findByName(String name);
 		
 		@Query("select s from Suppliers s where s.address.city= :city")

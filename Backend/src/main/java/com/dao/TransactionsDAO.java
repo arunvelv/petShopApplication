@@ -16,5 +16,8 @@ public interface TransactionsDAO extends JpaRepository<Transactions, Integer> {
 
     @Query("SELECT t FROM Transactions t WHERE t.customers.customerId = :customerId")
     List<Transactions> findByCustomers_CustomerId(int customerId);
+    
+    @Query("SELECT t FROM Transactions t WHERE t.pets.petId = :petId")
+    List<Transactions> findByPets_PetId(int petId);
 
 }

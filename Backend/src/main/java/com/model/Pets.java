@@ -51,7 +51,7 @@ public class Pets {
     
     private PetCategories category;
 
-    @OneToMany(mappedBy = "pets", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "pets", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Transactions> transactions;
 

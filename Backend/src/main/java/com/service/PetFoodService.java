@@ -66,7 +66,7 @@ public class PetFoodService
 
 	 {
 
-	   Optional<PetFood> petFoods = petFoodDAO.findByName(name);
+	   List<PetFood> petFoods = petFoodDAO.findByName(name);
 
 	   if (!petFoods.isEmpty()) 
 
@@ -173,7 +173,8 @@ public class PetFoodService
 	                existingPetFood.setQuantity(updatedPetFood.getQuantity());
 
 	                existingPetFood.setPrice(updatedPetFood.getPrice());
- 
+	     
+	                existingPetFood.setImageURL(updatedPetFood.getImageURL());
 	                PetFood savedPetFood = petFoodDAO.save(existingPetFood);
 
 	                return new ResponseEntity<>(savedPetFood, HttpStatus.OK);

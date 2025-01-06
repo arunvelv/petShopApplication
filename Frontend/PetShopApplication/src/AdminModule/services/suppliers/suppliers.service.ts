@@ -8,15 +8,14 @@ import { Address } from '../../../models/Address';
   providedIn: 'root'
 })
 export class SuppliersService {
-  searchSuppliers(name: any, email: any, contact: any) {
-    throw new Error('Method not implemented.');
-  }
+
+ 
   private baseUrl = 'http://localhost:9999/api/v1/suppliers';
 
   constructor(private http: HttpClient) {}
 
   getAllSuppliers(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl, { responseType: 'json' });
+    return this.http.get<any[]>(this.baseUrl);
   }
 
   getSupplierById(id: number): Observable<Supplier> {
@@ -42,14 +41,11 @@ export class SuppliersService {
      });
   }
 
- 
+  
 
 
- 
-
-
-
-  updateSupplier(id: number, supplier: Supplier): Observable<Supplier> {
-    return this.http.put<Supplier>(`${this.baseUrl}/update/${id}`, supplier, { responseType: 'json' });
+  updateSupplier(suppliersId: number, suppliersDetails: Supplier): Observable<Supplier> {
+    return this.http.put<Supplier>(`${this.baseUrl}/update/${suppliersId}`, suppliersDetails, { responseType: 'json' });
   }
+
 }

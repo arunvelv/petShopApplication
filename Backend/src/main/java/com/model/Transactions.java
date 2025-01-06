@@ -2,8 +2,7 @@ package com.model;
 
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 
 import jakarta.persistence.*;
 
@@ -32,7 +31,6 @@ public class Transactions {
     private Customer customers;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-//    @JsonIgnore
     @JoinColumn(name = "pet_id")
     private Pets pets;
 

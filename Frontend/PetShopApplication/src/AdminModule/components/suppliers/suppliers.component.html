@@ -1,24 +1,110 @@
 <div class="container mt-4">
   <h1>Supplier Management</h1>
 
-  <!-- Search Section -->
-  <div class="mb-3">
-    <h3>Search Suppliers</h3>
-    <div class="input-group mb-2">
-      <input [(ngModel)]="searchParams.name" class="form-control" placeholder="Search by Name" />
-      <button class="btn btn-info" (click)="searchByName()">Search</button>
-    </div>
-    <div class="input-group mb-2">
-      <input [(ngModel)]="searchParams.city" class="form-control" placeholder="Search by City" />
-      <button class="btn btn-info" (click)="searchByCity()">Search</button>
-    </div>
-    <div class="input-group mb-2">
-      <input [(ngModel)]="searchParams.state" class="form-control" placeholder="Search by State" />
-      <button class="btn btn-info" (click)="searchByState()">Search</button>
-    </div>
+  <div class="running-message text-center mb-3">
+    <span>To change the address of the customers, <a href="address">click here</a> Note the address ID and change in the address page</span>
   </div>
 
+  <div class="text-center">
+    <button class="btn btn-outline-success mb-3" (click)="toggleAddSupplierForm()">Add Supplier</button>
+  </div>
+
+  <div *ngIf="showAddSupplierForm" class="card p-4 my-4 mx-auto" style="max-width: 800px;">
+  <form (ngSubmit)="addSupplier()"  class="mb-4">
+    <div class="row">
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Supplier Name"
+          [(ngModel)]="newSupplier.name"
+          name="name"
+          required
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Contact Person"
+          [(ngModel)]="newSupplier.contactPerson"
+          name="contactPerson"
+          required
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Phone Number"
+          [(ngModel)]="newSupplier.phoneNumber"
+          name="phoneNumber"
+          required
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          [(ngModel)]="newSupplier.email"
+          name="email"
+          required
+        />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Street"
+          [(ngModel)]="newSupplier.address.street"
+          name="street"
+          required
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="City"
+          [(ngModel)]="newSupplier.address.city"
+          name="city"
+          required
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="State"
+          [(ngModel)]="newSupplier.address.state"
+          name="state"
+          required
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Zip Code"
+          [(ngModel)]="newSupplier.address.zipCode"
+          name="zipCode"
+          required
+        />
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary btn-block">
+          Add Supplier
+        </button>
+      </div>
+    </div>
+    </form>
+    </div>
+
   <!-- Suppliers Table -->
+  <div *ngIf="suppliers.length">
   <table class="table table-striped mt-4">
     <thead>
       <tr>
@@ -26,181 +112,53 @@
         <th>Contact Person</th>
         <th>Phone</th>
         <th>Email</th>
-        <th>Address</th>   
+        <th>Address</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let supplier of suppliers">
-        <td>{{ supplier.name }}</td>
-        <td>{{ supplier.contactPerson }}</td>
-        <td>{{ supplier.phoneNumber }}</td>
-        <td>{{ supplier.email }}</td>
-        <td>{{ supplier.address.street }} {{ supplier.address.city }} {{ supplier.address.state }} {{ supplier.address.zipCode }}</td> 
+      <tr *ngFor="let supplier of suppliers; let i = index">
         <td>
-          <button class="btn btn-warning btn-sm" (click)="editSelectedSupplier(supplier)">Edit</button>
+          <input
+            *ngIf="editSupplierIndex === i"
+            [(ngModel)]="supplier.name"
+            class="form-control"
+          />
+          <span *ngIf="editSupplierIndex !== i">{{ supplier.name }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editSupplierIndex === i"
+            [(ngModel)]="supplier.contactPerson"
+            class="form-control"
+          />
+          <span *ngIf="editSupplierIndex !== i">{{ supplier.contactPerson }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editSupplierIndex === i"
+            [(ngModel)]="supplier.phoneNumber"
+            class="form-control"
+          />
+          <span *ngIf="editSupplierIndex !== i">{{ supplier.phoneNumber }}</span>
+        </td>
+        <td>
+          <input
+            *ngIf="editSupplierIndex === i"
+            [(ngModel)]="supplier.email"
+            class="form-control"
+          />
+          <span *ngIf="editSupplierIndex !== i">{{ supplier.email }}</span>
+        </td>
+        <td>
+          {{ supplier.address.street }}, {{ supplier.address.city }}, {{ supplier.address.state }}, {{ supplier.address.zipCode }}
+        </td>
+        <td>
+          <button *ngIf="editSupplierIndex !== i" class="btn btn-warning btn-sm" (click)="editSupplier(i)">Edit</button>
+          <button *ngIf="editSupplierIndex === i" class="btn btn-success btn-sm" (click)="saveSupplier(i)">Save</button>
+          <button *ngIf="editSupplierIndex === i" class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
         </td>
       </tr>
     </tbody>
   </table>
-
-  <div class="form-group">
-    <h3>Add Supplier with Address</h3>
-    <form (ngSubmit)="addSupplier()">
-      <h4>Supplier Details</h4>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newSupplier.name"
-        name="name"
-        placeholder="Employee Name"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newSupplier.contactPerson"
-        name="contactPerson"
-        placeholder="contactPerson"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newSupplier.phoneNumber"
-        name="phoneNumber"
-        placeholder="phoneNumber"
-        required
-      />
-     
-      <input
-        type="email"
-        class="form-control"
-        [(ngModel)]="newSupplier.email"
-        name="email"
-        placeholder="Email"
-        required
-      />
-      <h4>Address Details</h4>
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.street"
-        name="street"
-        placeholder="Street"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.city"
-        name="city"
-        placeholder="City"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.state"
-        name="state"
-        placeholder="State"
-        required
-      />
-      <input
-        type="text"
-        class="form-control"
-        [(ngModel)]="newAddress.zipCode"
-        name="zipCode"
-        placeholder="Zip Code"
-        required
-      />
-
-      <button class="btn btn-primary" type="submit">Add Supplier</button>
-    </form>
-  </div>
-
-  <!-- Add Supplier Form -->
-  <!-- <div *ngIf="showAddSupplierForm" class="mt-4">
-    <h3>Add New Supplier</h3>
-    <form (ngSubmit)="addSupplier()">
-      <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input [(ngModel)]="newSupplier.name" name="name" id="name" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="contactPerson" class="form-label">Contact Person</label>
-        <input [(ngModel)]="newSupplier.contactPerson" name="contactPerson" id="contactPerson" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="phoneNumber" class="form-label">Phone Number</label>
-        <input [(ngModel)]="newSupplier.phoneNumber" name="phoneNumber" id="phoneNumber" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input [(ngModel)]="newSupplier.email" name="email" id="email" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="street" class="form-label">Street</label>
-        <input [(ngModel)]="newSupplier.address.street" name="street" id="street" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="city" class="form-label">City</label>
-        <input [(ngModel)]="newSupplier.address.city" name="city" id="city" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="state" class="form-label">State</label>
-        <input [(ngModel)]="newSupplier.address.state" name="state" id="state" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="zipCode" class="form-label">Zip Code</label>
-        <input [(ngModel)]="newSupplier.address.zipCode" name="zipCode" id="zipCode" class="form-control" required />
-      </div>
-      <button type="submit" class="btn btn-primary">Add Supplier</button>
-    </form>
-  </div> -->
-
-  <!-- Edit Supplier Form -->
-  <!-- <div *ngIf="editSupplier" class="mt-4">
-    <h3>Edit Supplier</h3>
-    <form (ngSubmit)="updateSupplier()">
-      <div class="mb-3">
-        <label for="editName" class="form-label">Name</label>
-        <input [(ngModel)]="editSupplier.name" name="editName" id="editName" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editContactPerson" class="form-label">Contact Person</label>
-        <input [(ngModel)]="editSupplier.contactPerson" name="editContactPerson" id="editContactPerson" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editPhoneNumber" class="form-label">Phone Number</label>
-        <input [(ngModel)]="editSupplier.phoneNumber" name="editPhoneNumber" id="editPhoneNumber" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editEmail" class="form-label">Email</label>
-        <input [(ngModel)]="editSupplier.email" name="editEmail" id="editEmail" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editStreet" class="form-label">Street</label>
-        <input [(ngModel)]="editSupplier.address.street" name="editStreet" id="editStreet" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editCity" class="form-label">City</label>
-        <input [(ngModel)]="editSupplier.address.city" name="editCity" id="editCity" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editState" class="form-label">State</label>
-        <input [(ngModel)]="editSupplier.address.state" name="editState" id="editState" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="editZipCode" class="form-label">Zip Code</label>
-        <input [(ngModel)]="editSupplier.address.zipCode" name="editZipCode" id="editZipCode" class="form-control" required />
-      </div>
-      <button type="submit" class="btn btn-primary">Update Supplier</button>
-      <button class="btn btn-secondary" (click)="cancelEdit()">Cancel</button>
-    </form>
-  </div> -->
-
-  <!-- Toggle Add Form Button -->
-  <!-- <button class="btn btn-success mt-4" (click)="showAddSupplierForm = !showAddSupplierForm">
-    {{ showAddSupplierForm ? 'Cancel' : 'Add New Supplier' }}
-  </button>
-</div> -->
+</div>

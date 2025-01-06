@@ -14,9 +14,10 @@ export class PetFoodsService {
   getAllPetFoods(): Observable<PetFood[]> {
     return this.http.get<PetFood[]>(this.baseUrl);
   }
-  searchByName(name: string): Observable<PetFood[]> {
-    const url = `${this.baseUrl}/pet_foods/search?name=${encodeURIComponent(name)}`;
-    return this.http.get<PetFood[]>(url);
+  
+searchByName(name: string): Observable<PetFood[]> {
+  const url = `${this.baseUrl}/search?name=${name}`;
+  return this.http.get<PetFood[]>(url);
 }
  
   searchByBrand(brand: string): Observable<PetFood[]> {

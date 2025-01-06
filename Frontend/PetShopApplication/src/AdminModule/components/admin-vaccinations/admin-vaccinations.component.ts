@@ -13,6 +13,7 @@ export class AdminVaccinationsComponent implements OnInit {
   vaccinations: any[] = [];
   originalVaccinations: any[] = [];
   editedVaccinationId: number | null = null;
+  isAddingVaccination: boolean = false; // Controls visibility of add form
   newVaccination: any = { name: '', description: '', price: 0, available: true };
   searchQuery: string = '';
 
@@ -65,6 +66,13 @@ export class AdminVaccinationsComponent implements OnInit {
     this.loadVaccinations();
   }
 
+  toggleAddVaccination(): void {
+    this.isAddingVaccination = !this.isAddingVaccination;
+    if (!this.isAddingVaccination) {
+      this.newVaccination = { name: '', description: '', price: 0, available: true };
+    }
+  }
+
   addVaccination(): void {
     if (!this.newVaccination.name || !this.newVaccination.description || this.newVaccination.price <= 0) {
       alert('Please fill in all the fields.');
@@ -75,6 +83,7 @@ export class AdminVaccinationsComponent implements OnInit {
       next: () => {
         this.newVaccination = { name: '', description: '', price: 0, available: true };
         this.loadVaccinations();
+        this.isAddingVaccination = false;
         alert('New vaccination added!');
       },
       error: (err) => {

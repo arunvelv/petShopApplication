@@ -32,7 +32,7 @@ public interface PetFoodDAO extends JpaRepository<PetFood,Integer>
 
 	//Get PetFood by name
 
-    Optional<PetFood> findByName(String name);
+    List<PetFood> findByName(String name);
 
     // Get all PetFood by type
 
@@ -57,9 +57,9 @@ public interface PetFoodDAO extends JpaRepository<PetFood,Integer>
 
     @Transactional
 
-    @Query("UPDATE PetFood pf SET pf.name = :name, pf.brand = :brand, pf.type = :type, pf.quantity = :quantity, pf.price = :price WHERE pf.foodId = :foodId")
+    @Query("UPDATE PetFood pf SET pf.name = :name, pf.brand = :brand, pf.type = :type, pf.quantity = :quantity, pf.price = :price, pf.imageURL = :imageURL WHERE pf.foodId = :foodId")
 
-    void updatePetFoodById(String name, String brand, String type, int quantity, float price, int foodId);
+    void updatePetFoodById(String name, String brand, String type, int quantity, float price, String imageURL, int foodId);
  
 	
  

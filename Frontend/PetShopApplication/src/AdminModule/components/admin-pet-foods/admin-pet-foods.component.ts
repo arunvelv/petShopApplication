@@ -3,7 +3,7 @@ import { PetFood } from '../../../models/PetFood';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminPetFoodsService } from '../../services/AdminPetFoods/admin-pet-foods.service';
-
+ 
 @Component({
   selector: 'app-admin-pet-foods',
   imports: [CommonModule,FormsModule],
@@ -28,7 +28,7 @@ export class AdminPetFoodsComponent {
   constructor (private AdminPetFoodService:AdminPetFoodsService )
   {}
  
-  
+ 
   ngOnInit(): void {
     this.getPetFoods();
     }
@@ -182,5 +182,7 @@ export class AdminPetFoodsComponent {
       this.filteredPetFoods = [];
     }
   }
-
+ 
 }
+ 
+ 

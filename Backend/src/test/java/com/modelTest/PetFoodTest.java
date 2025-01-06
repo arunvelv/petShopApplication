@@ -45,7 +45,7 @@ class PetFoodTest {
     @Test
     void testPetFoodParameterizedConstructor() {
         List<Pets> petsList = new ArrayList<>();
-        PetFood petFoodWithParams = new PetFood(2, "Cat Delight", "FelineCare", "Wet", 5, 25.99f, petsList);
+        PetFood petFoodWithParams = new PetFood(2, "Cat Delight", "FelineCare", "Wet", 5, 25.99f,"https://www.pedigree.in/files/styles/webp/public/2024-02/Why-is-packaged-food-mobile.jpg.webp?VersionId=c8Q_uk7ETL0EtUQJMnHPVxo_JMR0Py3n&itok=D0lTt94v", petsList);
 
         assertEquals(2, petFoodWithParams.getFoodId());
         assertEquals("Cat Delight", petFoodWithParams.getName());
@@ -53,6 +53,7 @@ class PetFoodTest {
         assertEquals("Wet", petFoodWithParams.getType());
         assertEquals(5, petFoodWithParams.getQuantity());
         assertEquals(25.99f, petFoodWithParams.getPrice());
+        assertEquals("https://www.pedigree.in/files/styles/webp/public/2024-02/Why-is-packaged-food-mobile.jpg.webp?VersionId=c8Q_uk7ETL0EtUQJMnHPVxo_JMR0Py3n&itok=D0lTt94v", petFoodWithParams.getImageURL());
         assertEquals(petsList, petFoodWithParams.getPets());
     }
 

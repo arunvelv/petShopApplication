@@ -57,8 +57,6 @@ import com.model.*;
 	    public ResponseEntity<Suppliers> addSuppliers(@RequestBody SupplierPayload payload) {
 	    	Address address = payload.getAddress();
 	        Suppliers suppliers = payload.getSuppliers();
-	        System.out.println(suppliers);
-	        System.out.println(address);
 //	        if (address == null || suppliers == null) {
 //	            throw new InvalidInputException("VALIDATION_ERROR");
 //	       }
@@ -67,12 +65,14 @@ import com.model.*;
 	           throw new InvalidInputException("ADD_FAILS");
 	        }
 	    	Suppliers createdSuppliers = suppliersService.saveSuppliers(suppliers, address);
-	        return new ResponseEntity<>(createdSuppliers, HttpStatus.OK);
+	        return new ResponseEntity<>(createdSuppliers, HttpStatus.CREATED);
 	        }
+	    
+	   
 	      
 	        
 	        
-	    @PutMapping("/update/{id:[0-9]+}")
+	    @PutMapping("/update/{id}")
 	    public ResponseEntity<Suppliers> updateCustomer(@PathVariable("id") int suppliersId, @RequestBody Suppliers suppliersDetails) {
 	    	Suppliers updatedSuppliers = suppliersService.updateSuppliers(suppliersId, suppliersDetails);
 	        if (updatedSuppliers != null) {
@@ -80,5 +80,6 @@ import com.model.*;
 	        }
 	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
+	    
 	}
 	 

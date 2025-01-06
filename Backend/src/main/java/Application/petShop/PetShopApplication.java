@@ -23,7 +23,7 @@ import com.service.*;
 @SpringBootApplication(scanBasePackages="com.controller,com.service")
 @EntityScan("com.model")
 @EnableJpaRepositories("com.dao")
-public class PetShopApplication {
+public class PetShopApplication {	
 
 	public static void main(String[] args) {
 		SpringApplication.run(PetShopApplication.class, args);
@@ -33,10 +33,7 @@ public class PetShopApplication {
 	@DependsOn("userDetailsService")
 	public DaoAuthenticationProvider daoAuthenticationProvider() {
 	    CustomUserDetailService service=userDetailsService();
- 
-	  
 	    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-	    
 	    provider.setUserDetailsService(service);
 	    provider.setPasswordEncoder(passwordEncoder());
 	    return provider;

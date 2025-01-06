@@ -4,7 +4,6 @@ import { User } from '../../models/User';
 import { FormsModule } from '@angular/forms';
 import {CommonModule} from "@angular/common";
 import { Router } from '@angular/router';
-import { error } from 'node:console';
 
 @Component({
   selector: 'app-user-login',

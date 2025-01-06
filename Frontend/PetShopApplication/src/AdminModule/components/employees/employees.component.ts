@@ -14,6 +14,7 @@ import { Address } from '../../../models/Address';
 export class EmployeesComponent implements OnInit {
   employees: Employee[] = [];
   newEmployee: Employee = {} as Employee;
+  editingEmployee: Employee  | null = null;
   editingEmployeeIndex: any | null = null;
   newAddress: Address = {} as Address;
   showAddEmployeeForm: boolean = false;
@@ -39,7 +40,10 @@ export class EmployeesComponent implements OnInit {
 
   toggleAddEmployeeForm(): void {
     this.showAddEmployeeForm = !this.showAddEmployeeForm;
-    // this.newEmployee = {} as Employee;
+    if (!this.showAddEmployeeForm) {
+      this.newEmployee = {} as Employee;
+      this.newAddress = {} as Address;
+    }
   }
 
   addEmployee(): void {
@@ -60,24 +64,26 @@ export class EmployeesComponent implements OnInit {
 
   editEmployee(index: number): void {
     this.editingEmployeeIndex = index;
-    // this.newEmployee = { ...this.employees[index] };
+    this.editingEmployee = { ...this.employees[index] };
   }
 
-  updateEmployee(index: number): void {
-    const updatedEmployee = this.employees[index]
-      this.employeesService.updateEmployee(updatedEmployee.employeeId, updatedEmployee).subscribe(
-        () => {
-          
-          this.editingEmployeeIndex = null; // Exit edit mode
-        },
-        (error) => {
-          console.error('Error updating employee:', error);
-          this.errorMessage = 'Failed to update employee. Please try again.';
+  updateEmployee(employee: Employee): void {
+    this.employeesService.updateEmployee(employee.employeeId, employee).subscribe(
+      (updatedEmployee: Employee) => {
+        const index = this.employees.findIndex(emp => emp.employeeId === updatedEmployee.employeeId);
+        if (index !== -1) {
+          this.employees[index] = updatedEmployee;
         }
-      );
-    }
+        this.editingEmployee = null; // Exit edit mode
+      },
+      (error) => {
+        console.error('Error updating employee:', error);
+      }
+    );
+  }
   
   cancelEdit(): void {
     this.editingEmployeeIndex = null;
+    this.editingEmployee = null;
   }
 }

@@ -1,132 +1,111 @@
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Manage Vaccinations</h1>
-  
-    <!-- Search Bar -->
-    <!-- <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Search vaccinations..."
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()"
-      />
-    </div>
-   -->
-    <!-- Vaccinations Table -->
-    <table class="table table-bordered table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Available</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let vaccination of vaccinations">
-          <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.name }}</td>
-          <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="vaccination.name"
-            />
-          </td>
-  
-          <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.description }}</td>
-          <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="vaccination.description"
-            />
-          </td>
-  
-          <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.price }}</td>
-          <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
-            <input
-              type="number"
-              class="form-control"
-              [(ngModel)]="vaccination.price"
-            />
-          </td>
-  
-          <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">
-            {{ vaccination.available ? 'Yes' : 'No' }}
-          </td>
-          <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
-            <select class="form-control" [(ngModel)]="vaccination.available">
-              <option [value]="true">Yes</option>
-              <option [value]="false">No</option>
-            </select>
-          </td>
-  
-          <td>
-            <button
-              *ngIf="editedVaccinationId !== vaccination.vaccinationId"
-              class="btn btn-primary btn-sm"
-              (click)="startEdit(vaccination.vaccinationId)"
-            >
-              Edit
-            </button>
-            <button
-              *ngIf="editedVaccinationId === vaccination.vaccinationId"
-              class="btn btn-success btn-sm"
-              (click)="saveEdit(vaccination)"
-            >
-              Save
-            </button>
-            <button
-              *ngIf="editedVaccinationId === vaccination.vaccinationId"
-              class="btn btn-secondary btn-sm"
-              (click)="cancelEdit()"
-            >
-              Cancel
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- Add Vaccination -->
-    <div class="card p-3 mt-4">
-      <h5>Add New Vaccination</h5>
-      <div class="row">
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Name"
-            [(ngModel)]="newVaccination.name"
-          />
-        </div>
-        <div class="col-md-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Description"
-            [(ngModel)]="newVaccination.description"
-          />
-        </div>
-        <div class="col-md-2">
-          <input
-            type="number"
-            class="form-control"
-            placeholder="Price"
-            [(ngModel)]="newVaccination.price"
-          />
-        </div>
-        <div class="col-md-2">
-          <select class="form-control" [(ngModel)]="newVaccination.available">
-            <option [value]="true">Yes</option>
-            <option [value]="false">No</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-success" (click)="addVaccination()">Add</button>
-        </div>
+  <h1 class="text-center mb-4">Manage Vaccinations</h1>
+
+  <!-- Add Vaccination Button -->
+  <button class="btn btn-success mb-3" (click)="toggleAddVaccination()">
+    {{ isAddingVaccination ? 'Close Add Vaccination' : 'Add Vaccination' }}
+  </button>
+
+  <!-- Add Vaccination Form -->
+  <div *ngIf="isAddingVaccination" class="card p-3 mt-4">
+    <h5>Add New Vaccination</h5>
+    <div class="row">
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Name"
+          [(ngModel)]="newVaccination.name"
+        />
+      </div>
+      <div class="col-md-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Description"
+          [(ngModel)]="newVaccination.description"
+        />
+      </div>
+      <div class="col-md-2">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Price"
+          [(ngModel)]="newVaccination.price"
+        />
+      </div>
+      <div class="col-md-2">
+        <select class="form-control" [(ngModel)]="newVaccination.available">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-success" (click)="addVaccination()">Add</button>
       </div>
     </div>
   </div>
-  
+
+  <!-- Vaccinations Table -->
+  <table class="table table-bordered table-striped mt-4">
+    <thead>
+      <tr>
+        <th>Vaccination ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Available</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vaccination of vaccinations">
+        <td>{{ vaccination.vaccinationId }}</td>
+        <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.name }}</td>
+        <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
+          <input type="text" class="form-control" [(ngModel)]="vaccination.name" />
+        </td>
+        <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.description }}</td>
+        <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
+          <input type="text" class="form-control" [(ngModel)]="vaccination.description" />
+        </td>
+        <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">{{ vaccination.price }}</td>
+        <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
+          <input type="number" class="form-control" [(ngModel)]="vaccination.price" />
+        </td>
+        <td *ngIf="editedVaccinationId !== vaccination.vaccinationId">
+          {{ vaccination.available ? 'Yes' : 'No' }}
+        </td>
+        <td *ngIf="editedVaccinationId === vaccination.vaccinationId">
+          <select class="form-control" [(ngModel)]="vaccination.available">
+            <option [value]="true">Yes</option>
+            <option [value]="false">No</option>
+          </select>
+        </td>
+        <td>
+          <button
+            *ngIf="editedVaccinationId !== vaccination.vaccinationId"
+            class="btn btn-primary btn-sm"
+            (click)="startEdit(vaccination.vaccinationId)"
+          >
+            Edit
+          </button>
+          <button
+            *ngIf="editedVaccinationId === vaccination.vaccinationId"
+            class="btn btn-success btn-sm"
+            (click)="saveEdit(vaccination)"
+          >
+            Save
+          </button>
+          <button
+            *ngIf="editedVaccinationId === vaccination.vaccinationId"
+            class="btn btn-secondary btn-sm"
+            (click)="cancelEdit()"
+          >
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

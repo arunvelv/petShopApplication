@@ -16,5 +16,12 @@
     margin-right: 30px;             /* Add some spacing from the edge */
     transform: translateY(-60px);
   }
+
+  .error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+ 
   
   

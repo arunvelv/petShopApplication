@@ -44,7 +44,7 @@
           <th>Phone</th>
           <th>Email</th>
           <th>Address</th>
-          <th>Actions</th>
+          <!-- <th>Actions</th> -->
         </tr>
       </thead>
       <tbody>
@@ -72,11 +72,11 @@
           <td>
             {{ employee.address.street }}, {{ employee.address.city }}, {{ employee.address.state }} - {{ employee.address.zipCode }}
           </td>
-          <td>
+          <!-- <td>
             <button *ngIf="editingEmployeeIndex !== i" class="btn btn-warning btn-sm" (click)="editEmployee(i)">Edit</button>
-            <button *ngIf="editingEmployeeIndex === i" class="btn btn-success btn-sm" (click)="updateEmployee(i)">Save</button>
+            <button *ngIf="editingEmployeeIndex === i" class="btn btn-success btn-sm" (click)="updateEmployee(employee)">Save</button>
             <button *ngIf="editingEmployeeIndex === i" class="btn btn-secondary btn-sm" (click)="cancelEdit()">Cancel</button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>

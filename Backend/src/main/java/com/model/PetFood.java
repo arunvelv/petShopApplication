@@ -58,7 +58,7 @@ public class PetFood
 	
  
 	public PetFood(int foodId, @NotNull @Size(max = 255) String name, @Size(max = 255) String brand,
-			@Size(max = 255) String type, @NotNull int quantity, @NotNull float price, List<Pets> pets) {
+			@Size(max = 255) String type, @NotNull int quantity, @NotNull float price, String imageURL, List<Pets> pets) {
 		super();
 		this.foodId = foodId;
 		this.name = name;
@@ -66,6 +66,7 @@ public class PetFood
 		this.type = type;
 		this.quantity = quantity;
 		this.price = price;
+		this.imageURL = imageURL;
 		this.pets = pets;
 	}
 

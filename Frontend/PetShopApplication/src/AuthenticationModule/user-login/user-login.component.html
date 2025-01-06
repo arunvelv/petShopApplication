@@ -2,7 +2,8 @@
   <div class="card shadow-lg p-4" style="max-width: 400px; width: 100%; border-radius: 10px;">
     <div class="card-body">
       <h3 class="text-center text-primary mb-4">Sign In</h3>
-      <form>
+      <form #loginForm="ngForm" (ngSubmit)="UserLogin()">
+        <!-- Username Field -->
         <div class="form-group mb-3">
           <label for="emailInput" class="form-label">User Name</label>
           <input
@@ -13,8 +14,19 @@
             name="userName"
             placeholder="Enter your user name"
             required
+            minlength="3"
+            #username="ngModel"
           />
+          <!-- Validation Feedback for Username -->
+          <div *ngIf="username.invalid && username.touched" class="text-danger mt-1">
+            <span *ngIf="username.errors?.['required']">User Name is required.</span>
+            <span *ngIf="username.errors?.['minlength']">
+              User Name must be at least 3 characters long.
+            </span>
+          </div>
         </div>
+
+        <!-- Password Field -->
         <div class="form-group mb-4">
           <label for="passwordInput" class="form-label">Password</label>
           <input
@@ -25,15 +37,27 @@
             name="password"
             placeholder="Enter your password"
             required
+            minlength="6"
+            #password="ngModel"
           />
+          <!-- Validation Feedback for Password -->
+          <div *ngIf="password.invalid && password.touched" class="text-danger mt-1">
+            <span *ngIf="password.errors?.['required']">Password is required.</span>
+            <span *ngIf="password.errors?.['minlength']">
+              Password must be at least 6 characters long.
+            </span>
+          </div>
         </div>
+
+        <!-- Sign In Button -->
         <button
-          type="button"
+          type="submit"
           class="btn btn-primary w-100 mb-3"
-          (click)="UserLogin()"
         >
           Sign In
         </button>
+
+        <!-- Sign Up Link -->
         <p class="text-center mb-0">
           <a href="user-register" class="text-decoration-none text-primary">
             Don't have an account? Sign up
